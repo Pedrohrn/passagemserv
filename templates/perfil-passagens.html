@@ -1,0 +1,23 @@
+<div sc-modal="perfilCtrl.modal">
+  <div class="sc-modal-header">
+  	Sou um Modal
+		<i class="sc-modal-close sc-cursor-pointer sc-icon-fechar-1 sc-badge-hover-red" ng-click="perfilCtrl.close()"></i>
+		<button class="sc-btn sc-btn-green sc-m-l-xxl" ng-click="perfil.novo()" type="button">Novo Checklist</button>
+  </div>
+
+  <div class="sc-modal-body">
+  	<ul class="sc-accordion">
+			<li class="sc-p-t-xl" ng-repeat="perfil in checklist.list">
+				<div class="flex-row">
+					<div class="fcol-xs-auto">
+						<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.checklist}}</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+  </div>
+
+  <div class="sc-modal-footer">
+    <button ng-click="perfilCtrl.close()" class="sc-btn">Cancelar</button>
+  </div>
+</div>

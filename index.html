@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html ng-app="passagem-servico">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title> Passagem de serviço </title>
+    <link rel="stylesheet" href="css/sc-uikit.css">
+    <link rel="stylesheet" href="css/sc-icons.css">
+    <link rel="stylesheet" href="css/passagemserv.css">
+  </head>
+  <body ng-controller="PassagemServicoCtrl">
+
+    <section id="topbar">
+      <div class="fix">
+        <div class="flex-row">
+          <div class="left sc-p-r-lg">
+            <button ng-click="novaPassagemCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">Nova Passagem</button>
+          </div>
+          <div class="sc-p-r-lg fcol-xs-auto fcol-sm-50 fcol-lg-33">
+            <form class="sc-input-group">
+              <input class="sc-input-default" type="text">
+              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
+              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
+              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-impressora"></i></button>
+            </form>
+          </div>
+          <div class="fcol-xs-auto hidden-xs"></div>
+          <div class="fcol-xs-3em">
+            <span class="sc-dropdown pull-right">
+              <div class="sc-relative">
+                <button class="sc-btn sc-btn-grey" ng-click="menuAdmCtrl.toggleMenu()" type="button">
+                  <i class="sc-icon sc-icon-reticiencias-v"></i>
+                </button>
+              </div>
+              <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menuAdmCtrl.menuOpen" style="display: block;">
+                <li ng-click="perfilCtrl.init()">
+                  <span>Perfil Checklist</span>
+                </li>
+                <li ng-click="menuAdmCtrl.abrirModalLog()">
+                  <span>Histórico</span>
+                </li>
+              </ul>
+            </span>
+          </div>
+          <div class="clear"></div>
+          <div id="top-bar-filter">
+            <div class="sc-p-lg ng-animation-slider" ng-show="filtroCtrl.avancado" style="display: none;">
+              <form ng-submit="filtroCtrl.buscarPassagem()" autocomplete="nope">
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                  <div class="sc-input-group">
+                    <div class="sc-label">Quem sai:</div>
+                    <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemSai" type="text">
+                    <button class="sc-btn sc-btn-blue" type="button">
+                      <i class="sc-icon sc-icon-lupa-1"></i>
+                    </button>
+                    <button class="sc-btn sc-btn-default" type="button">
+                      <i class="sc-icon sc-icon-visto-1"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                  <div class="sc-input-group">
+                    <div class="sc-label">Quem entra:</div>
+                    <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemEntra" type="text">
+                    <button class="sc-btn sc-btn-blue" type="button">
+                      <i class="sc-icon sc-icon-lupa-1"></i>
+                    </button>
+                    <button class="sc-btn sc-btn-default" type="button">
+                      <i class="sc-icon sc-icon-visto-1"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                  <div class="sc-label">Status</div>
+                  <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.status">
+                    <option value="">Todos</option>
+                    <option value="pendente" label="Pendente/ Em aberto">Pendente/A passar</option>
+                    <option value="realizada" label="Realizada">Realizada</option>
+                  </select>
+                </div>
+                <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                  <div>
+                    <div class="sc-label">Início</div>
+                    <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
+                  </div>
+                  <div>
+                    <div class="sc-label">Fim</div>
+                    <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
+                  </div>
+                  <div>
+                    <div class="sc-label">Tipo de Data:</div>
+                    <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
+                      <option value="" class="" selected="selected">Todos</option>
+                      <option value="criadoEm" label="Criado em">Criado em</option>
+                      <option value="passadaEm" label="Passada em">Passada em</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div ng-if="filtroCtrl.newPeriodo">
+                  <hr>
+                  <div class="flex-row" ng-repeat="data in filtroCtrl.params.datas">
+                    <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                      <div>
+                        <div class="sc-label">Início</div>
+                        <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
+                      </div>
+                      <div>
+                        <div class="sc-label">Fim</div>
+                        <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
+                      </div>
+                      <div>
+                        <div class="sc-label">Tipo de Data:</div>
+                        <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
+                          <option value="" class="" selected="selected">Todos</option>
+                          <option value="criadoEm" label="Criado em">Criado em</option>
+                          <option value="passadaEm" label="Passada em">Passada em</option>
+                        </select>
+                      </div>
+                      <div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
+                        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="filtroCtrl.params.newPeriods.remove(data)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <button ng-click="filtroCtrl.buscar" class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md" type="submit">
+                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-lupa-1"></i></div>
+                  <div class="sc-btn-text">Aplicar</div>
+                </button>
+                <button ng-click="filtroCtrl.limparBusca()" class="sc-btn sc-btn-awesomeness sc-btn-red sc-m-l-md" type="button">
+                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-fechar-1"></i></div>
+                  <div class="sc-btn-text">Limpar busca</div>
+                </button>
+                <button ng-click="filtroCtrl.addPeriodo()" class="sc-btn sc-btn-awesomeness sc-btn-green sc-m-l-md" type="button">
+                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-calendario-2"></i></div>
+                  <div class="sc-btn-text">Adicionar Período</div>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="passagem-servico">
+      <section class="sc-bg-white">
+        <div>
+          <ul class="sc-accordion">
+            <li class="sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;">
+              <div class="flex-row sc-text-gray">
+                <div class="sc-p-md fcol-xs-3m align-center">
+                  <input class="sc-checkbox sc-checkbox-blue" type="checkbox">
+                </div>
+                <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Saiu</div>
+                <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Entrou</div>
+                <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Data da passagem</div>
+                <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Status</div>
+                <div class="sc-p-md fcol-xs-3m"></div>
+              </div>
+            </li>
+            <li ng-repeat="passagem in listCtrl.list">
+              <div class="sc-accordion-head flex-row sc-text-gray">
+                <label class="fcol-xs-3em align-center">
+                  <input class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
+                </label>
+                <div class="fcol-xs-auto">
+                  <div class="icone seta-vermelha"></div>
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.saiu}}</div>
+                </div>
+                <div class="fcol-xs-auto">
+                  <div class="icone seta-verde"></div>
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.entrou}}</div>
+                </div>
+                <div class="fcol-xs-auto">
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.dia}}/0{{passagem.mes}}/{{passagem.ano}}</div>
+                </div>
+                <div class="fcol-xs-auto">
+                  <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': {{passagem.status}} == Realizada, 'sc-bg-yellow': {{passagem.status}} == Pendente}">{{passagem.status}}</span>
+                </div>
+                <div class="fcol-xs-3em align-center">
+                  <div class="sc-dropdown" ng-click="this.menuPassagemCtrl.toggleMenu()">
+                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': this.menuPassagemCtrl.menuOpen}"></i>
+                    <ul class="sc-dropdown-menu pull-right ng-hide" ng-show="this.menuPassagemCtrl.menuOpen" style="display: block;">
+                      <li>Passar serviço</li>
+                      <li>Editar</li>
+                      <li>Duplicar passagem</li>
+                      <li>Desativar</li>
+                      <li>Excluir</li>
+                      <li>Histórico</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active" ></div>
+      <div ng-include="'templates/nova-passagem.html'" ng-if="novaPassagemCtrl.new" ></div>
+      <div ng-include="'templates/log.html'" ng-if="menuAdmCtrl.logOpen" ></div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.7/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+
+    <script type="text/javascript" src="js/sc-uikit.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <!-- <script type="text/javascript" src="/controllers/nova-passagem.js" /> -->
+  </body>
+</html>
