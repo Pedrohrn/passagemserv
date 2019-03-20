@@ -45,18 +45,19 @@
           </div>
         </div>
         <div id="top-bar-filter">
-          <div class="sc-p-lg ng-animation-slider" ng-show="filtroCtrl.avancado" style="display: block;">
+          <div class="sc-panel sc-p-lg ng-animation-slider" ng-show="filtroCtrl.avancado" style="display: block;">
             <form ng-submit="filtroCtrl.buscarPassagem()" autocomplete="nope">
               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                 <div>
                   <div class="sc-label">Quem sai:</div>
                   <div class="sc-input-group">
-                    <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemSai" type="text">
+                    <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemSai" type="text" typeahead="porteiro as porteiro.nome" typeahead-combo="true" typeahead-editable="false" typeahead-multiple="true" typeahead-on-select="filtroCtrl.params.set(filtro.params.quemSai)" aria-autocomplete="list" autocomplete="nope" aria-expanded="false" aria-owns="type">
                     <button class="sc-btn sc-btn-blue" type="button">
                       <i class="sc-icon sc-icon-lupa-1"></i>
                     </button>
-                    <button class="sc-btn sc-btn-default" type="button">
+                    <button class="sc-btn sc-btn-default sc-relative" ng-click="filtro.quemSai.checked.length" type="button">
                       <i class="sc-icon sc-icon-visto-1"></i>
+                      <span class="sc-badge sc-badge-fixed sc-bg-yellow ng-hide" ng-show="filtro.quemSai.checked.length"></span>
                     </button>
                   </div>
                 </div>
@@ -69,8 +70,9 @@
                     <button class="sc-btn sc-btn-blue" type="button">
                       <i class="sc-icon sc-icon-lupa-1"></i>
                     </button>
-                    <button class="sc-btn sc-btn-default" type="button">
+                    <button class="sc-btn sc-btn-default sc-relative" ng-click="filtro.quemEntra.checked.length" type="button">
                       <i class="sc-icon sc-icon-visto-1"></i>
+                      <span class="sc-badge sc-badge-fixed sc-bg-yellow ng-hide" ng-show="filtro.quemEntra.checked.length">
                     </button>
                   </div>
                 </div>
@@ -83,16 +85,16 @@
                   <option value="realizada" label="Realizada">Realizada</option>
                 </select>
               </div>
-              <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-                <div>
+              <div id="periodo">
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                   <div class="sc-label">Início</div>
                   <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
                 </div>
-                <div>
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                   <div class="sc-label">Fim</div>
                   <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
                 </div>
-                <div>
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                   <div class="sc-label">Tipo de Data:</div>
                   <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
                     <option value="" class="" selected="selected">Todos</option>
@@ -102,19 +104,19 @@
                 </div>
               </div>
               <div class="clear"></div>
-              <div ng-if="filtroCtrl.newPeriodo">
+              <div class="ng-hide" ng-show="filtroCtrl.newPeriodo">
                 <hr>
                 <div class="flex-row" ng-repeat="data in filtroCtrl.params.datas">
-                  <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-                    <div>
+                  <div id="periodo">
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Início</div>
                       <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
                     </div>
-                    <div>
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Fim</div>
                       <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
                     </div>
-                    <div>
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Tipo de Data:</div>
                       <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
                         <option value="" class="" selected="selected">Todos</option>
@@ -151,11 +153,11 @@
     <div id="passagem-servico">
       <section class="sc-bg-white">
         <div>
-          <ul class="sc-accordion">
+          <ul multi-check-group class="sc-accordion">
             <li class="sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;">
               <div class="flex-row sc-text-gray">
                 <div class="sc-p-md fcol-xs-3m align-center">
-                  <input class="sc-checkbox sc-checkbox-blue" type="checkbox">
+                  <input ng-click="passagens.selectAll()" ng-checked="passagens.allSelected" class="sc-checkbox sc-checkbox-blue" type="checkbox">
                 </div>
                 <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Saiu</div>
                 <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Entrou</div>
@@ -167,7 +169,7 @@
             <li ng-repeat="passagem in listCtrl.list">
               <div class="sc-accordion-head flex-row sc-text-gray">
                 <label class="fcol-xs-3em align-center">
-                  <input class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
+                  <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
                 </label>
                 <div class="fcol-xs-auto">
                   <div class="icone seta-vermelha"></div>

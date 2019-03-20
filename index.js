@@ -67,6 +67,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		abrirFiltroAvancado: function() {
 			this.avancado = !this.avancado;
+		},
+
+		newPeriodo: false,
+
+		addPeriodo: function(){
+			this.newPeriodo = !this.newPeriodo;
+
 		}
 	}
 

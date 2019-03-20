@@ -1,8 +1,60 @@
 <div sc-modal="perfilCtrl.modal">
   <div class="sc-modal-header">
-  	Sou um Modal
 		<i class="sc-modal-close sc-cursor-pointer sc-icon-fechar-1 sc-badge-hover-red" ng-click="perfilCtrl.close()"></i>
 		<button class="sc-btn sc-btn-green sc-m-l-xxl" ng-click="perfil.novo()" type="button">Novo Checklist</button>
+  </div>
+  <div class="sc-panel">
+  	<div class="sc-panel-body grid-container">
+  		<form ng-submit="submit()">
+  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  				<label>
+  					<div class="sc-label">Título do Checklist</div>
+  					<input class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.titulo" type="text">
+  				</label>
+  			</div>
+  			<div class="clear"></div>
+  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  				<label>
+  					<div class="sc-label">Item</div>
+  					<div class="sc-input-group">
+  						<input type="text" class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.itemList.length">
+  						<button class="sc-btn sc-btn-green">
+  							<i class="sc-icon sc-icon-mais-1"></i>
+  						</button>
+  					</div>
+  				</label>
+  			</div>
+  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  				<label>
+  					<div class="sc-label">Categoria</div>
+  					<select class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.categoria.length">
+  						<option value="" class="" selected="selected"></option>
+  						<option value="acontecimento" label="Acontecimento">Acontecimento</option>
+  						<option value="funcionamento" label="Funcionamento">Funcionamento</option>
+  						<option value="emprestimo" label="Emprestimo">Empréstimos</option>
+  						<div class="ng-hide" ng-show="categoriasCond.length" ng-repeat="categoria in perfilPassagemCtrl.categorias">
+  							<option value="{{categoria}}" label="{{categoria}}">{{categoria}}</option>
+  						</div>
+  					</select>
+  				</label>
+  			</div>
+  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  				<label>
+  					<div class="sc-label">Porteiros podem adicionar novos itens?</div>
+  					<label>
+  						<span class="sc-toggle">
+  							<input ng-model="perfilPassagemCtrl.config.impedir_porteiros_cadastrarem_novos_itens" type="checkbox">
+  							<span label-false="Não" label-true="Sim"></span>
+  						</span>
+  					</label>
+  				</label>
+  			</div>
+  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  				<label>
+  				</label>
+  			</div>
+  		</form>
+  	</div>
   </div>
 
   <div class="sc-modal-body">

@@ -11,4 +11,18 @@
 #top-bar-filter {
 	position: relative;
 	margin: 0 -0.8em;
+	top: .6em;
+	left: 0;
+	right: 0;
+	background-color: #ECECEE;
+	border-top: 1px solid #DBDBDC;
+	box-shadow: 0 0.8em 1.6em rgba(0,0,0,0.35);
+}
+
+#breadcrumb {
+	color: #7d858c;
+  font-size: 0.8em;
+  padding: 0 1em .6em;
+  background-color: #f3f3f4;
+  border-bottom: 1px solid #D7D9DB;
 }
