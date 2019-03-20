@@ -1,8 +1,14 @@
-#topbar {
+#top-bar-content {
 	padding: .6em .8em;
 	height: 52px;
 }
 
-body {
-	background-color: #f3f3f4;
+#top-bar {
+	z-index: 97;
+	position: relative;
+}
+
+#top-bar-filter {
+	position: relative;
+	margin: 0 -0.8em;
 }

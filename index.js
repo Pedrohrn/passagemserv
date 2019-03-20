@@ -65,7 +65,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.filtroCtrl = {
 		avancado: false,
 
-		abrirAvancado: function() {
+		abrirFiltroAvancado: function() {
 			this.avancado = !this.avancado;
 		}
 	}

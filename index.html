@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="css/sc-uikit.css">
     <link rel="stylesheet" href="css/sc-icons.css">
     <link rel="stylesheet" href="css/passagemserv.css">
+    <link rel="stylesheet" href="css/sc-responsivo.css">
   </head>
   <body ng-controller="PassagemServicoCtrl">
 
-    <section id="topbar">
-      <div class="fix">
+    <section id="top-bar" style="height: 52px;">
+      <section id="top-bar-content" class="fix">
         <div class="flex-row">
           <div class="left sc-p-r-lg">
             <button ng-click="novaPassagemCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">Nova Passagem</button>
@@ -20,7 +21,7 @@
             <form class="sc-input-group">
               <input class="sc-input-default" type="text">
               <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
-              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
+              <button ng-click="filtroCtrl.abrirFiltroAvancado()" class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
               <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-impressora"></i></button>
             </form>
           </div>
@@ -42,13 +43,14 @@
               </ul>
             </span>
           </div>
-          <div class="clear"></div>
-          <div id="top-bar-filter">
-            <div class="sc-p-lg ng-animation-slider" ng-show="filtroCtrl.avancado" style="display: none;">
-              <form ng-submit="filtroCtrl.buscarPassagem()" autocomplete="nope">
-                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        </div>
+        <div id="top-bar-filter">
+          <div class="sc-p-lg ng-animation-slider" ng-show="filtroCtrl.avancado" style="display: block;">
+            <form ng-submit="filtroCtrl.buscarPassagem()" autocomplete="nope">
+              <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                <div>
+                  <div class="sc-label">Quem sai:</div>
                   <div class="sc-input-group">
-                    <div class="sc-label">Quem sai:</div>
                     <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemSai" type="text">
                     <button class="sc-btn sc-btn-blue" type="button">
                       <i class="sc-icon sc-icon-lupa-1"></i>
@@ -58,9 +60,11 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                <div>
+                  <div class="sc-label">Quem entra:</div>
                   <div class="sc-input-group">
-                    <div class="sc-label">Quem entra:</div>
                     <input class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.quemEntra" type="text">
                     <button class="sc-btn sc-btn-blue" type="button">
                       <i class="sc-icon sc-icon-lupa-1"></i>
@@ -70,78 +74,79 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-                  <div class="sc-label">Status</div>
-                  <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.status">
-                    <option value="">Todos</option>
-                    <option value="pendente" label="Pendente/ Em aberto">Pendente/A passar</option>
-                    <option value="realizada" label="Realizada">Realizada</option>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                <div class="sc-label">Status</div>
+                <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.status">
+                  <option value="">Todos</option>
+                  <option value="pendente" label="Pendente/ Em aberto">Pendente/A passar</option>
+                  <option value="realizada" label="Realizada">Realizada</option>
+                </select>
+              </div>
+              <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                <div>
+                  <div class="sc-label">Início</div>
+                  <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
+                </div>
+                <div>
+                  <div class="sc-label">Fim</div>
+                  <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
+                </div>
+                <div>
+                  <div class="sc-label">Tipo de Data:</div>
+                  <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
+                    <option value="" class="" selected="selected">Todos</option>
+                    <option value="criadoEm" label="Criado em">Criado em</option>
+                    <option value="passadaEm" label="Passada em">Passada em</option>
                   </select>
                 </div>
-                <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-                  <div>
-                    <div class="sc-label">Início</div>
-                    <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
-                  </div>
-                  <div>
-                    <div class="sc-label">Fim</div>
-                    <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
-                  </div>
-                  <div>
-                    <div class="sc-label">Tipo de Data:</div>
-                    <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
-                      <option value="" class="" selected="selected">Todos</option>
-                      <option value="criadoEm" label="Criado em">Criado em</option>
-                      <option value="passadaEm" label="Passada em">Passada em</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="clear"></div>
-                <div ng-if="filtroCtrl.newPeriodo">
-                  <hr>
-                  <div class="flex-row" ng-repeat="data in filtroCtrl.params.datas">
-                    <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
-                      <div>
-                        <div class="sc-label">Início</div>
-                        <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
-                      </div>
-                      <div>
-                        <div class="sc-label">Fim</div>
-                        <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
-                      </div>
-                      <div>
-                        <div class="sc-label">Tipo de Data:</div>
-                        <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
-                          <option value="" class="" selected="selected">Todos</option>
-                          <option value="criadoEm" label="Criado em">Criado em</option>
-                          <option value="passadaEm" label="Passada em">Passada em</option>
-                        </select>
-                      </div>
-                      <div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
-                        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="filtroCtrl.params.newPeriods.remove(data)"></i>
-                      </div>
+              </div>
+              <div class="clear"></div>
+              <div ng-if="filtroCtrl.newPeriodo">
+                <hr>
+                <div class="flex-row" ng-repeat="data in filtroCtrl.params.datas">
+                  <div id="periodo" class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+                    <div>
+                      <div class="sc-label">Início</div>
+                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
+                    </div>
+                    <div>
+                      <div class="sc-label">Fim</div>
+                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
+                    </div>
+                    <div>
+                      <div class="sc-label">Tipo de Data:</div>
+                      <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
+                        <option value="" class="" selected="selected">Todos</option>
+                        <option value="criadoEm" label="Criado em">Criado em</option>
+                        <option value="passadaEm" label="Passada em">Passada em</option>
+                      </select>
+                    </div>
+                    <div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
+                      <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="filtroCtrl.params.newPeriods.remove(data)"></i>
                     </div>
                   </div>
                 </div>
-                <hr>
-                <button ng-click="filtroCtrl.buscar" class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md" type="submit">
-                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-lupa-1"></i></div>
-                  <div class="sc-btn-text">Aplicar</div>
-                </button>
-                <button ng-click="filtroCtrl.limparBusca()" class="sc-btn sc-btn-awesomeness sc-btn-red sc-m-l-md" type="button">
-                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-fechar-1"></i></div>
-                  <div class="sc-btn-text">Limpar busca</div>
-                </button>
-                <button ng-click="filtroCtrl.addPeriodo()" class="sc-btn sc-btn-awesomeness sc-btn-green sc-m-l-md" type="button">
-                  <div class="sc-btn-icon"><i class="sc-icon sc-icon-calendario-2"></i></div>
-                  <div class="sc-btn-text">Adicionar Período</div>
-                </button>
-              </form>
-            </div>
+              </div>
+              <hr>
+              <button ng-click="filtroCtrl.buscar" class="sc-btn sc-btn-awesomeness sc-btn-blue sc-m-l-md" type="submit">
+                <div class="sc-btn-icon"><i class="sc-icon sc-icon-lupa-1"></i></div>
+                <div class="sc-btn-text">Aplicar</div>
+              </button>
+              <button ng-click="filtroCtrl.limparBusca()" class="sc-btn sc-btn-awesomeness sc-btn-red sc-m-l-md" type="button">
+                <div class="sc-btn-icon"><i class="sc-icon sc-icon-fechar-1"></i></div>
+                <div class="sc-btn-text">Limpar busca</div>
+              </button>
+              <button ng-click="filtroCtrl.addPeriodo()" class="sc-btn sc-btn-awesomeness sc-btn-green sc-m-l-md" type="button">
+                <div class="sc-btn-icon"><i class="sc-icon sc-icon-calendario-2"></i></div>
+                <div class="sc-btn-text">Adicionar Período</div>
+              </button>
+            </form>
           </div>
         </div>
-      </div>
+      </section>
     </section>
+    <section id="breadcrumb"><a>Início</a> / Ações / Passagem de Serviço</section>
 
     <div id="passagem-servico">
       <section class="sc-bg-white">
@@ -208,6 +213,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
 
     <script type="text/javascript" src="js/sc-uikit.js"></script>
+    <script type="text/javascript" src="js/sc-responsivo.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <!-- <script type="text/javascript" src="/controllers/nova-passagem.js" /> -->
   </body>
