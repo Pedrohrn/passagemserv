@@ -199,6 +199,38 @@
                   </div>
                 </div>
               </div>
+              <div class="sc-accordion-body ng-animation-slider ng-hide" style="display: block;" ng-show="passagemCtrl.accOpened">
+                <div class="sc-p-lg sc-p-b-o">
+                  <div class="sc-fieldset ng-animation-slider">
+                    <div class="col-md-6 sc-p-l-none">
+                      <div class="sc-text-gray sc-p-xs">Quem sai:
+                        <span class="sc-text-blue sc-p-l-sm">{{passagem.saiu}}</span>
+                      </div>
+                      <div class="sc-text-gray sc-p-xs">Quem entra:
+                        <span class="sc-text-blue sc-p-l-sm">{{passagem.entrou}}</span>
+                      </div>
+                      <div class="sc-text-gray sc-p-xs">Data e hora:
+                        <span class="sc-text-blue sc-p-l-sm">{{passagem.dia}}/0{{passagem.mes}}/{{passagem.ano}}, às {{passagem.horario}}</span>
+                      </div>
+                      <div class="sc-text-gray sc-p-xs">
+                        Eu, {{passagem.saiu}}, passo o posto de serviço para o(a) {{passagem.entrou}}, de acordo com as informações abaixo:
+                      </div>
+                      <div>
+                        <ul ng-repeat="checklist in passagem.checklists">
+                          <div class="sc-label">{{checklist.nome}}</div>
+                          <li>
+                          </li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sc-fieldset ng-animation-slider">
+                    <div class="col-md-6 sc-p-l-none">
+                      <h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
