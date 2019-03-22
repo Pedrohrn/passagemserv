@@ -167,7 +167,7 @@
               </div>
             </li>
             <li ng-repeat="passagem in listCtrl.list">
-              <div class="sc-accordion-head flex-row sc-text-gray" ng-click="accordionCtrl.openAcc(id)">
+              <div class="sc-accordion-head flex-row sc-text-gray" ng-click="accordionCtrl.openAcc()">
                 <label class="fcol-xs-3em align-center">
                   <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
                 </label>
@@ -185,10 +185,10 @@
                 <div class="fcol-xs-auto">
                   <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': {{passagem.status}} == Realizada, 'sc-bg-yellow': {{passagem.status}} == Pendente}">{{passagem.status}}</span>
                 </div>
-                <div class="fcol-xs-3em align-center">
-                  <div class="sc-dropdown" ng-click="this.menuPassagemCtrl.toggleMenu()">
-                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': this.menuPassagemCtrl.menuOpen}"></i>
-                    <ul class="sc-dropdown-menu pull-right ng-hide" ng-show="this.menuPassagemCtrl.menuOpen" style="display: block;">
+                <div class="fcol-xs-3em align-center" sc-stop-click>
+                  <div class="sc-dropdown" ng-click="menuPassagemCtrl.toggleMenu()">
+                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': menuPassagemCtrl.menuOpen}"></i>
+                    <ul class="sc-dropdown-menu pull-right ng-hide" ng-show="menuPassagemCtrl.menuOpen" style="display: block;">
                       <li>Passar serviço</li>
                       <li>Editar</li>
                       <li>Duplicar passagem</li>
@@ -213,18 +213,22 @@
                         <span class="sc-text-blue sc-p-l-sm">{{passagem.dia}}/0{{passagem.mes}}/{{passagem.ano}}, às {{passagem.horario}}</span>
                       </div>
                     </div>
+                    <div class="col-md-6 sc-p-l-none">
+                      <div class="sc-label sc-text-blue">Síndico
+                        <div class="sc-fieldset">
+                          <input class="sc-checkbox sc-checkbox-gray" type="chec">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="clear"></div>
-                <div class="sc-p-lg sc-p-b-o sc-p-t-o flex-row">
+                <div class="sc-p-lg flex-row">
                   <div class="sc-fieldset ng-animation-slider">
-                    <div class="fcol-xs-100 fcol-md-50 sc-p-r-md-md">
-                      <div class="sc-text-gray sc-p-xs">
-                        Eu,
-                        <span class="sc-text-blue"> {{passagem.saiu}}</span>
-                        , passo o posto de serviço para o(a)
-                        <span class="sc-text-blue"> {{passagem.entrou}}</span>
-                        , de acordo com as informações abaixo:
+                    <div class="fcol-xs-100 fcol-md-50 sc-p-r-md-md fcol-xs-auto">
+                      <div class="sc-text-gray sc-p-xs">Eu,
+                        <span class="sc-text-blue"> {{passagem.saiu}}</span>, passo o posto de serviço para o(a)
+                        <span class="sc-text-blue"> {{passagem.entrou}}</span>, de acordo com as informações abaixo:
                       </div>
                       <h3 class="sc-text-blue">{{passagem.perfil}}</h3>
                       <table ng-repeat="evento in passagem.categorias" class="sc-table">
@@ -239,21 +243,52 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Qtd</td>
-                            <td>Tipo</td>
                             <td>Nome</td>
-                            <td>Ocorrido</td>
-                            <td>Local do ocorrido</td>
+                            <td ng-if="evento.key == 'Funcionamento'">Qtd</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">Ocorrido</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">Local do ocorrido</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Ação</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Unidade/Pessoa</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Tipo</td>
                           </tr>
-                          <tr ng-repeat="evento in evento.eventosList">
-                            <td>{{evento.qtd}}</td>
-                            <td>{{evento.tipo}}</td>
-                            <td>{{evento.nome}}</td>
-                            <td>{{evento.ocorrido}}</td>
-                            <td>{{evento.local}}</td>
+                          <tr ng-repeat="registro in evento.eventosList">
+                            <td>{{registro.nome}}</td>
+                            <td ng-if="evento.key == 'Funcionamento'">{{registro.qtd}}</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.ocorrido}}</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.local}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.acao}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.tipoPessoa}}</td>
                           </tr>
                         </tbody>
                       </table>
+                      <!-- <table class="sc-table">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="sc-text-blue">
+                                <b>Empréstimos</b>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Item</td>
+                            <td>Ação</td>
+                            <td>Pessoa</td>
+                            <td>Tipo de pessoa</td>
+                            <td>Status atual</td>
+                          </tr>
+                          <tr ng-repeat="registro in evento.eventosList">
+                            <td>{{registro.item}}</td>
+                            <td>{{registro.acao}}</td>
+                            <td>{{registro.unidade_pessoa}}</td>
+                            <td>{{registro.tipoPessoa}}</td>
+                            <td>{{registro.statusAtual}}</td>
+                          </tr>
+                        </tbody>
+                      </table> -->
                     </div>
                   </div>
                 </div>
@@ -263,9 +298,9 @@
         </div>
       </section>
 
-      <div ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active" ></div>
-      <div ng-include="'templates/nova-passagem.html'" ng-if="novaPassagemCtrl.new" ></div>
-      <div ng-include="'templates/log.html'" ng-if="menuAdmCtrl.logOpen" ></div>
+      <div ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active"></div>
+      <div ng-include="'templates/nova-passagem.html'" ng-if="novaPassagemCtrl.new"></div>
+      <div ng-include="'templates/log.html'" ng-if="menuAdmCtrl.logOpen"></div>
     </div>
 
     <script type="text/javascript" src="js/jquery.js"></script>

@@ -23,7 +23,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		addItem: function() {
 	    newItemNo: this.items.length + 1;
 	    this.items.push('Item ' + newItemNo);
-  	};
+  	},
+  }
 
 	$s.porteirosCtrl = {
 		porteirosList: [
@@ -120,9 +121,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 					{ id: 3,
-						key: 'Emprestimos',
+						key: 'Empréstimos',
 						eventosList: [
-							{ id: 1, item: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
+							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
 						],
 					},
 				],
@@ -152,9 +153,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 					{ id: 3,
-						key: 'Emprestimos',
+						key: 'Empréstimos',
 						eventosList: [
-							{ id: 1, item: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
+							{ id: 1, nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
 						],
 					},
 				],
@@ -186,7 +187,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 3,
 						key: 'Empréstimos',
 						eventosList: [
-							{ id: 1, item: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
+							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
 						],
 					},
 				],
@@ -197,7 +198,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.accordionCtrl = {
 		accOpened: false,
 
-		openAcc: function(id) {
+		openAcc: function() {
 			this.accOpened = !this.accOpened;
 		}
 	};
