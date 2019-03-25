@@ -1,11 +1,11 @@
-<div sc-modal="perfilCtrl.modal">
+<div class="sc-modal-90perc" sc-modal="perfilCtrl.modal">
   <div class="sc-modal-header">
 		<i class="sc-modal-close sc-cursor-pointer sc-icon-fechar-1 sc-badge-hover-red" ng-click="perfilCtrl.close()"></i>
 		<button class="sc-btn sc-btn-green sc-m-l-xxl" ng-click="perfilCtrl.novoPerfil()" type="button">Novo Checklist</button>
   </div>
   <div class="sc-panel ng-hide" ng-show="perfilCtrl.perfilNovo">
   	<div class="sc-panel-body grid-container">
-  		<form ng-submit="submit()">
+  		<form ng-submit="newPerfilCtrl.newPerfil()">
   			<div class="col-xs-6 sc-p-t-l">
   				<label>
   					<div class="sc-label">Título do Checklist</div>
@@ -17,8 +17,8 @@
   				<label>
   					<div class="sc-label">Item</div>
   					<div class="sc-input-group">
-  						<input type="text" class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.itemList.length">
-  						<button ng-click="perfilCtrl.addNovoItem()" class="sc-btn sc-btn-green">
+  						<input type="text" class="sc-input-default sc-input-block" name="newItem" ng-model="newPerfilCtrl.newItem">
+  						<button ng-click="newPerfilCtrl.addItem()" class="sc-btn sc-btn-green">
   							<i class="sc-icon sc-icon-mais-1"></i>
   						</button>
   					</div>
@@ -27,7 +27,7 @@
   			<div class="col-xs-3 sc-p-t-l">
   				<label>
   					<div class="sc-label">Categoria</div>
-  					<select class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.categoria.length">
+  					<select class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
   						<option value="" class="" selected="selected"></option>
   						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
   					</select>
@@ -45,7 +45,7 @@
   				</label>
   			</div>
   			<div class="clear"></div>
-  			<div ng-repeat="item in perfilCtrl.newPerfil"> <!-- listas de itens do perfil -->
+  			<div ng-repeat="item in newPerfilCtrl.itemList"> <!-- listas de itens do perfil -->
 	  			<div class="col-xs-6 sc-p-t-l">
 	  				<label>
 	  					<div class="sc-label">Item</div>
@@ -55,9 +55,9 @@
 	  			<div class="col-xs-3 sc-p-t-l">
 	  				<label>
 	  					<div class="sc-label">Categoria</div>
-	  					<select class="sc-input sc-input-block">
+	  					<select class="sc-input-default sc-input-block">
 	  						<option value="" selected="selected"></option>
-	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome">{{categoria.nome}}</option>
+	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
 	  					</select>
 	  				</label>
 	  			</div>
@@ -75,7 +75,7 @@
   				<div class="col-xs-1 sc-p-t-l">
   					<label>
   						<div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
-                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.newPerfil.remove(item)"></i>
+                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="newPerfilCtrl.deleteItem($index)"></i>
               </div>
   					</label>
   				</div>
@@ -86,15 +86,17 @@
 
   <div class="sc-modal-body">
   	<div class="ng-hide" ng-show="perfisCtrl.list.length == 0">Nenhum perfil foi cadastrado ainda!</div>
-  	<ul class="sc-accordion">
-			<li class="sc-p-t-xl" ng-repeat="perfil in perfilCtrl.list">
-				<div class="flex-row">
-					<div class="fcol-xs-auto">
-						<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
+  	<div>
+	  	<ul class="sc-accordion">
+				<li class="sc-p-t-xl" ng-repeat="perfil in perfilCtrl.list">
+					<div class="sc-accordion-head flex-row">
+						<div class="fcol-xs-auto">
+							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
+						</div>
 					</div>
-				</div>
-			</li>
-		</ul>
+				</li>
+			</ul>
+		</div>
   </div>
 
   <div class="sc-modal-footer">

@@ -18,13 +18,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 .controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', function($s, scModal) {
 	$s.oneAtAtime = true;
 
-	$s.addItemCtrl = {
+	/*$s.addItemCtrl = {
 		items: [],
 		addItem: function() {
 	    newItemNo: this.items.length + 1;
 	    this.items.push('Item ' + newItemNo);
   	},
-  }
+  }*/
+
+
 
   $s.admCtrl = {
   	grupos: [
@@ -107,6 +109,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		list: [
 			{ id: 1,
 				nome: 'Portaria Social',
+				itens: [
+					{ id: 1, categoria: 'Funcionamento', nome: 'Portão Funcionando', hasQtd: true, qtd: 4 },
+					{ id: 2, categoria: 'Funcionamento', nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
+					{ id: 3, categoria: 'Funcionamento', nome: 'Interfone funcionando' hasQtd: true, qtd: 2 },
+				]
 			},
 			{ id: 2,
 				nome: 'Portaria de Serviço',
@@ -135,6 +142,20 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.modal.close()
 		}
 	};
+
+	$s.newPerfilCtrl = {
+		itemList: [],
+		addItem: function() {
+			this.itemList.push({'nome': this.newItem, 'categoria': this.newCategoria, 'hasQtd': this.newHasQtd})
+			this.newItem = '';
+			this.newCategoria = '';
+			this.newHasQtd = '';
+		},
+
+		deleteItem: function(index){
+			this.itemList.splice(index, 1);
+		}
+	}
 
 	$s.listCtrl = {
 		list: [

@@ -1,6 +1,6 @@
 <div class="sc-panel" style="position: absolute; top: 52px; z-index: 100000;">
 	<div class="sc-panel-body">
-		<form ng-submit="submit()">
+		<form ng-submit="submit()" class="flex-row">
 			<div class="col-xs-12 col-md-12 sc-p-t-xl">
 				<span class="criado_por infos_informativo">
 					<b class="titulo">Criado por:</b>
@@ -12,8 +12,7 @@
 				<label>
 					<div class="sc-label">Quem sai:</div>
 					<select class="sc-input-default sc-input-block" ng-model="passagem.saindo">
-						<option value="?" selected ng-repeat="porteiro in novaPassagemCtrl.porteirosList"></option>
-						<option value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
+						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
 					</select>
 				</label>
 				<label>
@@ -25,8 +24,7 @@
 				<label>
 					<div class="sc-label">Quem entra:</div>
 					<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
-						<option value="?" selected ng-repeat="porteiro in novaPassagemCtrl.porteirosList"></option>
-						<option value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
+						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
 					</select>
 				</label>
 				<label>
@@ -45,9 +43,14 @@
 					</select>
 				</label>
 			</div>
-			<div class="col-xs-12 col-md-6 sc-p-t-xl">
-				<h2 class="sc-label">Portaria Social{{checklist}}</h2>
-				<button class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
+			<div class="clear"></div>
+			<div class="col-xs-12 sc-p-t-xl flex-row">
+				<div class="col-xs-3">
+					<h2 class="sc-label">Portaria Social{{checklist}}</h2>
+				</div>
+				<div class="col-xs-3">
+					<button class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
+				</div>
 			</div>
 			<div class="col-xs-12 col-md-6 sc-p-t-xl">
 				<h3>{{categoria}}</h3>
