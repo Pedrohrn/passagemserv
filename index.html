@@ -183,7 +183,7 @@
                   <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.dia}}/0{{passagem.mes}}/{{passagem.ano}}</div>
                 </div>
                 <div class="fcol-xs-auto">
-                  <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': {{passagem.status}} == Realizada, 'sc-bg-yellow': {{passagem.status}} == Pendente}">{{passagem.status}}</span>
+                  <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': '{{passagem.status}}' == 'Realizada', 'sc-bg-yellow': '{{passagem.status}}' == 'Pendente'}">{{passagem.status}}</span>
                 </div>
                 <div class="fcol-xs-3em align-center" sc-stop-click>
                   <div class="sc-dropdown" ng-click="menuPassagemCtrl.toggleMenu()">
@@ -214,9 +214,14 @@
                       </div>
                     </div>
                     <div class="col-md-6 sc-p-l-none">
-                      <div class="sc-label sc-text-blue">Síndico
-                        <div class="sc-fieldset">
-                          <input class="sc-checkbox sc-checkbox-gray" type="chec">
+                      <div class="sc-text sc-text-blue">Notificações</div>
+                      <div ng-repeat="grupo in admCtrl.grupos">
+                        <div class="sc-label sc-text-blue">{{grupo.label}}
+                          <div class="sc-fieldset" ng-repeat="membro in grupo.membros">
+                            <input class="sc-checkbox sc-checkbox-gray" type="checkbox">
+                            <label class="sc-label">{{membro.user}} -</label>
+                            <label class="sc-text-gray" ng-click="passagemCtrl.abrirLog()">ver histórico</label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -262,33 +267,6 @@
                           </tr>
                         </tbody>
                       </table>
-                      <!-- <table class="sc-table">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="sc-text-blue">
-                                <b>Empréstimos</b>
-                              </div>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Item</td>
-                            <td>Ação</td>
-                            <td>Pessoa</td>
-                            <td>Tipo de pessoa</td>
-                            <td>Status atual</td>
-                          </tr>
-                          <tr ng-repeat="registro in evento.eventosList">
-                            <td>{{registro.item}}</td>
-                            <td>{{registro.acao}}</td>
-                            <td>{{registro.unidade_pessoa}}</td>
-                            <td>{{registro.tipoPessoa}}</td>
-                            <td>{{registro.statusAtual}}</td>
-                          </tr>
-                        </tbody>
-                      </table> -->
                     </div>
                   </div>
                 </div>

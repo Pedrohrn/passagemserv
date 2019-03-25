@@ -1,44 +1,39 @@
 <div sc-modal="perfilCtrl.modal">
   <div class="sc-modal-header">
 		<i class="sc-modal-close sc-cursor-pointer sc-icon-fechar-1 sc-badge-hover-red" ng-click="perfilCtrl.close()"></i>
-		<button class="sc-btn sc-btn-green sc-m-l-xxl" ng-click="perfil.novo()" type="button">Novo Checklist</button>
+		<button class="sc-btn sc-btn-green sc-m-l-xxl" ng-click="perfilCtrl.novoPerfil()" type="button">Novo Checklist</button>
   </div>
-  <div class="sc-panel">
+  <div class="sc-panel ng-hide" ng-show="perfilCtrl.perfilNovo">
   	<div class="sc-panel-body grid-container">
   		<form ng-submit="submit()">
-  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  			<div class="col-xs-6 sc-p-t-l">
   				<label>
   					<div class="sc-label">Título do Checklist</div>
   					<input class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.titulo" type="text">
   				</label>
   			</div>
   			<div class="clear"></div>
-  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  			<div class="col-xs-6 sc-p-t-l">
   				<label>
   					<div class="sc-label">Item</div>
   					<div class="sc-input-group">
   						<input type="text" class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.itemList.length">
-  						<button class="sc-btn sc-btn-green">
+  						<button ng-click="perfilCtrl.addNovoItem()" class="sc-btn sc-btn-green">
   							<i class="sc-icon sc-icon-mais-1"></i>
   						</button>
   					</div>
   				</label>
   			</div>
-  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  			<div class="col-xs-3 sc-p-t-l">
   				<label>
   					<div class="sc-label">Categoria</div>
   					<select class="sc-input-default sc-input-block" ng-model="perfilPassagemCtrl.newPerfil.categoria.length">
   						<option value="" class="" selected="selected"></option>
-  						<option value="acontecimento" label="Acontecimento">Acontecimento</option>
-  						<option value="funcionamento" label="Funcionamento">Funcionamento</option>
-  						<option value="emprestimo" label="Emprestimo">Empréstimos</option>
-  						<div class="ng-hide" ng-show="categoriasCond.length" ng-repeat="categoria in perfilPassagemCtrl.categorias">
-  							<option value="{{categoria}}" label="{{categoria}}">{{categoria}}</option>
-  						</div>
+  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
   					</select>
   				</label>
   			</div>
-  			<div class="col-xs-12 col-md-6 sc-p-t-l">
+  			<div class="col-xs-3 sc-p-t-l">
   				<label>
   					<div class="sc-label">Porteiros podem adicionar novos itens?</div>
   					<label>
@@ -49,20 +44,53 @@
   					</label>
   				</label>
   			</div>
-  			<div class="col-xs-12 col-md-6 sc-p-t-l">
-  				<label>
-  				</label>
-  			</div>
+  			<div class="clear"></div>
+  			<div ng-repeat="item in perfilCtrl.newPerfil"> <!-- listas de itens do perfil -->
+	  			<div class="col-xs-6 sc-p-t-l">
+	  				<label>
+	  					<div class="sc-label">Item</div>
+	  					<input type="text" class="sc-input-default sc-input-block" value="{{item.nome}}" label="{{item.nome}}">
+	  				</label>
+	  			</div>
+	  			<div class="col-xs-3 sc-p-t-l">
+	  				<label>
+	  					<div class="sc-label">Categoria</div>
+	  					<select class="sc-input sc-input-block">
+	  						<option value="" selected="selected"></option>
+	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome">{{categoria.nome}}</option>
+	  					</select>
+	  				</label>
+	  			</div>
+  				<div class="col-xs-2 sc-p-t-l">
+  					<label>
+  						<div class="sc-label">Quantidade?</div>
+  						<label>
+  							<span class="sc-toggle">
+  								<input type="checkbox">
+  								<span label-false="Não" label-true="Sim"></span>
+  							</span>
+  						</label>
+  					</label>
+  				</div>
+  				<div class="col-xs-1 sc-p-t-l">
+  					<label>
+  						<div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
+                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.newPerfil.remove(item)"></i>
+              </div>
+  					</label>
+  				</div>
+	  		</div>
   		</form>
   	</div>
   </div>
 
   <div class="sc-modal-body">
+  	<div class="ng-hide" ng-show="perfisCtrl.list.length == 0">Nenhum perfil foi cadastrado ainda!</div>
   	<ul class="sc-accordion">
-			<li class="sc-p-t-xl" ng-repeat="perfil in checklist.list">
+			<li class="sc-p-t-xl" ng-repeat="perfil in perfilCtrl.list">
 				<div class="flex-row">
 					<div class="fcol-xs-auto">
-						<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.checklist}}</div>
+						<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
 					</div>
 				</div>
 			</li>

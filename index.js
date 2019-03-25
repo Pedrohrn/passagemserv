@@ -26,6 +26,31 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   	},
   }
 
+  $s.admCtrl = {
+  	grupos: [
+	  	{ id: 1,
+	  		label: 'Síndico',
+	  		membros: [
+	  			{ id: 1, user: 'Márcio' },
+	  		],
+	  	},
+	  	{ id: 2,
+	  		label: 'Subsíndico',
+	  		membros: [
+	  			{ id: 1, user: 'Rafael' },
+	  		],
+	  	},
+	  	{ id: 3,
+	  		label: 'Administração',
+	  		membros: [
+	  			{ id: 1, user: 'Ana' },
+	  			{ id: 2, user: 'Maria' },
+	  			{ id: 3, user: 'Lúcio' },
+	  		],
+	  	},
+  	],
+  }
+
 	$s.porteirosCtrl = {
 		porteirosList: [
 			{nome: 'Porteiro 1'},
@@ -79,12 +104,28 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	}
 
 	$s.perfilCtrl = {
-		perfis: [
-			{ id: 1, nome: 'Portaria Social' },
-			{ id: 2, nome: 'Portaria de Serviço' },
+		list: [
+			{ id: 1,
+				nome: 'Portaria Social',
+			},
+			{ id: 2,
+				nome: 'Portaria de Serviço',
+			},
+		],
+
+		categorias: [
+		 { id: 1, nome: 'Acontecimento' },
+		 { id: 2, nome: 'Funcionamento' },
+		 { id: 3, nome: 'Empréstimos' },
 		],
 
 		modal: new scModal(),
+
+		perfilNovo: false,
+
+		novoPerfil: function(){
+			this.perfilNovo = !this.perfilNovo;
+		},
 
 		init: function () {
 			console.log(this.modal)

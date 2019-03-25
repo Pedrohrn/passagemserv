@@ -41,8 +41,7 @@
 				<label>
 					<div class="sc-label">Checklist:</div>
 					<select class="sc-input-default sc-input-block" ng-model="listaChecklist">
-						<option value="?" selected ng-repeat="checklist in listaChecklist"></option>
-						<option value="{{checklist.key}}" label="{{checklist.key}}">{{checklist.key}}</option>
+						<option ng-repeat="perfil in perfilCtrl.list" value="{{perfil.nome}}" label="{{perfil.nome}}">{{perfil.nome}}</option>
 					</select>
 				</label>
 			</div>
