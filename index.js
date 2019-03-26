@@ -16,17 +16,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 })
 
 .controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', function($s, scModal) {
-	$s.oneAtAtime = true;
-
-	/*$s.addItemCtrl = {
-		items: [],
-		addItem: function() {
-	    newItemNo: this.items.length + 1;
-	    this.items.push('Item ' + newItemNo);
-  	},
-  }*/
-
-
+	oneAtAtime = true;
 
   $s.admCtrl = {
   	grupos: [
@@ -97,22 +87,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		}
 	}
 
-	$s.menuPassagemCtrl = {
-		menuOpen: false,
-
-		toggleMenu: function(){
-			this.menuOpen = !this.menuOpen;
-		}
-	}
-
 	$s.perfilCtrl = {
 		list: [
 			{ id: 1,
 				nome: 'Portaria Social',
 				itens: [
-					{ id: 1, categoria: 'Funcionamento', nome: 'Portão Funcionando', hasQtd: true, qtd: 4 },
-					{ id: 2, categoria: 'Funcionamento', nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-					{ id: 3, categoria: 'Funcionamento', nome: 'Interfone funcionando' hasQtd: true, qtd: 2 },
+					{ id: 1, categoria: 'Funcionamento', nome: 'Portão Funcionando', 		hasQtd: true, qtd: 4 },
+					{ id: 2, categoria: 'Funcionamento', nome: 'Câmeras funcionando', 	hasQtd: true, qtd: 6 },
+					{ id: 3, categoria: 'Funcionamento', nome: 'Interfone funcionando', hasQtd: true, qtd: 2 },
 				]
 			},
 			{ id: 2,
@@ -135,21 +117,27 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		init: function () {
-			console.log(this.modal)
 			this.modal.open()
 		},
 		close: function () {
 			this.modal.close()
+		},
+
+		menuPerfilOpen: false,
+
+		togglePerfisMenu: function(){
+			this.menuPerfilOpen = !this.menuPerfilOpen;
 		}
 	};
 
 	$s.newPerfilCtrl = {
 		itemList: [],
 		addItem: function() {
-			this.itemList.push({'nome': this.newItem, 'categoria': this.newCategoria, 'hasQtd': this.newHasQtd})
+			this.itemList.push({'nome': this.newItem, 'categoria': this.newCategoria, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd})
 			this.newItem = '';
 			this.newCategoria = '';
 			this.newHasQtd = '';
+			this.newQtd = '';
 		},
 
 		deleteItem: function(index){
@@ -254,7 +242,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 				],
 			},
-		]
+		],
+
+		menuOpen: false,
+
+		toggleMenu: function(){
+			this.menuOpen = !this.menuOpen;
+		}
 	};
 
 	$s.accordionCtrl = {

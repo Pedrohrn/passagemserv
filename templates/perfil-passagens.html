@@ -56,7 +56,7 @@
 	  				<label>
 	  					<div class="sc-label">Categoria</div>
 	  					<select class="sc-input-default sc-input-block">
-	  						<option value="" selected="selected"></option>
+	  						<option value="{{item.categoria}}" label="{{item.categoria}}" selected="selected"></option>
 	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
 	  					</select>
 	  				</label>
@@ -80,6 +80,9 @@
   					</label>
   				</div>
 	  		</div>
+        <div class="col-xs-2">
+          <button ng-click="perfilCtrl.salvarNovoPerfil()" class="sc-btn sc-btn-green">Salvar Perfil</button>
+        </div>
   		</form>
   	</div>
   </div>
@@ -88,11 +91,33 @@
   	<div class="ng-hide" ng-show="perfisCtrl.list.length == 0">Nenhum perfil foi cadastrado ainda!</div>
   	<div>
 	  	<ul class="sc-accordion">
-				<li class="sc-p-t-xl" ng-repeat="perfil in perfilCtrl.list">
+				<li class="" ng-repeat="perfil in perfilCtrl.list">
 					<div class="sc-accordion-head flex-row">
 						<div class="fcol-xs-auto">
 							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
 						</div>
+            <div class="fcol-xs-3em" sc-stop-click>
+              <div class="sc-dropdown" ng-click="perfilCtrl.togglePerfisMenu()">
+                <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': perfilCtrl.menuPerfilOpen}"></i>
+                <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="perfilCtrl.menuPerfilOpen" style="display: block;">
+                  <li>
+                    <span>Editar</span>
+                  </li>
+                  <li>
+                    <span>Duplicar perfil</span>
+                  </li>
+                  <li>
+                    <span>Desativar perfil</span>
+                  </li>
+                  <li>
+                    <span>Excluir</span>
+                  </li>
+                  <li>
+                    <span>Histórico</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
 					</div>
 				</li>
 			</ul>
@@ -100,6 +125,6 @@
   </div>
 
   <div class="sc-modal-footer">
-    <button ng-click="perfilCtrl.close()" class="sc-btn">Cancelar</button>
+    <button ng-click="perfilCtrl.close()" class="sc-btn">Fechar</button>
   </div>
 </div>

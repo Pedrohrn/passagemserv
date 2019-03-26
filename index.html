@@ -186,15 +186,27 @@
                   <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': '{{passagem.status}}' == 'Realizada', 'sc-bg-yellow': '{{passagem.status}}' == 'Pendente'}">{{passagem.status}}</span>
                 </div>
                 <div class="fcol-xs-3em align-center" sc-stop-click>
-                  <div class="sc-dropdown" ng-click="menuPassagemCtrl.toggleMenu()">
-                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': menuPassagemCtrl.menuOpen}"></i>
-                    <ul class="sc-dropdown-menu pull-right ng-hide" ng-show="menuPassagemCtrl.menuOpen" style="display: block;">
-                      <li>Passar serviço</li>
-                      <li>Editar</li>
-                      <li>Duplicar passagem</li>
-                      <li>Desativar</li>
-                      <li>Excluir</li>
-                      <li>Histórico</li>
+                  <div class="sc-dropdown" ng-click="listCtrl.toggleMenu()">
+                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': listCtrl.menuOpen}"></i>
+                    <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="listCtrl.menuOpen" style="display: block;">
+                      <li>
+                        <span>Passar serviço</span>
+                      </li>
+                      <li>
+                        <span>Editar</span>
+                      </li>
+                      <li>
+                        <span>Duplicar passagem</span>
+                      </li>
+                      <li>
+                        <span>Desativar</span>
+                      </li>
+                      <li>
+                        <span>Excluir</span>
+                      </li>
+                      <li>
+                        <span>Histórico</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
