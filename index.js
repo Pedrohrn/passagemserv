@@ -99,6 +99,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 			{ id: 2,
 				nome: 'Portaria de Serviço',
+				itens: [
+					{ id: 1, categoria: 'Funcionamento', nome: 'Portão Funcionando', 		hasQtd: true, qtd: 10 },
+					{ id: 2, categoria: 'Funcionamento', nome: 'Câmeras funcionando', 	hasQtd: true, qtd: 10 },
+					{ id: 3, categoria: 'Funcionamento', nome: 'Interfone funcionando', hasQtd: true, qtd: 10 },
+				]
 			},
 		],
 
@@ -132,8 +137,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.newPerfilCtrl = {
 		itemList: [],
+		newTitulo: '',
+		count: 0,
 		addItem: function() {
-			this.itemList.push({'nome': this.newItem, 'categoria': this.newCategoria, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd})
+			this.itemList.push({id: this.count+1, 'categoria': this.newCategoria, 'nome': this.newItem, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd})
 			this.newItem = '';
 			this.newCategoria = '';
 			this.newHasQtd = '';
@@ -142,6 +149,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		deleteItem: function(index){
 			this.itemList.splice(index, 1);
+		},
+
+		salvarNovoPerfil: function(){
+			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length, nome: this.newTitulo, itens: this.itemList})
 		}
 	}
 
