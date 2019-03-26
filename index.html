@@ -253,7 +253,7 @@
                           <tr>
                             <th>
                               <div class="sc-text-blue">
-                                <b>{{evento.nome}}</b>
+                                <b>{{evento.key}}</b>
                               </div>
                             </th>
                           </tr>
@@ -261,21 +261,21 @@
                         <tbody>
                           <tr>
                             <td>Nome</td>
-                            <td ng-if="evento.nome == 'Funcionamento'">Qtd</td>
-                            <td ng-if="evento.nome == 'Acontecimentos'">Ocorrido</td>
-                            <td ng-if="evento.nome == 'Acontecimentos'">Local do ocorrido</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">Ação</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">Unidade/Pessoa</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">Tipo</td>
+                            <td ng-if="evento.key == 'Funcionamento'">Qtd</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">Ocorrido</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">Local do ocorrido</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Ação</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Unidade/Pessoa</td>
+                            <td ng-if="evento.key == 'Empréstimos'">Tipo</td>
                           </tr>
                           <tr ng-repeat="registro in evento.eventosList">
                             <td>{{registro.nome}}</td>
-                            <td ng-if="evento.nome == 'Funcionamento'">{{registro.qtd}}</td>
-                            <td ng-if="evento.nome == 'Acontecimentos'">{{registro.ocorrido}}</td>
-                            <td ng-if="evento.nome == 'Acontecimentos'">{{registro.local}}</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.acao}}</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
-                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.tipoPessoa}}</td>
+                            <td ng-if="evento.key == 'Funcionamento'">{{registro.qtd}}</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.ocorrido}}</td>
+                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.local}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.acao}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
+                            <td ng-if="evento.key == 'Empréstimos'">{{registro.tipoPessoa}}</td>
                           </tr>
                         </tbody>
                       </table>

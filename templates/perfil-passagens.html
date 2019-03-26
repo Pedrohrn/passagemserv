@@ -47,54 +47,71 @@
     					</select>
     				</label>
     			</div>
+          <div class="col-xs-2 sc-p-t-l">
+            <label>
+              <div class="sc-label">Quantidade?</div>
+              <label>
+                <span class="sc-toggle sc-m-t-sm">
+                  <input type="checkbox" ng-model="perfilCtrl.newHasQtd">
+                  <span label-false="Não" label-true="Sim"></span>
+                </span>
+              </label>
+            </label>
+          </div>
+          <div class="col-xs-2 sc-p-t-l ng-hide" ng-show="perfilCtrl.newHasQtd">
+            <label>
+              <div class="sc-label">Quantidade:</div>
+              <label>
+                <input class="sc-input-default sc-input-block" type="number" min="1" max="9999" ng-model="perfilCtrl.newQtd">
+              </label>
+            </label>
+          </div>
         </div>
   			<div class="clear"></div>
   			<div class="sc-m-t-md" ng-repeat="item in newPerfilCtrl.itemList"> <!-- listas de itens do perfil -->
-          <div ng-repeat="nome in item">
-            <div class="sc-m-t-md">
-    	  			<div class="col-xs-4 sc-p-t-l">
-    	  				<label>
-    	  					<div class="sc-label">Item</div>
-    	  					<input type="text" class="sc-input-default sc-input-block" value="{{nome.nome}}" label="{{nome.nome}}">
-    	  				</label>
-    	  			</div>
-    	  			<div class="col-xs-3 sc-p-t-l">
-    	  				<label>
-    	  					<div class="sc-label">Categoria</div>
-    	  					<select class="sc-input-default sc-input-block">
-    	  						<option value="{{item.categoria}}" label="{{item.categoria}}" selected="selected"></option>
-    	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
-    	  					</select>
-    	  				</label>
-    	  			</div>
-      				<div class="col-xs-2 sc-p-t-l">
-      					<label>
-      						<div class="sc-label">Quantidade?</div>
-      						<label>
-      							<span class="sc-toggle sc-m-t-sm">
-      								<input type="checkbox" ng-model="this.perfilCtrl.newHasQtd">
-      								<span label-false="Não" label-true="Sim"></span>
-      							</span>
-      						</label>
-      					</label>
-      				</div>
-              <div class="col-xs-2 sc-p-t-l ng-hide" ng-show="this.perfilCtrl.newHasQtd">
+          <div class="sc-m-t-md">
+  	  			<div class="col-xs-4 sc-p-t-l">
+  	  				<label>
+  	  					<div class="sc-label">Item</div>
+  	  					<input type="text" class="sc-input-default sc-input-block" value="{{item.nome}}" label="{{item.nome}}">
+  	  				</label>
+  	  			</div>
+  	  			<div class="col-xs-3 sc-p-t-l">
+  	  				<label>
+  	  					<div class="sc-label">Categoria</div>
+  	  					<select class="sc-input-default sc-input-block">
+  	  						<option value="{{item.categoria}}" label="{{item.categoria}}" selected="selected"></option>
+  	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
+  	  					</select>
+  	  				</label>
+  	  			</div>
+    				<div class="col-xs-2 sc-p-t-l">
+    					<label>
+    						<div class="sc-label">Quantidade?</div>
+    						<label>
+    							<span class="sc-toggle sc-m-t-sm">
+    								<input class="ng-empty" type="checkbox">
+    								<span label-false="Não" label-true="Sim"></span>
+    							</span>
+    						</label>
+    					</label>
+    				</div>
+            <div class="col-xs-2 sc-p-t-l ng-hide" ng-show="perfilCtrl.newHasQtd">
+              <label>
+                <div class="sc-label">Quantidade:</div>
                 <label>
-                  <div class="sc-label">Quantidade:</div>
-                  <label>
-                    <input class="sc-input-default sc-input-block" type="number" min="1" max="9999" ng-model="this.perfilCtrl.newQtd">
-                  </label>
+                  <input class="sc-input-default sc-input-block" value="{{item.qtd}}" type="number" min="1" max="9999">
                 </label>
-              </div>
-      				<div class="col-xs-1 sc-p-t-l">
-      					<label>
-      						<div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md sc-m-t-xl">
-                    <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="newPerfilCtrl.deleteItem($index)"></i>
-                  </div>
-      					</label>
-      				</div>
-    	  		</div>
-          </div>
+              </label>
+            </div>
+    				<div class="col-xs-1 sc-p-t-l">
+    					<label>
+    						<div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md sc-m-t-xl">
+                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="newPerfilCtrl.deleteItem($index)"></i>
+                </div>
+    					</label>
+    				</div>
+  	  		</div>
         </div>
         <div class="clear"></div>
         <div class="col-xs-2 sc-m-t-lg pull-right">
@@ -111,7 +128,7 @@
 				<li class="" ng-repeat="perfil in perfilCtrl.list">
 					<div class="sc-accordion-head flex-row">
 						<div class="fcol-xs-auto">
-							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.perfil}}</div>
+							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
 						</div>
             <div class="fcol-xs-3em" sc-stop-click>
               <div class="sc-dropdown" ng-click="perfilCtrl.togglePerfisMenu()">
