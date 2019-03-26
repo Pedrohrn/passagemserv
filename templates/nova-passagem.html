@@ -38,41 +38,41 @@
 			<div class="col-xs-6 col-md-6 sc-p-t-xl">
 				<label>
 					<div class="sc-label">Checklist:</div>
-					<select class="sc-input-default sc-input-block" ng-model="listaChecklist">
-						<option ng-repeat="perfil in perfilCtrl.list" value="{{perfil.nome}}" label="{{perfil.nome}}">{{perfil.nome}}</option>
+					<select class="sc-input-default sc-input-block" ng-model="novaPassagemCtrl.currentPerfil">
+						<option ng-repeat="perfil in perfilCtrl.list" value="{{perfil.perfil}}" label="{{perfil.perfil}}">{{perfil.perfil}}</option>
 					</select>
 				</label>
 			</div>
 			<div class="clear"></div>
 			<div class="col-xs-12 sc-p-t-xl flex-row">
-				<div class="col-xs-3">
-					<h2 class="sc-label">Portaria Social{{checklist}}</h2>
+				<div class="col-xs-6">
+					<h2 class="sc-label">{{novaPassagemCtrl.currentPerfil}}</h2>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-6">
 					<button class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
 				</div>
 			</div>
 			<div class="col-xs-12 col-md-6 sc-p-t-xl">
-				<h3>{{categoria}}</h3>
+				<h3>{{novaPassagemCtrl.currentPerfil.itens.categoria}}</h3>
 				<button class="sc-btn sc-btn-green"><i class="sc-icon sc-icon-mais-2"></i></button>
 				<div class="col-xs-12 col-md-6">
 					<ul>
-						<li class="sc-p-t-xl">
+						<li class="">
 							<div class="flex-row sc-text-blue">
 								<div class="sc-p-v-md sc-p-h-sc fcol-xs-3 sc-text-medium">Qtde</div>
 								<div class="sc-p-v-md sc-p-h-sc fcol-xs-3 sc-text-medium">Item</div>
 							</div>
 						</li>
-						<li ng-repeat="item in checklist.itens">
+						<li ng-repeat="item in currentPerfil.itens">
 							<div class="flex-row">
 								<label class="fcol-xs-3em align-center">
 									<input class="sc-checkbox sc-checkbox-gray" ng-model="listItem.confere" type="checkbox">
 								</label>
 								<div class="fcol-xs-auto">
-									<input class="sc-input sc-input-default" type="text" ng-model="listItem.qtde">
+									<input class="sc-input sc-input-default" value="item.qtd" type="text" ng-model="listItem.qtde">
 								</div>
 								<div class="fcol-xs-auto"><
-									<span>{{item.key}}</span>
+									<span>{{item.nome}}</span>
 								</div>
 							</div>
 						</li>

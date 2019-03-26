@@ -156,7 +156,7 @@
           <ul multi-check-group class="sc-accordion">
             <li class="sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;">
               <div class="flex-row sc-text-gray">
-                <div class="sc-p-md fcol-xs-3m align-center">
+                <div class="fcol-xs-3em align-center">
                   <input ng-click="passagens.selectAll()" ng-checked="passagens.allSelected" class="sc-checkbox sc-checkbox-blue" type="checkbox">
                 </div>
                 <div class="sc-p-v-md sc-p-h-sc fcol-xs-auto sc-text-medium">Saiu</div>
@@ -253,7 +253,7 @@
                           <tr>
                             <th>
                               <div class="sc-text-blue">
-                                <b>{{evento.key}}</b>
+                                <b>{{evento.nome}}</b>
                               </div>
                             </th>
                           </tr>
@@ -261,21 +261,21 @@
                         <tbody>
                           <tr>
                             <td>Nome</td>
-                            <td ng-if="evento.key == 'Funcionamento'">Qtd</td>
-                            <td ng-if="evento.key == 'Acontecimentos'">Ocorrido</td>
-                            <td ng-if="evento.key == 'Acontecimentos'">Local do ocorrido</td>
-                            <td ng-if="evento.key == 'Empréstimos'">Ação</td>
-                            <td ng-if="evento.key == 'Empréstimos'">Unidade/Pessoa</td>
-                            <td ng-if="evento.key == 'Empréstimos'">Tipo</td>
+                            <td ng-if="evento.nome == 'Funcionamento'">Qtd</td>
+                            <td ng-if="evento.nome == 'Acontecimentos'">Ocorrido</td>
+                            <td ng-if="evento.nome == 'Acontecimentos'">Local do ocorrido</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">Ação</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">Unidade/Pessoa</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">Tipo</td>
                           </tr>
                           <tr ng-repeat="registro in evento.eventosList">
                             <td>{{registro.nome}}</td>
-                            <td ng-if="evento.key == 'Funcionamento'">{{registro.qtd}}</td>
-                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.ocorrido}}</td>
-                            <td ng-if="evento.key == 'Acontecimentos'">{{registro.local}}</td>
-                            <td ng-if="evento.key == 'Empréstimos'">{{registro.acao}}</td>
-                            <td ng-if="evento.key == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
-                            <td ng-if="evento.key == 'Empréstimos'">{{registro.tipoPessoa}}</td>
+                            <td ng-if="evento.nome == 'Funcionamento'">{{registro.qtd}}</td>
+                            <td ng-if="evento.nome == 'Acontecimentos'">{{registro.ocorrido}}</td>
+                            <td ng-if="evento.nome == 'Acontecimentos'">{{registro.local}}</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.acao}}</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
+                            <td ng-if="evento.nome == 'Empréstimos'">{{registro.tipoPessoa}}</td>
                           </tr>
                         </tbody>
                       </table>
