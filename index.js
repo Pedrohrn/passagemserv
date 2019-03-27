@@ -131,9 +131,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 
 		categorias: [
-		 { id: 1, label: 'Funcionamento' },
+/*		 { id: 1, label: 'Funcionamento' },
 		 { id: 2, label: 'Acontecimento' },
-		 { id: 3, label: 'Empréstimos' },
+		 { id: 3, label: 'Empréstimos' },*/
 		],
 
 		modal: new scModal(),
@@ -332,6 +332,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		addCategoria: function(){
 			this.listCategorias.push({id: this.listCategorias.length+1, label: this.newCategoria});
 			console.log(this.listCategorias);
+		},
+
+		removerCategoria: function(index){
+			this.listCategorias.splice(index, 1);
 		},
 
 		closeAddCategoria: function(){
