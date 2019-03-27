@@ -27,6 +27,15 @@
         </div>
   			<div class="clear"></div>
         <div class="sc-m-t-md">
+          <div class="col-xs-3 sc-p-t-l">
+            <label>
+              <div class="sc-label">Categoria</div>
+              <select class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
+                <option value="" class="" selected="selected"></option>
+                <option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
+              </select>
+            </label>
+          </div>
     			<div class="col-xs-4 sc-p-t-l">
     				<label>
     					<div class="sc-label">Item</div>
@@ -36,15 +45,6 @@
     							<i class="sc-icon sc-icon-mais-1"></i>
     						</button>
     					</div>
-    				</label>
-    			</div>
-    			<div class="col-xs-3 sc-p-t-l">
-    				<label>
-    					<div class="sc-label">Categoria</div>
-    					<select class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
-    						<option value="" class="" selected="selected"></option>
-    						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
-    					</select>
     				</label>
     			</div>
           <div class="col-xs-2 sc-p-t-l">
@@ -70,19 +70,19 @@
   			<div class="clear"></div>
   			<div class="sc-m-t-md" ng-repeat="item in newPerfilCtrl.itemList"> <!-- listas de itens do perfil -->
           <div class="sc-m-t-md">
+            <div class="col-xs-3 sc-p-t-l">
+              <label>
+                <div class="sc-label">Categoria</div>
+                <select class="sc-input-default sc-input-block">
+                  <option value="{{item.label}}" label="{{item.label}}" selected="selected"></option>
+                  <option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
+                </select>
+              </label>
+            </div>
   	  			<div class="col-xs-4 sc-p-t-l">
   	  				<label>
   	  					<div class="sc-label">Item</div>
   	  					<input type="text" class="sc-input-default sc-input-block" value="{{item.nome}}" label="{{item.nome}}">
-  	  				</label>
-  	  			</div>
-  	  			<div class="col-xs-3 sc-p-t-l">
-  	  				<label>
-  	  					<div class="sc-label">Categoria</div>
-  	  					<select class="sc-input-default sc-input-block">
-  	  						<option value="{{item.categoria}}" label="{{item.categoria}}" selected="selected"></option>
-  	  						<option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.nome}}" label="{{categoria.nome}}">{{categoria.nome}}</option>
-  	  					</select>
   	  				</label>
   	  			</div>
     				<div class="col-xs-2 sc-p-t-l">

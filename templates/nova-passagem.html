@@ -1,7 +1,7 @@
 <div class="sc-panel" style="position: absolute; top: 52px; z-index: 100000;">
-	<div class="sc-panel-body">
+	<div class="sc-accordion-body">
 		<form ng-submit="submit()" class="flex-row">
-			<div class="col-xs-12 col-md-12 sc-p-t-xl">
+			<div class="col-xs-12 col-md-12 sc-p-t-xl align-right">
 				<span class="criado_por infos_informativo">
 					<b class="titulo">Criado por:</b>
 					<span>{{porteiroAtual}}, em {{dataCriacao}}, às {{horaCriacao}} - {{diaCriacao}}.</span>
@@ -9,35 +9,43 @@
 			</div>
 			<div class="clear"></div>
 			<div class="col-xs-6 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
-				<label>
-					<div class="sc-label">Quem sai:</div>
-					<select class="sc-input-default sc-input-block" ng-model="passagem.saindo">
-						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
-					</select>
-				</label>
-				<label>
-					<div class="sc-label">Senha:</div>
-					<input type="password" class="sc-input sc-input-default" required>
-				</label>
+				<div class="col-sm-5">
+					<label>
+						<div class="sc-label">Quem sai:</div>
+						<select class="sc-input-default sc-input-block" ng-model="passagem.saindo">
+							<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
+						</select>
+					</label>
+				</div>
+				<div class="col-sm-1">
+					<label>
+						<div class="sc-label">Senha:</div>
+						<input type="password" class="sc-input sc-input-default">
+					</label>
+				</div>
 			</div>
 			<div class="col-xs-6 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
-				<label>
-					<div class="sc-label">Quem entra:</div>
-					<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
-						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
-					</select>
-				</label>
-				<label>
-					<div class="sc-label">Senha:</div>
-					<input type="password" class="sc-input sc-input-default" required>
-				</label>
+				<div class="col-sm-5">
+					<label>
+						<div class="sc-label">Quem entra:</div>
+						<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
+							<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
+						</select>
+					</label>
+				</div>
+				<div class="col-sm-1">
+					<label>
+						<div class="sc-label">Senha:</div>
+						<input type="password" class="sc-input sc-input-default">
+					</label>
+				</div>
 			</div>
-			<span class="col-xs-12 sc-p-t-xl">
+			<span class="col-xs-12 sc-p-t-xl sc-m-l-lg">
 				Eu, {{passagem.saindo}} (que está saindo), passo o posto de serviço para o(a) {{passagem.entrando}} (que está entrando), de acordo com as informações abaixo:
 			</span>
-			<div class="col-xs-6 col-md-6 sc-p-t-xl">
+			<div class="col-xs-4 sc-p-t-xl sc-m-l-lg">
 				<label>
-					<div class="sc-label">Checklist:</div>
+					<div class="sc-label">Perfil:</div>
 					<select class="sc-input-default sc-input-block" ng-model="novaPassagemCtrl.currentPerfil">
 						<option ng-repeat="perfil in perfilCtrl.list" value="{{perfil.nome}}" label="{{perfil.nome}}">{{perfil.nome}}</option>
 					</select>
@@ -45,44 +53,104 @@
 			</div>
 			<div class="clear"></div>
 			<div class="col-xs-12 sc-p-t-xl flex-row">
-				<div class="col-xs-6">
-					<h2 class="sc-label">{{novaPassagemCtrl.currentPerfil}}</h2>
+				<div class="col-xs-4">
+					<h2 class="sc-label sc-text-xxl">{{novaPassagemCtrl.currentPerfil}}</h2>
 				</div>
-				<div class="col-xs-6">
-					<button class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
+				<div class="col-xs-4">
+					<button ng-click="novaPassagemCtrl.criarCategoria()" class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 sc-p-t-xl">
-				<h3>{{novaPassagemCtrl.currentPerfil.itens.categoria}}</h3>
-				<button class="sc-btn sc-btn-green"><i class="sc-icon sc-icon-mais-2"></i></button>
+			<div class="col-xs-4 sc-m-l-lg ng-hide" ng-show="novaPassagemCtrl.novaCategoria" style="display: block; z-index: 999999;">
+				<div class="sc-label">Nome:</div>
+				<label class="sc-input-group">
+					<input class="sc-input sc-input-default sc-input-block" ng-model="novaPassagemCtrl.newCategoria" type="text">
+					<button ng-click="novaPassagemCtrl.addCategoria()" class="sc-btn sc-btn-green">
+						<i class="sc-icon sc-icon-mais-2"></i>
+					</button>
+					<button ng-click="novaPassagemCtrl.closeAddCategoria()" class="sc-btn sc-btn-red">
+						<i class="sc-icon sc-icon-lixeira-2"></i>
+					</button>
+				</label>
+			</div>
+			<div class="col-xs-12 col-md-6 sc-m-h-xl sc-fieldset" ng-repeat="categoria in novaPassagemCtrl.listCategorias">
+				<div class="col-xs-12 col-md-6 flex-row">
+					<div class="sc-label sc-text-lg-sm">{{categoria.label}}</div>
+					<button ng-click="novaPassagemCtrl.cadastrarItem()" class="sc-m-l-xl sc-btn sc-btn-green sc-btn-thin sc-btn-sm-md">
+						<i class="sc-icon sc-icon-mais-2"></i>
+					</button>
+				</div>
+				<div class="ng-hide col-xs-12 sc-p-t-sm" ng-show="novaPassagemCtrl.newItem">
+					<div class="col-xs-6">
+						<div class="sc-label">Novo Item:</div>
+						<label class="sc-input-group">
+							<input class="sc-input sc-input-default sc-input-block" ng-model="novaPassagemCtrl.newItemName" type="text">
+							<button ng-click="novaPassagemCtrl.addItem()" class="sc-btn sc-btn-green">
+								<i class="sc-icon sc-icon-mais-2"></i>
+							</button>
+							<button ng-click="novaPassagemCtrl.closeAddItem()" class="sc-btn sc-btn-red">
+								<i class="sc-icon sc-icon-lixeira-2"></i>
+							</button>
+						</label>
+					</div>
+					<div class="col-xs-2">
+						<label>
+							<div class="sc-label">Quantidade?</div>
+							<span class="sc-toggle sc-m-t-sm">
+								<input class="ng-empty" ng-model="novaPassagemCtrl.newItemHasQtd" type="checkbox">
+								<span label-false="Não" label-true="Sim"></span>
+							</span>
+						</label>
+					</div>
+					<div class="col-xs-2 ng-hide" ng-show="novaPassagemCltr.newItemHasQtd">
+						<label>
+							<div class="sc-label">Quantidade:</div>
+							<input class="sc-input-default sc-input-block" ng-model="novaPassagemCtrl.newItemQtd">
+						</label>
+					</div>
+				</div>
 				<div class="col-xs-12 col-md-6">
 					<ul>
-						<li class="">
-							<div class="flex-row sc-text-blue">
-								<div class="sc-p-v-md sc-p-h-sc fcol-xs-3 sc-text-medium">Qtde</div>
-								<div class="sc-p-v-md sc-p-h-sc fcol-xs-3 sc-text-medium">Item</div>
+						<li>
+							<div class="flex-row sc-p-v-md sc-label sc-text-blue">
+								<label class="fcol-xs-3em">
+									<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
+								</label>
+								<div class="fcol-xs-10 sc-text-medium sc-label">Qtde</div>
+								<div class="fcol-xs-auto sc-text-medium sc-label">Item</div>
 							</div>
 						</li>
-						<li ng-repeat="item in currentPerfil.itens">
+						<li ng-repeat="item in novaPassagemCtrl.itens" class="sc-p-b-sm">
 							<div class="flex-row">
-								<label class="fcol-xs-3em align-center">
-									<input class="sc-checkbox sc-checkbox-gray" ng-model="listItem.confere" type="checkbox">
+								<label class="fcol-xs-3em sc-p-t-md">
+									<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
 								</label>
+								<div class="fcol-xs-10">
+									<input class="fcol-xs-80 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
+								</div>
 								<div class="fcol-xs-auto">
-									<input class="sc-input sc-input-default" value="item.qtd" type="text" ng-model="listItem.qtde">
+									<span class="sc-text sc-text-xl-sm sc-text-black-md">{{item.itemName}}</span>
 								</div>
-								<div class="fcol-xs-auto"><
-									<span>{{item.nome}}</span>
-								</div>
+								<div class="col-xs-1">
+		    					<label>
+		    						<div class="fcol-xs-auto">
+		                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="novaPassagemCtrl.deleteItem($index)"></i>
+		                </div>
+		    					</label>
+		    				</div>
 							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
-			</div>
-			<div class="col-xs-12 col-md-12 sc-p-t-xl">
+			<div class="col-xs-12 sc-m-h-xl col-md-6">
 				<label class="sc-label">Observações:</label>
 				<textarea class="sc-input sc-input-default sc-input-block" ng-model="passagem.detalhes" rows="5" cols="30"></textarea>
+			</div>
+			<div class="clear"></div>
+			<div class="col-xs-12 sc-p-t-xxl align-right sc-m-b-xxl">
+				<button class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md">Salvar e passar</button>
+				<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md">Salvar</button>
+				<button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md">Cancelar</button>
 			</div>
 		</form>
 	</div>
