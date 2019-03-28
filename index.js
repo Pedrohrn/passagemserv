@@ -161,6 +161,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.newPerfilCtrl = {
 		itemList: [],
 		newTitulo: '',
+		showCategoriaToolbar: false,
+		novaCategoria: '',
+		newCategoria: false,
 
 		addItem: function() {
 			this.itemList.push({id: this.newCategoria.id, 'label': this.newCategoria, 'nome': this.newItem, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd});
@@ -178,7 +181,20 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		salvarNovoPerfil: function(){
 			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newTitulo, categorias: this.itemList});
 			console.log($s.perfilCtrl.list);
-		}
+		},
+
+		toggleCategoriaToolbar: function(){
+			this.showCategoriaToolbar = !this.showCategoriaToolbar;
+		},
+
+		criarCategoria: function(){
+			this.newCategoria = !this.newCategoria;
+		},
+
+		addCategoria: function(){
+			$s.perfilCtrl.categorias.push({id: $s.perfilCtrl.categorias.length+1, label: this.novaCategoria});
+		},
+
 	}
 
 	$s.listCtrl = {

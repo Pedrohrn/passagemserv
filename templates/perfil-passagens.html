@@ -30,10 +30,47 @@
           <div class="col-xs-3 sc-p-t-l">
             <label>
               <div class="sc-label">Categoria</div>
-              <select class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
-                <option value="" class="" selected="selected"></option>
-                <option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
-              </select>
+              <div class="sc-input-group">
+                <select class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
+                  <option value="" class="" selected="selected"></option>
+                  <option ng-repeat="categoria in perfilCtrl.categorias" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
+                </select>
+                <div class="sc-dropdown sc-btn sc-btn-default" ng-click="newPerfilCtrl.toggleCategoriaToolbar()">
+                  <i class="sc-icon sc-icon-reticiencias-v"></i>
+                  <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="newPerfilCtrl.showCategoriaToolbar" style="display: block;">
+                    <li>
+                      <span ng-click="newPerfilCtrl.newCategoria()">Nova Categoria</span>
+                    </li>
+                    <li>
+                      <span ng-click="newPerfilCtrl.editCategoriaName()">Editar</span>
+                    </li>
+                    <li>
+                      <span ng-click="newPerfilCtrl.disableCategoria()">Desativar</span>
+                    </li>
+                    <li>
+                      <span ng-click="newPerfilCtrl.deleteCategoria()">Excluir</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="sc-input-group ng-hide" ng-show="newPerfilCtrl.addNovaCategoria">
+                <input class="sc-input-default" ng-model="newPerfilCtrl.novaCategoria">
+                <button class="sc-btn sc-btn-green" ng-click="newPerfilCtrl.addCategoria()" type="button">
+                  <i class="sc-icon sc-icon-visto-1"></i>
+                </button>
+                <button class="sc-btn sc-btn-red" ng-click="newPerfilCtrl.dismissCategoria()" type="button">
+                  <i class="sc-icon sc-icon-fechar-1"></i>
+                </button>
+              </div>
+              <div class="sc-input-group ng-hide" ng-show="newPerfilCtrl.editCategoriaName">
+                <input class="sc-input-default" ng-model="newPerfilCtrl.categoriaNewName">
+                <button class="sc-btn sc-btn-green" ng-click="newPerfilCtrl.saveNewName()">
+                  <i class="sc-icon sc-icon-visto-1"></i>
+                </button>
+                <button class="sc-btn sc-btn-red" ng-click="newPerfilCtrl.dismissNewName()">
+                  <i class="sc-icon sc-icon-fechar-1"></i>
+                </button>
+              </div>
             </label>
           </div>
     			<div class="col-xs-4 sc-p-t-l">
@@ -41,7 +78,7 @@
     					<div class="sc-label">Item</div>
     					<div class="sc-input-group">
     						<input type="text" class="sc-input-default sc-input-block" name="newItem" ng-model="newPerfilCtrl.newItem">
-    						<button ng-click="newPerfilCtrl.addItem()" class="sc-btn sc-btn-green">
+    						<button ng-click="newPerfilCtrl.addItem()" class="sc-btn sc-btn-green" type="button">
     							<i class="sc-icon sc-icon-mais-1"></i>
     						</button>
     					</div>

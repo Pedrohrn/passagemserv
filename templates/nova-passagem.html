@@ -1,5 +1,5 @@
 <div class="sc-panel" style="position: absolute; top: 52px; z-index: 100000;">
-	<div class="sc-accordion-body">
+	<div class="sc-panel-body">
 		<form ng-submit="submit()" class="flex-row">
 			<div class="col-xs-12 col-md-12 sc-p-t-xl align-right">
 				<span class="criado_por infos_informativo">
@@ -8,8 +8,8 @@
 				</span>
 			</div>
 			<div class="clear"></div>
-			<div class="sc-m-l-lg">
-				<div class="col-xs-12 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
+			<div class="col-lg-12 col-sm-12 col-md-12">
+				<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 					<label>
 						<div class="sc-label">Quem sai:</div>
 						<select class="sc-input-default sc-input-block" ng-model="passagem.saindo">
@@ -17,13 +17,13 @@
 						</select>
 					</label>
 				</div>
-				<div class="col-xs-12 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
+				<div class="col-xs-2 col-sm-2 col-md-3 col-lg-2 sc-p-t-xl">
 					<label>
 						<div class="sc-label">Senha:</div>
 						<input type="password" class="sc-input sc-input-default">
 					</label>
 				</div>
-				<div class="col-xs-12 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
+				<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 					<label>
 						<div class="sc-label">Quem entra:</div>
 						<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
@@ -31,17 +31,17 @@
 						</select>
 					</label>
 				</div>
-				<div class="col-xs-12 col-md-6 col-sm-6 col-xm-3 sc-p-t-xl">
+				<div class="col-xs-2 col-sm-2 col-md-3 col-lg-2 sc-p-t-xl">
 					<label>
 						<div class="sc-label">Senha:</div>
 						<input type="password" class="sc-input sc-input-default">
 					</label>
 				</div>
 			</div>
-			<span class="col-xs-12 sc-p-t-xl sc-m-l-lg">
+			<span class="col-xs-12 sc-p-t-xxxl sc-p-b-xl sc-m-l-lg">
 				Eu, <b>{{passagem.saindo}}</b> (que está saindo), passo o posto de serviço para o(a) <b>{{passagem.entrando}}</b> (que está entrando), de acordo com as informações abaixo:
 			</span>
-			<div class="col-xs-4 sc-p-t-xl sc-m-l-lg">
+			<div class="col-xs-6 col-md-4 col-lg-6 sc-p-t-xl sc-m-l-lg">
 				<label>
 					<div class="sc-label">Perfil:</div>
 					<select class="sc-input-default sc-input-block" ng-model="novaPassagemCtrl.currentPerfil">
@@ -70,20 +70,21 @@
 					</button>
 				</label>
 			</div>
+			<div class="clear"></div>
 			<div class="col-xs-12 col-md-6 sc-m-h-xl sc-fieldset" ng-repeat="categoria in novaPassagemCtrl.listCategorias">
 				<div class="col-xs-12 col-md-6 flex-row">
 					<div class="sc-label sc-text-lg-sm sc-p-t-xs">{{categoria.label}}</div>
 					<button ng-click="novaPasssagemCtrl.editItem()" class="sc-m-l-xl sc-btn sc-btn-clean sc-btn-thin sc-btn-md align-right">
 						<i class="sc-icon sc-icon-lapis"></i>
 					</button>
-					<button ng-click="novaPassagemCtrl.cadastrarItem()" class="sc-m-l-xl sc-btn sc-btn-green sc-btn-thin sc-btn-sm-md">
-						<i class="sc-icon sc-icon-mais-2"></i>
-					</button>
-					<span class="push-right">
+					<div class="sc-btn-group">
+						<button ng-click="novaPassagemCtrl.cadastrarItem()" class="sc-m-l-xl sc-btn sc-btn-green sc-btn-thin sc-btn-sm-md">
+							<i class="sc-icon sc-icon-mais-2"></i>
+						</button>
 						<button ng-click="novaPassagemCtrl.removerCategoria($index)" class="sc-m-l-xl sc-btn sc-btn-red sc-btn-thin sc-btn-sm-md">
 							<i class="sc-icon sc-icon-lixeira-2"></i>
 						</button>
-					</span>
+					</div>
 				</div>
 				<div class="ng-hide col-xs-12 sc-p-t-sm" ng-show="novaPassagemCtrl.newItem">
 					<div class="col-xs-6">
@@ -136,7 +137,7 @@
 								<div class="fcol-xs-auto">
 									<span class="sc-text sc-text-xl-sm sc-text-black-md">{{item.itemName}}</span>
 								</div>
-								<div class="col-xs-1">
+								<div class="">
 		    					<label>
 		    						<div class="fcol-xs-auto">
 		                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="novaPassagemCtrl.deleteItem($index)"></i>
@@ -148,6 +149,7 @@
 					</ul>
 				</div>
 			</div>
+			<div class="clear"></div>
 			<div class="col-xs-12 sc-m-h-xl sc-p-t-xxl col-md-6 ng-hide" ng-show="novaPassagemCtrl.currentPerfil">
 				<label class="sc-label">Observações:</label>
 				<textarea class="sc-input sc-input-default sc-input-block" ng-model="passagem.detalhes" rows="5" cols="30"></textarea>
