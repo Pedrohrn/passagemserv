@@ -162,8 +162,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itemList: [],
 		newTitulo: '',
 		showCategoriaToolbar: false,
-		novaCategoria: '',
-		newCategoria: false,
+		currentPerfil: '',
+		listCategorias: $s.perfilCtrl.categorias,
+		novaCategoria: false,
+		itens: [],
+		newItem: false,
 
 		addItem: function() {
 			this.itemList.push({id: this.newCategoria.id, 'label': this.newCategoria, 'nome': this.newItem, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd});
@@ -179,7 +182,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarNovoPerfil: function(){
-			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newTitulo, categorias: this.itemList});
+			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.itemList});
 			console.log($s.perfilCtrl.list);
 		},
 
@@ -195,6 +198,41 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			$s.perfilCtrl.categorias.push({id: $s.perfilCtrl.categorias.length+1, label: this.novaCategoria});
 		},
 
+		criarCategoria: function(){
+			this.novaCategoria = !this.novaCategoria;
+			console.log(this.novaCategoria);
+		},
+
+		addCategoria: function(){
+			this.listCategorias.push({id: this.listCategorias.length+1, label: this.newCategoria});
+			console.log(this.listCategorias);
+		},
+
+		removerCategoria: function(index){
+			this.listCategorias.splice(index, 1);
+		},
+
+		closeAddCategoria: function(){
+			this.novaCategoria = !this.novaCategoria;
+		},
+
+		cadastrarItem: function(){
+			this.newItem = !this.newItem;
+		},
+
+		closeAddItem: function(){
+			this.newItem = !this.newItem;
+		},
+
+		addItem:function(){
+			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
+			this.newItemHasQtd = false;
+			console.log(this.itens);
+		},
+
+		deleteItem: function(index){
+			this.itens.splice(index, 1);
+		},
 	}
 
 	$s.listCtrl = {
@@ -305,10 +343,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.accordionCtrl = {
 		accOpened: false,
+		showNotificacoes: false,
 
 		openAcc: function() {
 			this.accOpened = !this.accOpened;
-		}
+		},
+
+		displayNotificacoes: function(){
+			this.showNotificacoes = !this.showNotificacoes;
+		},
+
 	};
 
 	$s.formCtrl = {
@@ -335,6 +379,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
+		itensTamanho: false,
+
+		tamanhos: function(){
+			if (this.itens.length > 0){
+				this.itensTamanho = !this.itensTamanho;
+			};
+		},
 
 		novaPassagem: function(){
 			this.new = !this.new;
