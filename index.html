@@ -156,18 +156,18 @@
           <ul multi-check-group class="sc-accordion">
             <li class="sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;">
               <div class="flex-row sc-text-gray">
-                <div class="fcol-xs-3em align-center">
+                <div class="fcol-xs-3em align-center" sc-stop-click>
                   <input ng-click="passagens.selectAll()" ng-checked="passagens.allSelected" class="sc-checkbox sc-checkbox-blue" type="checkbox">
                 </div>
                 <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Saiu</div>
                 <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Entrou</div>
-                <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Data da passagem</div>
+                <div class="sc-p-v-md fcol-xs-auto sc-text-medium hidden-xs">Data da passagem</div>
                 <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Status</div>
                 <div class="sc-p-md fcol-xs-3m"></div>
               </div>
             </li>
-            <li ng-repeat="passagem in listCtrl.list">
-              <div class="sc-accordion-head flex-row sc-text-gray" ng-click="accordionCtrl.openAcc()">
+            <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)">
+              <div class="sc-accordion-head flex-row sc-text-gray" ng-click="itemCtrl.accToggle(passagem)">
                 <label class="fcol-xs-3em align-center">
                   <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
                 </label>
@@ -179,16 +179,16 @@
                   <div class="icone seta-verde"></div>
                   <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.entrou}}</div>
                 </div>
-                <div class="fcol-xs-auto">
+                <div class="fcol-xs-auto hidden-xs">
                   <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.dia}}/0{{passagem.mes}}/{{passagem.ano}}</div>
                 </div>
                 <div class="fcol-xs-auto">
                   <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': '{{passagem.status}}' == 'Realizada', 'sc-bg-yellow': '{{passagem.status}}' == 'Pendente'}">{{passagem.status}}</span>
                 </div>
-                <div class="fcol-xs-3em align-center sc-stop-click" sc-stop-click="true">
-                  <div class="sc-dropdown" ng-click="listCtrl.toggleMenu()">
-                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': listCtrl.menuOpen}"></i>
-                    <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="listCtrl.menuOpen" style="display: block;">
+                <div class="fcol-xs-3em align-center" sc-stop-click>
+                  <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
+                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened}"></i>
+                    <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="passagem.menu.opened" style="display: block;">
                       <li>
                         <span>Passar serviço</span>
                       </li>
@@ -211,7 +211,7 @@
                   </div>
                 </div>
               </div>
-              <div class="sc-accordion-body ng-animation-slider ng-hide" style="display: block;" ng-show="accordionCtrl.accOpened">
+              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened">
                 <div class="col-xs-12 sc-p-t-sm">
                   <div class="sc-fieldset flex-row ng-animation-slider">
                     <div class="col-xs-6 sc-p-l-sm">

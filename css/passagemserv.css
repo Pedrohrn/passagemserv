@@ -25,3 +25,7 @@
   background-color: #f3f3f4;
   border-bottom: 1px solid #D7D9DB;
 }
+
+.sc-p-none-xs {
+	padding: 0 !important;
+}

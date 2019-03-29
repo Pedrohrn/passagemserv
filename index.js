@@ -1,4 +1,4 @@
-app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal'])
+app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle'])
 
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
   $locationProvider.html5Mode({
@@ -15,7 +15,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   };
 })
 
-.controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', function($s, scModal) {
+.controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', function($s, scModal, scToggle) {
 	oneAtAtime = true;
 
   $s.admCtrl = {
@@ -64,26 +64,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		addPeriodo: function(){
 			this.newPeriodo = !this.newPeriodo;
 
-		}
-	}
-
-	$s.menuAdmCtrl = {
-		menuOpen: false,
-
-		toggleMenu: function(){
-			this.menuOpen = !this.menuOpen;
-		},
-
-		perfilOpen: false,
-
-		abrirModalPerfil: function(){
-			this.perfilOpen = !this.perfilOpen;
-		},
-
-		logOpen: false,
-
-		abrirModalLog: function(){
-			this.logOpen = !this.logOpen;
 		}
 	}
 
@@ -333,16 +313,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 		],
-
-		menuOpen: false,
-
-		toggleMenu: function(){
-			this.menuOpen = !this.menuOpen;
-		}
 	};
 
 	$s.accordionCtrl = {
-		accOpened: false,
 		showNotificacoes: false,
 
 		openAcc: function() {
@@ -354,6 +327,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 	};
+
+	$s.menuAdmCtrl = {
+		toggleMenu: function() {
+			this.menuOpen = !this.menuOpen
+		}
+	}
+
+	$s.itemCtrl = {
+		init: function(passagem) {
+			passagem.acc = new scToggle()
+			passagem.menu = new scToggle()
+		},
+
+		accToggle: function(passagem) {
+			passagem.acc.toggle()
+		}
+	}
 
 	$s.formCtrl = {
 		params: [],
@@ -380,6 +370,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itens: [],
 		newItem: false,
 		itensTamanho: false,
+		newItemHasQtd: false,
 
 		tamanhos: function(){
 			if (this.itens.length > 0){
@@ -401,6 +392,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(this.listCategorias);
 		},
 
+		// categoriaCtrl: {
+		// 	new:
+		// 	rm: (idx)
+		// 	add: ()
+		// }
+
 		removerCategoria: function(index){
 			this.listCategorias.splice(index, 1);
 		},
@@ -419,7 +416,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		addItem:function(){
 			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
-			this.newItemHasQtd = false;
 			console.log(this.itens);
 		},
 
