@@ -104,21 +104,21 @@
                 </div>
               </div>
               <div class="clear"></div>
-              <div class="ng-hide" ng-show="filtroCtrl.newPeriodo">
+              <div class="ng-hide" ng-show="filtroCtrl.newFiltroPeriodo">
                 <hr>
-                <div class="flex-row" ng-repeat="data in filtroCtrl.params.datas">
+                <div class="" ng-repeat="data in filtroCtrl.params.datas">
                   <div id="periodo">
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Início</div>
-                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoInicial" max="3000-12-31" type="date">
+                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.newDataInicial" max="3000-12-31" type="date">
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Fim</div>
-                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.params.periodoFinal" max="3000-12-31" type="date">
+                      <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.newDataFinal" max="3000-12-31" type="date">
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
                       <div class="sc-label">Tipo de Data:</div>
-                      <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.params.tipoData">
+                      <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.newTipoData">
                         <option value="" class="" selected="selected">Todos</option>
                         <option value="criadoEm" label="Criado em">Criado em</option>
                         <option value="passadaEm" label="Passada em">Passada em</option>
@@ -188,11 +188,11 @@
                 <div class="fcol-xs-3em align-center" sc-stop-click>
                   <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
                     <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened}"></i>
-                    <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="passagem.menu.opened" style="display: block;">
+                    <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menu.opened" style="display: block;">
                       <li>
                         <span>Passar serviço</span>
                       </li>
-                      <li>
+                      <li ng-click="formCtrl.edit()">
                         <span>Editar</span>
                       </li>
                       <li>
@@ -226,8 +226,8 @@
                       </div>
                     </div>
                     <div class="col-xs-6">
-                      <div class="sc-text sc-dropdown sc-btn sc-btn-clean sc-text-blue" ng-click="accordionCtrl.displayNotificacoes()">Notificações</div>
-                      <div class="sc-p-none sc-p-t-md sc-m-h-md ng-hide" ng-show="accordionCtrl.showNotificacoes" ng-repeat="grupo in admCtrl.grupos">
+                      <div class="sc-text sc-dropdown sc-btn sc-btn-clean sc-text-blue" ng-click="passagem.notificacoes.toggle()">Notificações</div>
+                      <div class="sc-p-none sc-p-t-md sc-m-h-md" ng-show="passagem.notificacoes.opened" ng-repeat="grupo in admCtrl.grupos">
                         <div class="sc-label sc-text-blue">{{grupo.label}}
                           <div class="sc-fieldset">
                             <div ng-repeat="membro in grupo.membros">
@@ -265,20 +265,20 @@
                         <tr>
                           <td><b>Nome</b></td>
                           <td class="align-right" ng-if="evento.label == 'Funcionamento'"><b>Qtd</b></td>
-                          <td ng-if="evento.label == 'Acontecimentos'"><b>Ocorrido</b></td>
-                          <td ng-if="evento.label == 'Acontecimentos'"><b>Local do ocorrido</b></td>
-                          <td ng-if="evento.label == 'Empréstimos'"><b>Ação</b></td>
-                          <td ng-if="evento.label == 'Empréstimos'"><b>Unidade/Pessoa</b></td>
-                          <td ng-if="evento.label == 'Empréstimos'"><b>Tipo</b></td>
+                          <td ng-if="evento.label == 'Acontecimentos'" class=""><b>Ocorrido</b></td>
+                          <td ng-if="evento.label == 'Acontecimentos'" class="hidden-xs"><b>Local do ocorrido</b></td>
+                          <td ng-if="evento.label == 'Empréstimos'" class=""><b>Ação</b></td>
+                          <td ng-if="evento.label == 'Empréstimos'" class="hidden-xs"><b>Unidade/Pessoa</b></td>
+                          <td ng-if="evento.label == 'Empréstimos'" class="hidden-xs"><b>Tipo</b></td>
                         </tr>
                         <tr ng-repeat="registro in evento.eventosList">
                           <td>{{registro.nome}}</td>
                           <td class="align-right" ng-if="evento.label == 'Funcionamento'">{{registro.qtd}}</td>
-                          <td ng-if="evento.label == 'Acontecimentos'">{{registro.ocorrido}}</td>
-                          <td ng-if="evento.label == 'Acontecimentos'">{{registro.local}}</td>
-                          <td ng-if="evento.label == 'Empréstimos'">{{registro.acao}}</td>
-                          <td ng-if="evento.label == 'Empréstimos'">{{registro.unidade_pessoa}}</td>
-                          <td ng-if="evento.label == 'Empréstimos'">{{registro.tipoPessoa}}</td>
+                          <td ng-if="evento.label == 'Acontecimentos'" class="">{{registro.ocorrido}}</td>
+                          <td ng-if="evento.label == 'Acontecimentos'" class="hidden-xs">{{registro.local}}</td>
+                          <td ng-if="evento.label == 'Empréstimos'" class="">{{registro.acao}}</td>
+                          <td ng-if="evento.label == 'Empréstimos'" class="hidden-xs">{{registro.unidade_pessoa}}</td>
+                          <td ng-if="evento.label == 'Empréstimos'" class="hidden-xs">{{registro.tipoPessoa}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -293,6 +293,7 @@
       <div ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active"></div>
       <div ng-include="'templates/nova-passagem.html'" ng-if="novaPassagemCtrl.new"></div>
       <div ng-include="'templates/log.html'" ng-if="menuAdmCtrl.logOpen"></div>
+      <div ng-include="'templates/transferArea.html'" ng-if="formCtrl.editPassagem"></div>
     </div>
 
     <script type="text/javascript" src="js/jquery.js"></script>

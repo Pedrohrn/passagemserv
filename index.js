@@ -54,17 +54,25 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.filtroCtrl = {
 		avancado: false,
+		filtroParams: [],
+		count: 0,
 
 		abrirFiltroAvancado: function() {
 			this.avancado = !this.avancado;
 		},
 
-		newPeriodo: false,
+		newFiltroPeriodo: false,
 
 		addPeriodo: function(){
-			this.newPeriodo = !this.newPeriodo;
+			this.newFiltroPeriodo = !this.newFiltroPeriodo;
+		},
 
-		}
+		newPeriodo: function(){
+			this.filtroParams.push({dataInicial: this.newDataInicial, dataFinal: this.newDataFinal, tipoData: this.newTipoData});
+			this.newDataFinal = '';
+			this.newDataInicial = '';
+			this.newTipoData = '';
+		},
 	}
 
 	$s.perfilCtrl = {
@@ -74,7 +82,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
-						eventos: [
+						eventosList: [
 							{ nome: 'Portão Funcionando', 		hasQtd: true, qtd: 4 },
 							{ nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
 							{ nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
@@ -82,7 +90,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 					{ id: 2,
 						label: 'Acontecimento',
-						eventos: [
+						eventosList: [
 							{ nome: 'Entrada de fornecedores', hasQtd: false, qtd: 0 },
 							{ nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
 						],
@@ -94,7 +102,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
-						eventos: [
+						eventosList: [
 							{ nome: 'Portão Funcionando', 		hasQtd: true, qtd: 10 },
 							{ nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 10 },
 							{ nome: 'Interfone funcionando', 	hasQtd: true, qtd: 10 },
@@ -102,7 +110,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 					{ id: 2,
 						label: 'Acontecimento',
-						eventos: [
+						eventosList: [
 							{ nome: 'Entrada de fornecedores', hasQtd: true, qtd: 10 },
 						],
 					},
@@ -315,19 +323,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	};
 
-	$s.accordionCtrl = {
-		showNotificacoes: false,
-
-		openAcc: function() {
-			this.accOpened = !this.accOpened;
-		},
-
-		displayNotificacoes: function(){
-			this.showNotificacoes = !this.showNotificacoes;
-		},
-
-	};
-
 	$s.menuAdmCtrl = {
 		toggleMenu: function() {
 			this.menuOpen = !this.menuOpen
@@ -338,15 +333,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		init: function(passagem) {
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
+			passagem.notificacoes = new scToggle()
 		},
 
 		accToggle: function(passagem) {
 			passagem.acc.toggle()
-		}
+		},
+
+		displayNotificacoes: function(){
+			this.showNotificacoes = !this.showNotificacoes;
+		},
 	}
 
 	$s.formCtrl = {
 		params: [],
+		edit: false,
 
 		init: function(passagem) {
 			obj = passagem || {}
