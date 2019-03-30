@@ -373,7 +373,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		edit: false,
 
 		init: function(passagem) {
-			obj = passagem || {}
+			this.obj = passagem || {}
 
 			// usar alguma coias para copiar o obj 'passagem'
 			this.newRecord = !obj.id

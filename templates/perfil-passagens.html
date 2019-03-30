@@ -9,7 +9,7 @@
     <div class="ng-hide" ng-show="perfilCtrl.perfilNovo">
       <div class="sc-panel-body grid-container sc-m-b-md">
         <form class="sc-m-t-md" ng-submit="newPerfilCtrl.newPerfil()">
-          <div class="col-xs-auto col-md-6 col-lg-6 sc-p-t-l sc-p-h-none">
+          <div class="col-xs-auto col-md-5 col-lg-6 sc-p-t-l sc-p-h-none">
             <label>
               <div class="sc-label">Título do Perfil</div>
               <input class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newPerfilName" type="text">
@@ -38,12 +38,12 @@
             <div class="col-xs-12 col-sm-5 sc-p-t-xxxl">
               <button ng-click="newPerfilCtrl.criarCategoria()" class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4" ng-show="newPerfilCtrl.novaCategoria">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4" ng-show="newPerfilCtrl.novaCategoria">
               <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
                 <div class="sc-label">Categoria:</div>
                 <label class="sc-input-group">
                   <select class="sc-input sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
-                    <option value="">Selecione ou cadastre uma nova</option>
+                    <option value="">Selecione ou cadastre</option>
                     <option ng-repeat="categoria in categoriasCtrl.list" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
                   </select>
                   <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
@@ -106,7 +106,7 @@
                     </button>
                   </label>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 sc-p-t-xl sc-p-t-none-sm">
+                <div class="col-xs-6 col-sm-3 col-md-3 sc-p-t-xl sc-p-t-none-sm">
                   <label>
                     <div class="sc-label">Quantidade?</div>
                     <span class="sc-toggle sc-m-t-sm">
@@ -115,7 +115,7 @@
                     </span>
                   </label>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 sc-p-t-xl ng-hide" ng-show="novaPassagemCtrl.newItemHasQtd">
+                <div class="col-xs-6 col-sm-3 col-md-3 ng-hide" ng-show="newPerfilCtrl.newItemHasQtd">
                   <label>
                     <div class="sc-label">Quantidade:</div>
                     <input class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newItemQtd">
