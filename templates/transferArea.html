@@ -1,4 +1,4 @@
-<div ng-include="templates/transferArea.html" scope="" onload="" style="position: absolute; top: 52px; z-index: 100000;">
+<div style="position: absolute; top: 52px; z-index: 100000;">
 	<form ng-submit="submit()" class="flex-row">
 		<div class="col-xs-12 col-md-12 sc-p-t-xl align-right">
 			<span class="criado_por infos_informativo">
@@ -12,7 +12,7 @@
 				<label>
 					<div class="sc-label">Quem sai:</div>
 					<select class="sc-input-default sc-input-block" ng-model="passagem.saindo">
-						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{passagem.entrou}}</option>
+						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{passagem.saiu}}</option>
 					</select>
 				</label>
 			</div>
@@ -26,7 +26,7 @@
 				<label>
 					<div class="sc-label">Quem entra:</div>
 					<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
-						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{passagem.saiu}}</option>
+						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{passagem.entrou}}</option>
 					</select>
 				</label>
 			</div>

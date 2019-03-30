@@ -16,7 +16,35 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 })
 
 .controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', function($s, scModal, scToggle) {
-	oneAtAtime = true;
+	$s.categoriasCtrl = {
+		list: [
+		 { id: 1, label: 'Funcionamento' },
+		 { id: 2, label: 'Acontecimento' },
+		 { id: 3, label: 'Empréstimos' },
+		],
+		novaCategoria: false,
+		showOpts: false,
+
+		showOptions: function(){
+			this.showOpts = !this.showOpts;
+		},
+
+		new: function(){
+			this.novaCategoria = !this.novaCategoria;
+		},
+
+		rmv: function(index){
+			this.list.splice(index, 1);
+			$s.newPerfilCtrl.listNewCategorias.splice(index, 1);
+		},
+
+		add: function(){
+			this.list.push({ id: this.list.length+1, label: this.newCategoria});
+			this.newCategoria = '';
+			console.log(this.list);
+		},
+	};
+
 
   $s.admCtrl = {
   	grupos: [
@@ -118,12 +146,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 		],
 
-		categorias: [
-/*		 { id: 1, label: 'Funcionamento' },
-		 { id: 2, label: 'Acontecimento' },
-		 { id: 3, label: 'Empréstimos' },*/
-		],
-
 		modal: new scModal(),
 
 		perfilNovo: false,
@@ -151,7 +173,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		newTitulo: '',
 		showCategoriaToolbar: false,
 		currentPerfil: '',
-		listCategorias: $s.perfilCtrl.categorias,
+		listCategorias: $s.categoriasCtrl.list,
+		listNewCategorias: [],
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
@@ -183,7 +206,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){
-			$s.perfilCtrl.categorias.push({id: $s.perfilCtrl.categorias.length+1, label: this.novaCategoria});
+			$s.categoriasCtrl.list.push({id: $s.categoriasCtrl.list.length+1, label: this.novaCategoria});
 		},
 
 		criarCategoria: function(){
@@ -192,12 +215,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){
-			this.listCategorias.push({id: this.listCategorias.length+1, label: this.newCategoria});
-			console.log(this.listCategorias);
+			this.listNewCategorias.push({id: this.listNewCategorias.length+1, label: this.newCategoria});
+			console.log(this.listNewCategorias);
 		},
 
 		removerCategoria: function(index){
-			this.listCategorias.splice(index, 1);
+			this.listNewCategorias.splice(index, 1);
 		},
 
 		closeAddCategoria: function(){
@@ -366,7 +389,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.novaPassagemCtrl = {
 		new: false,
 		currentPerfil: '',
-		listCategorias: $s.perfilCtrl.categorias,
+		listCategorias: $s.categoriasCtrl.list,
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
@@ -392,12 +415,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.listCategorias.push({id: this.listCategorias.length+1, label: this.newCategoria});
 			console.log(this.listCategorias);
 		},
-
-		// categoriaCtrl: {
-		// 	new:
-		// 	rm: (idx)
-		// 	add: ()
-		// }
 
 		removerCategoria: function(index){
 			this.listCategorias.splice(index, 1);

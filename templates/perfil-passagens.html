@@ -35,22 +35,50 @@
             </div>
           </div>
           <div class="col-xs-12 sc-fieldset">
-            <div class="col-xs-12 col-sm-4 sc-p-t-xxxl">
+            <div class="col-xs-12 col-sm-5 sc-p-t-xxxl">
               <button ng-click="newPerfilCtrl.criarCategoria()" class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ng-hide" ng-show="newPerfilCtrl.novaCategoria">
-              <div class="sc-label">Nome:</div>
-              <label class="sc-input-group">
-                <input class="sc-input sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria" type="text">
-                <button ng-click="newPerfilCtrl.addCategoria()" class="sc-btn sc-btn-green">
-                  <i class="sc-icon sc-icon-mais-2"></i>
-                </button>
-                <button ng-click="newPerfilCtrl.closeAddCategoria()" class="sc-btn sc-btn-red">
-                  <i class="sc-icon sc-icon-lixeira-2"></i>
-                </button>
-              </label>
+            <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4" ng-show="newPerfilCtrl.novaCategoria">
+              <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
+                <div class="sc-label">Categoria:</div>
+                <label class="sc-input-group">
+                  <select class="sc-input sc-input-default sc-input-block" ng-model="newPerfilCtrl.newCategoria">
+                    <option value="">Selecione ou cadastre uma nova</option>
+                    <option ng-repeat="categoria in categoriasCtrl.list" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
+                  </select>
+                  <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
+                    <i class="sc-icon sc-icon-reticiencias-v"></i>
+                    <span class="sc-dropdown ng-hide" ng-show=categoriasCtrl.showOpts>
+                      <ul class="sc-dropdown-menu">
+                        <li ng-click="categoriasCtrl.new()">Nova Categoria</li>
+                        <li ng-click="categoriasCtrl.edit()">Editar</li>
+                        <li ng-click="categoriasCtrl.disable()">Desativar</li>
+                        <li ng-click="categoriasCtrl.rmv($index)">Excluir</li>
+                      </ul>
+                    </span>
+                  </button>
+                  <button ng-click="newPerfilCtrl.addCategoria()" class="sc-btn sc-btn-green">
+                    <i class="sc-icon sc-icon-mais-2"></i>
+                  </button>
+                  <button ng-click="newPerfilCtrl.closeAddCategoria()" class="sc-btn sc-btn-red">
+                    <i class="sc-icon sc-icon-lixeira-2"></i>
+                  </button>
+                </label>
+              </div>
+              <div class="ng-hide" ng-show="categoriasCtrl.novaCategoria">
+                <div class="sc-label">Nova categoria:</div>
+                <label class="sc-input-group">
+                  <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
+                  <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
+                    <i class="sc-icon sc-icon-visto-1"></i>
+                  </button>
+                  <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
+                    <i class="sc-icon sc-icon-fechar-1"></i>
+                  </button>
+                </label>
+              </div>
             </div>
-            <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in newPerfilCtrl.listCategorias">
+            <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in newPerfilCtrl.listNewCategorias">
               <div class="col-xs-12 col-md-12 sc-fieldset-head flex-row">
                 <div class="sc-label sc-text-lg-sm sc-p-t-xs">{{categoria.label}}</div>
                 <div class="sc-btn-group">
@@ -87,7 +115,7 @@
                     </span>
                   </label>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 sc-p-t-xl ng-hide" ng-show="novaPassagemCltr.newItemHasQtd">
+                <div class="col-xs-6 col-sm-6 col-md-6 sc-p-t-xl ng-hide" ng-show="novaPassagemCtrl.newItemHasQtd">
                   <label>
                     <div class="sc-label">Quantidade:</div>
                     <input class="sc-input-default sc-input-block" ng-model="newPerfilCtrl.newItemQtd">
@@ -110,7 +138,7 @@
                       <label class="sc-p-t-md">
                         <input class="sc-checkbox sc-checkbox-gray" type="checkbox">
                       </label>
-                      <div class="col-xs-3 col-md-1 col-lg-2">
+                      <div class="col-xs-3 col-md-2 col-lg-2">
                         <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
                       </div>
                       <div class="fcol-xs-auto sc-p-t-xs sc-label">
