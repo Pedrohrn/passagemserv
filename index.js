@@ -179,15 +179,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itens: [],
 		newItem: false,
 
-		addItem: function() {
-			this.itemList.push({id: this.newCategoria.id, 'label': this.newCategoria, 'nome': this.newItem, 'hasQtd': this.newHasQtd, 'qtd': this.newQtd});
-			this.newItem = '';
-			this.newCategoria = '';
-			this.newHasQtd = false;
-			this.newQtd = 0;
-			console.log(this.itemList);
-		},
-
 		deleteItem: function(index){
 			this.itemList.splice(index, 1);
 		},
@@ -237,7 +228,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		addItem:function(){
 			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
+			this.newItemName = '';
 			this.newItemHasQtd = false;
+			this.newItemQtd = 0;
 			console.log(this.itens);
 		},
 
@@ -371,6 +364,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.formCtrl = {
 		params: [],
 		edit: false,
+		new: false,
 
 		init: function(passagem) {
 			this.obj = passagem || {}
