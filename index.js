@@ -169,60 +169,32 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	};
 
 	$s.newPerfilCtrl = {
-		itemList: [],
-		newTitulo: '',
-		showCategoriaToolbar: false,
 		currentPerfil: '',
-		listCategorias: $s.categoriasCtrl.list,
 		listNewCategorias: [],
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
-
-		deleteItem: function(index){
-			this.itemList.splice(index, 1);
-		},
 
 		salvarNovoPerfil: function(){
 			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.itemList});
 			console.log($s.perfilCtrl.list);
 		},
 
-		toggleCategoriaToolbar: function(){
-			this.showCategoriaToolbar = !this.showCategoriaToolbar;
-		},
-
-		criarCategoria: function(){
-			this.newCategoria = !this.newCategoria;
-		},
-
-		addCategoria: function(){
-			$s.categoriasCtrl.list.push({id: $s.categoriasCtrl.list.length+1, label: this.novaCategoria});
-		},
-
-		criarCategoria: function(){
+		criarCategoria: function(){ //toggle do campo de adicionador de categoria
 			this.novaCategoria = !this.novaCategoria;
 			console.log(this.novaCategoria);
 		},
 
-		addCategoria: function(){
+		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
 			this.listNewCategorias.push({id: this.listNewCategorias.length+1, label: this.newCategoria});
 			console.log(this.listNewCategorias);
 		},
 
-		removerCategoria: function(index){
+		removerCategoria: function(index){ //remover da lista de categorias do perfil, e não da lista principal de categorias
 			this.listNewCategorias.splice(index, 1);
 		},
 
-		closeAddCategoria: function(){
-			this.novaCategoria = !this.novaCategoria;
-		},
-
 		cadastrarItem: function(){
-			this.newItem = !this.newItem;
-		},
-
-		closeAddItem: function(){
 			this.newItem = !this.newItem;
 		},
 
@@ -390,13 +362,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itensTamanho: false,
 		newItemHasQtd: false,
 
-		tamanhos: function(){
+		tamanhos: function(){ //função para exibir a linha de títulos somente se a lista tiver algum elemento.
 			if (this.itens.length > 0){
 				this.itensTamanho = !this.itensTamanho;
 			};
+			console.log(itensTamanho);
 		},
 
-		novaPassagem: function(){
+		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
 		},
 
@@ -410,23 +383,18 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(this.listCategorias);
 		},
 
-		removerCategoria: function(index){
+		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
 			this.listCategorias.splice(index, 1);
-		},
-
-		closeAddCategoria: function(){
-			this.novaCategoria = !this.novaCategoria;
 		},
 
 		cadastrarItem: function(){
 			this.newItem = !this.newItem;
 		},
 
-		closeAddItem: function(){
-			this.newItem = !this.newItem;
-		},
-
 		addItem:function(){
+			if (this.newItemHasQtd == false) {
+				this.newItemQtd = 0;
+			};
 			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
 			console.log(this.itens);
 		},

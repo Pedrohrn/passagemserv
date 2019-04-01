@@ -92,7 +92,7 @@
 								<button ng-click="novaPassagemCtrl.addCategoria()" class="sc-btn sc-btn-green">
 									<i class="sc-icon sc-icon-mais-1"></i>
 								</button>
-								<button ng-click="novaPassagemCtrl.closeAddCategoria()" class="sc-btn sc-btn-red">
+								<button ng-click="novaPassagemCtrl.criarCategoria()" class="sc-btn sc-btn-red">
 									<i class="sc-icon sc-icon-fechar-1"></i>
 								</button>
 							</label>
@@ -131,7 +131,7 @@
 									<button ng-click="novaPassagemCtrl.addItem()" class="sc-btn sc-btn-green">
 										<i class="sc-icon sc-icon-mais-1"></i>
 									</button>
-									<button ng-click="novaPassagemCtrl.closeAddItem()" class="sc-btn sc-btn-red">
+									<button ng-click="novaPassagemCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
 										<i class="sc-icon sc-icon-lixeira-2"></i>
 									</button>
 								</label>
@@ -154,12 +154,12 @@
 						</div>
 						<div class="col-xs-12 sc-p-t-xs">
 							<ul>
-								<li>
+								<li class="ng-hide" ng-show="novaPassagemCtrl.itensTamanho">
 									<div class="flex-row sc-p-v-md sc-label sc-text-blue">
 										<label class="">
 											<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
 										</label>
-										<div class="col-xs-3 col-md-2 col-sm-2 col-lg-1 sc-text-medium sc-label">Qtde</div>
+										<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1 sc-text-medium sc-label">Qtde</div>
 										<div class="col-xs-auto sc-text-medium sc-label">Item</div>
 									</div>
 								</li>
@@ -168,8 +168,8 @@
 										<label class="sc-p-t-md">
 											<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
 										</label>
-										<div class="col-xs-3 col-md-2 col-sm-2 col-lg-1">
-											<input class="sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
+										<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1">
+											<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
 										</div>
 										<div class="fcol-xs-auto">
 											<input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.itemName}}" ng-model="item.itemName">
