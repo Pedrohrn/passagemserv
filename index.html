@@ -34,7 +34,7 @@
                 </button>
               </div>
               <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menuAdmCtrl.menuOpen" style="display: block;">
-                <li ng-click="perfilCtrl.init()">
+                <li ng-click="perfilCtrl.modalToggle()">
                   <span>Perfil Checklist</span>
                 </li>
                 <li ng-click="menuAdmCtrl.abrirModalLog()">
@@ -57,35 +57,48 @@
       <section class="sc-bg-white">
         <div>
           <ul multi-check-group class="sc-accordion">
+            <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="novaPassagemCtrl.new">
+              <div class="sc-accordion-head flex-row" ng-click="novaPassagemCtrl.novaPassagem()">
+                <div class="sc-accordion-col-3 align-center">
+                  <i class="sc-text-xl sc-icon-mais-1"></i>
+                </div>
+                <div class="fcol-xs-auto">
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-white">Nova passagem</div>
+                </div>
+              </div>
+              <div class="sc-accordion-body ng-animation-slider">
+                <div ng-include="'templates/form.html'"></div>
+              </div>
+            </li>
             <li class="sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;">
               <div class="flex-row sc-text-gray">
                 <div class="fcol-xs-3em align-center" sc-stop-click>
                   <input ng-click="passagens.selectAll()" ng-checked="passagens.allSelected" class="sc-checkbox sc-checkbox-blue" type="checkbox">
                 </div>
-                <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Saiu</div>
-                <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Entrou</div>
-                <div class="sc-p-v-md fcol-xs-auto sc-text-medium hidden-xs">Data da passagem</div>
-                <div class="sc-p-v-md fcol-xs-auto sc-text-medium">Status</div>
+                <div class="sc-p-md fcol-xs-auto sc-ellipsis-inline">Saiu</div>
+                <div class="sc-p-md fcol-xs-auto sc-ellipsis-inline">Entrou</div>
+                <div class="sc-p-md fcol-xs-auto sc-ellipsis-inline hidden-xs">Data da passagem</div>
+                <div class="sc-p-md fcol-xs-auto sc-ellipsis-inline">Status</div>
                 <div class="sc-p-md fcol-xs-3m"></div>
               </div>
             </li>
-            <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)">
+            <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened}">
               <div class="sc-accordion-head flex-row sc-text-gray" ng-click="itemCtrl.accToggle(passagem)">
                 <label class="fcol-xs-3em align-center">
                   <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
                 </label>
-                <div class="fcol-xs-auto">
+                <div class="fcol-xs-auto sc-p-md">
                   <div class="icone seta-vermelha"></div>
-                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.saiu || 'Nova Passagem'}}</div>
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.saiu}}</div>
                 </div>
-                <div class="fcol-xs-auto">
+                <div class="fcol-xs-auto sc-p-md">
                   <div class="icone seta-verde"></div>
-                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.entrou}}</div>
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.entrou}}</div>
                 </div>
-                <div class="fcol-xs-auto hidden-xs">
-                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.data | date: "dd/MM/yyyy" }}</div>
+                <div class="fcol-xs-auto sc-p-md hidden-xs">
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.data | date: "dd/MM/yyyy" }}</div>
                 </div>
-                <div class="fcol-xs-auto">
+                <div class="fcol-xs-auto sc-p-md">
                   <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': '{{passagem.status}}' == 'Realizada', 'sc-bg-yellow': '{{passagem.status}}' == 'Pendente'}">{{passagem.status}}</span>
                 </div>
                 <div class="fcol-xs-3em align-center" sc-stop-click>

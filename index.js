@@ -154,9 +154,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.perfilNovo = !this.perfilNovo;
 		},
 
-		init: function () {
+		modalToggle: function () {
 			this.modal.open()
 		},
+
+		init: function(perfil){
+			perfil.edit = new scToggle()
+			perfil.menu = new scToggle()
+		},
+
 		close: function () {
 			this.modal.close()
 		},
@@ -165,18 +171,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		togglePerfisMenu: function(){
 			this.menuPerfilOpen = !this.menuPerfilOpen;
-		}
+		},
+
 	};
 
 	$s.newPerfilCtrl = {
-		currentPerfil: '',
+		categorias: [],
 		listNewCategorias: [],
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
 
 		salvarNovoPerfil: function(){
-			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.itemList});
+			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
 			console.log($s.perfilCtrl.list);
 		},
 
@@ -334,6 +341,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		params: [],
 		edit: false,
 		new: false,
+		newRecord: false,
 
 		init: function(passagem) {
 			this.obj = passagem || {}
@@ -348,15 +356,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		editArea: function(){
-			this.edit = !this.edit;
-		},
+		set: function(perfil){
+			console.log($s.currentPerfil);
+			this.currentPerfil = $s.perfilCtrl.list.copy();
+		}
 	};
 
 	$s.novaPassagemCtrl = {
 		new: false,
-		currentPerfil: '',
-		listCategorias: $s.categoriasCtrl.list,
+		listCategorias: [],
 		novaCategoria: false,
 		itens: [],
 		newItem: false,
@@ -371,8 +379,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		novaPassagem: function(){ //abrir o formulário
-			// this.new = !this.new;
-			$s.listCtrl.list.unshift({})
+			this.new = !this.new;
+			//$s.listCtrl.list.unshift({})
 		},
 
 		criarCategoria: function(){

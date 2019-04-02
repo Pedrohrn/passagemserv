@@ -6,7 +6,7 @@
   </div>
 
   <div class="sc-modal-body">
-    <div class="ng-hide" ng-show="perfilCtrl.perfilNovo">
+    <div ng-if="perfilCtrl.perfilNovo">
       <div class="sc-panel-body grid-container sc-m-b-md">
         <form class="sc-m-t-md" ng-submit="newPerfilCtrl.newPerfil()">
           <div class="col-xs-auto col-md-5 col-sm-5 sc-p-t-l sc-p-h-none sc-p-r-lg">
@@ -173,7 +173,7 @@
   	<div class="ng-hide" ng-show="perfisCtrl.list.length == 0">Nenhum perfil foi cadastrado ainda!</div>
   	<div>
 	  	<ul class="sc-accordion">
-				<li class="" ng-repeat="perfil in perfilCtrl.list">
+				<li class="" ng-repeat="perfil in perfilCtrl.list" ng-init="perfilCtrl.init(perfil)">
 					<div class="sc-accordion-head flex-row">
 						<div class="fcol-xs-auto">
 							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
@@ -182,19 +182,19 @@
               <div class="sc-dropdown" ng-click="perfilCtrl.togglePerfisMenu()">
                 <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': perfilCtrl.menuPerfilOpen}"></i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="perfilCtrl.menuPerfilOpen" style="display: block;">
-                  <li>
+                  <li ng-click="perfil.edit.opened">
                     <span>Editar</span>
                   </li>
-                  <li>
+                  <li ng-click="perfilCtrl.duplicar()">
                     <span>Duplicar perfil</span>
                   </li>
-                  <li>
+                  <li ng-click="perfilCtrl.disable()">
                     <span>Desativar perfil</span>
                   </li>
-                  <li>
+                  <li ng-click="perfilCtrl.rmv">
                     <span>Excluir</span>
                   </li>
-                  <li>
+                  <li ng-click="perfilCtrl.showLog()">
                     <span>Histórico</span>
                   </li>
                 </ul>
