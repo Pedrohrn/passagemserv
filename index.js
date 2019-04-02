@@ -217,6 +217,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				entrou: 'Porteiro 1',
 				saiu: 'Porteiro 2',
 				data: 20032019,
+				horario: 203031,
 				status: 'Pendente',
 				perfil: 'Portaria Social',
 				categorias: [
@@ -247,6 +248,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				entrou: 'Porteiro 2',
 				saiu: 'Porteiro 1',
 				data: 21032019,
+				horario: 203031,
 				status: 'Realizada',
 				perfil: 'Portaria de Serviço',
 				categorias: [
@@ -277,6 +279,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				entrou: 'Porteiro 1',
 				saiu: 'Porteiro 2',
 				data: 22032019,
+				horario: 203031,
 				status: 'Realizada',
 				perfil: 'Portaria Social',
 				categorias: [
