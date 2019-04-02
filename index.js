@@ -45,64 +45,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 	};
 
-
-  $s.admCtrl = {
-  	grupos: [
-	  	{ id: 1,
-	  		label: 'Síndico',
-	  		membros: [
-	  			{ id: 1, user: 'Márcio' },
-	  		],
-	  	},
-	  	{ id: 2,
-	  		label: 'Subsíndico',
-	  		membros: [
-	  			{ id: 1, user: 'Rafael' },
-	  		],
-	  	},
-	  	{ id: 3,
-	  		label: 'Administração',
-	  		membros: [
-	  			{ id: 1, user: 'Ana' },
-	  			{ id: 2, user: 'Maria' },
-	  			{ id: 3, user: 'Lúcio' },
-	  		],
-	  	},
-  	],
-  }
-
-	$s.porteirosCtrl = {
-		porteirosList: [
-			{nome: 'Porteiro 1'},
-			{nome: 'Porteiro 2'},
-			{nome: 'Porteiro 3'},
-			{nome: 'Porteiro 4'},
-		],
-	}
-
-	$s.filtroCtrl = {
-		avancado: false,
-		filtroParams: [],
-		count: 0,
-
-		abrirFiltroAvancado: function() {
-			this.avancado = !this.avancado;
-		},
-
-		newFiltroPeriodo: false,
-
-		addPeriodo: function(){
-			this.newFiltroPeriodo = !this.newFiltroPeriodo;
-		},
-
-		newPeriodo: function(){
-			this.filtroParams.push({dataInicial: this.newDataInicial, dataFinal: this.newDataFinal, tipoData: this.newTipoData});
-			this.newDataFinal = '';
-			this.newDataInicial = '';
-			this.newTipoData = '';
-		},
-	}
-
 	$s.perfilCtrl = {
 		list: [
 			{ id: 1,
@@ -172,8 +114,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		togglePerfisMenu: function(){
 			this.menuPerfilOpen = !this.menuPerfilOpen;
 		},
-
-	};
+	}
 
 	$s.newPerfilCtrl = {
 		categorias: [],
@@ -313,12 +254,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 		],
-	};
-
-	$s.menuAdmCtrl = {
-		toggleMenu: function() {
-			this.menuOpen = !this.menuOpen
-		}
 	}
 
 	$s.itemCtrl = {
@@ -334,7 +269,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.acc.toggle()
 			if (!passagem.id) { passagem.edit.toggle() }
 		},
-
 	}
 
 	$s.formCtrl = {
@@ -360,7 +294,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log($s.currentPerfil);
 			this.currentPerfil = $s.perfilCtrl.list.copy();
 		}
-	};
+	}
 
 	$s.novaPassagemCtrl = {
 		new: false,
@@ -371,16 +305,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itensTamanho: false,
 		newItemHasQtd: false,
 
+		novaPassagem: function(){ //abrir o formulário
+			this.new = !this.new;
+		},
+
 		tamanhos: function(){ //função para exibir a linha de títulos somente se a lista tiver algum elemento.
 			if (this.itens.length > 0){
 				this.itensTamanho = !this.itensTamanho;
 			};
 			console.log(itensTamanho);
-		},
-
-		novaPassagem: function(){ //abrir o formulário
-			this.new = !this.new;
-			//$s.listCtrl.list.unshift({})
 		},
 
 		criarCategoria: function(){
@@ -412,6 +345,69 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		deleteItem: function(index){
 			this.itens.splice(index, 1);
 		},
+	}
+
+  $s.admCtrl = {
+  	grupos: [
+	  	{ id: 1,
+	  		label: 'Síndico',
+	  		membros: [
+	  			{ id: 1, user: 'Márcio' },
+	  		],
+	  	},
+	  	{ id: 2,
+	  		label: 'Subsíndico',
+	  		membros: [
+	  			{ id: 1, user: 'Rafael' },
+	  		],
+	  	},
+	  	{ id: 3,
+	  		label: 'Administração',
+	  		membros: [
+	  			{ id: 1, user: 'Ana' },
+	  			{ id: 2, user: 'Maria' },
+	  			{ id: 3, user: 'Lúcio' },
+	  		],
+	  	},
+  	],
+  }
+
+	$s.porteirosCtrl = {
+		porteirosList: [
+			{nome: 'Porteiro 1'},
+			{nome: 'Porteiro 2'},
+			{nome: 'Porteiro 3'},
+			{nome: 'Porteiro 4'},
+		],
+	}
+
+	$s.filtroCtrl = {
+		avancado: false,
+		filtroParams: [],
+		count: 0,
+
+		abrirFiltroAvancado: function() {
+			this.avancado = !this.avancado;
+		},
+
+		newFiltroPeriodo: false,
+
+		addPeriodo: function(){
+			this.newFiltroPeriodo = !this.newFiltroPeriodo;
+		},
+
+		newPeriodo: function(){
+			this.filtroParams.push({dataInicial: this.newDataInicial, dataFinal: this.newDataFinal, tipoData: this.newTipoData});
+			this.newDataFinal = '';
+			this.newDataInicial = '';
+			this.newTipoData = '';
+		},
+	}
+
+	$s.menuAdmCtrl = {
+		toggleMenu: function() {
+			this.menuOpen = !this.menuOpen
+		}
 	}
 
 }]);
