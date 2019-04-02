@@ -83,7 +83,7 @@
                   <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.entrou}}</div>
                 </div>
                 <div class="fcol-xs-auto hidden-xs">
-                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.data}}</div>
+                  <div class="sc-ellipsis-inline sc-text-bold sc-text-blue">{{passagem.data | date: "dd/MM/yyyy" }}</div>
                 </div>
                 <div class="fcol-xs-auto">
                   <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg align-center sc-text-md" ng-class="{'sc-bg-green': '{{passagem.status}}' == 'Realizada', 'sc-bg-yellow': '{{passagem.status}}' == 'Pendente'}">{{passagem.status}}</span>

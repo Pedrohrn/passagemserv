@@ -39,7 +39,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		add: function(){
-			this.list.push({ id: this.list.length+1, label: this.newCategoria});
+			this.list.unshift({ id: this.list.length+1, label: this.newCategoria});
 			this.newCategoria = '';
 			console.log(this.list);
 		},

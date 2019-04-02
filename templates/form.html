@@ -26,8 +26,8 @@
 			<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 				<label>
 					<div class="sc-label">Quem entra:</div>
-					<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">>
-						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}">{{porteiro.nome}}</option>
+					<select class="sc-input-default sc-input-block" ng-model="passagem.entrando">
+						<option ng-repeat="porteiro in porteirosCtrl.porteirosList" value="{{porteiro.nome}}" label="{{porteiro.nome}}" ng-class="{'disabled': 'passagem.saindo' == '{{porteiro.nome}}'}">{{porteiro.nome}}</option>
 					</select>
 				</label>
 			</div>
@@ -56,12 +56,12 @@
 	<!-- Categorias -->
 	<div class="sc-fieldset">
 		<div class="sc-fieldset-head">
-			<span class="sc-label sc-text-xxl sc-p-t-sm">{{novaPassagemCtrl.currentPerfil || 'Categorias'}}</span>
+			<span class="sc-label sc-text-xxl sc-p-t-sm">{{perfil.nome || 'Categorias'}}</span>
 			<button ng-click="novaPassagemCtrl.criarCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 		</div>
 
 		<div>
-			<div ng-show="novaPassagemCtrl.novaCategoria" style="max-width: 21em;">
+			<div ng-if="novaPassagemCtrl.novaCategoria" style="max-width: 21em;">
 				<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
 					<div class="sc-label">Categoria:</div>
 					<label class="sc-input-group">
