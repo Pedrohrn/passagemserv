@@ -216,9 +216,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			{	id: 1,
 				entrou: 'Porteiro 1',
 				saiu: 'Porteiro 2',
-				dia: 20,
-				mes: 3,
-				ano: 2019,
+				data: 20032019,
 				status: 'Pendente',
 				perfil: 'Portaria Social',
 				categorias: [
@@ -248,9 +246,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			{	id: 2,
 				entrou: 'Porteiro 2',
 				saiu: 'Porteiro 1',
-				dia: 21,
-				mes: 3,
-				ano: 2019,
+				data: 21032019,
 				status: 'Realizada',
 				perfil: 'Portaria de Serviço',
 				categorias: [
@@ -280,9 +276,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			{	id: 3,
 				entrou: 'Porteiro 1',
 				saiu: 'Porteiro 2',
-				dia: 22,
-				mes: 3,
-				ano: 2019,
+				data: 22032019,
 				status: 'Realizada',
 				perfil: 'Portaria Social',
 				categorias: [
@@ -322,15 +316,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
 			passagem.notificacoes = new scToggle()
+			passagem.edit = new scToggle()
+			if (!passagem.id) { this.accToggle(passagem) }
 		},
 
 		accToggle: function(passagem) {
 			passagem.acc.toggle()
+			if (!passagem.id) { passagem.edit.toggle() }
 		},
 
-		displayNotificacoes: function(){
-			this.showNotificacoes = !this.showNotificacoes;
-		},
 	}
 
 	$s.formCtrl = {
@@ -349,7 +343,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			} else {
 				this.params = obj
 			}
-		}
+		},
+
+		editArea: function(){
+			this.edit = !this.edit;
+		},
 	};
 
 	$s.novaPassagemCtrl = {
@@ -370,7 +368,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		novaPassagem: function(){ //abrir o formulário
-			this.new = !this.new;
+			// this.new = !this.new;
+			$s.listCtrl.list.unshift({})
 		},
 
 		criarCategoria: function(){
