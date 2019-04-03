@@ -13,7 +13,7 @@
 				<label>
 					<div class="sc-label">Quem sai:</div>
 					<select class="sc-input-default sc-input-block" ng-options="porteiro.nome for porteiro in porteirosCtrl.porteirosList" ng-model="passagem.saindo" selected="selected">
-						<option ng-selected="false" value="">Selecione</option>
+						<option ng-selected="false" value="{{passagem.entrou}}">Selecione</option>
 					</select>
 				</label>
 			</div>
@@ -110,10 +110,10 @@
 					</label>
 				</div> <!-- adicionador de categorias -->
 			</div>
-			<div class="sc-fieldset" ng-repeat="categoria in currentPerfil.categorias"> <!-- fieldset das categorias -->
+			<div class="sc-fieldset" ng-repeat="categoria in currentPerfil.categorias || novaPassagemCtrl.listCategorias"> <!-- fieldset das categorias -->
 				<div class="sc-fieldset-head flex-row">
 					<div class="sc-label sc-p-t-xs sc-p-r-lg">
-						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label}}">
+						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label || categoria.label}}">
 					</div>
 					<div class="sc-p-h-xs sc-p-t-xs">
 						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="novaPassagemCtrl.removerCategoria($index)"></i>

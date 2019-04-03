@@ -157,7 +157,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		close: function () {
 			this.modal.close()
 		},
-
 	}
 
 	$s.listCtrl = { //lista de passagens
@@ -168,7 +167,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 20032019,
 				horario: 203031,
 				status: 'Pendente',
-				perfil: 'Portaria Social',
+				perfilName: 'Portaria Social',
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
@@ -200,7 +199,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 21032019,
 				horario: 203031,
 				status: 'Realizada',
-				perfil: 'Portaria de Serviço',
+				perfilName: 'Portaria de Serviço',
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
@@ -232,7 +231,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 22032019,
 				horario: 203031,
 				status: 'Realizada',
-				perfil: 'Portaria Social',
+				perfilName: 'Portaria Social',
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',

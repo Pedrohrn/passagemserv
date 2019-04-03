@@ -132,7 +132,7 @@
                   <div ng-include="'templates/show.html'"></div>
                 </div>
 
-                <div ng-if="passagem.edit.opened">
+                <div ng-if="passagem.edit.opened" ng-init="formCtrl.init(passagem)">
                   <div ng-include="'templates/form.html'"></div>
                 </div>
               </div>
