@@ -49,40 +49,46 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
-				nome: 'Portaria Social',
+				perfilName: 'Portaria Social',
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
 						eventosList: [
-							{ nome: 'Portão Funcionando', 		hasQtd: true, qtd: 4 },
-							{ nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
-							{ nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
+							{ id: 1, nome: 'Portão Funcionando', 			hasQtd: true, qtd: 4 },
+							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
+							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
 					{ id: 2,
 						label: 'Acontecimento',
 						eventosList: [
-							{ nome: 'Entrada de fornecedores', hasQtd: false, qtd: 0 },
-							{ nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 0 },
+							{ id: 2, nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
 						],
 					},
 				],
 			},
 			{ id: 2,
-				nome: 'Portaria de Serviço',
+				perfilName: 'Portaria de Serviço',
 				categorias: [
 					{ id: 1,
 						label: 'Funcionamento',
 						eventosList: [
-							{ nome: 'Portão Funcionando', 		hasQtd: true, qtd: 10 },
-							{ nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 10 },
-							{ nome: 'Interfone funcionando', 	hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Porrtão Funcionando', 			hasQtd: true, qtd: 10 },
+							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 10 },
+							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 10 },
 						],
 					},
 					{ id: 2,
 						label: 'Acontecimento',
 						eventosList: [
-							{ nome: 'Entrada de fornecedores', hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 10 },
+						],
+					},
+					{ id: 3,
+						label: 'Teste',
+						eventosList: [
+							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 10 },
 						],
 					},
 				],
@@ -92,6 +98,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		novaCategoria: false,
 		listNewCategorias: [],
 		newItem: false,
+		newItemHasQtd: false,
+		newItemQtd: 0,
 		itens: [],
 
 		perfilNovo: false, // toggle do formulário de novo perfil
@@ -114,7 +122,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.listNewCategorias.splice(index, 1);
 		},
 
-		cadastrarItem: function(){ //toggle do input de item name
+		cadastrarItem: function(categoria){ //toggle do input de item name
 			this.newItem = !this.newItem;
 		},
 
@@ -131,8 +139,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarNovoPerfil: function(){
-			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
-			console.log($s.perfilCtrl.list);
+			this.list.push({ id: this.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
+			console.log(this.list);
 		},
 
 		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
@@ -183,6 +191,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				obs: 'blablablabla teste teste teste'
 			},
 
 			{	id: 2,
@@ -214,6 +223,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				obs: 'teste blablaldfdskfsdkf teste'
 			},
 
 			{	id: 3,
@@ -245,6 +255,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				obs: 'teste lsfksdofpskakofskfs sdfopsdkfsdo teste'
 			},
 		],
 	}
@@ -283,10 +294,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		set: function(perfil){
+/*		set: function(perfil){
 			console.log($s.currentPerfil);
 			this.currentPerfil = $s.perfilCtrl.list.copy();
-		}
+		}*/
 	}
 
 	$s.novaPassagemCtrl = { //controle e exibição do cadastro de uma nova passagem

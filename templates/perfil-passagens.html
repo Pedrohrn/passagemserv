@@ -89,14 +89,14 @@
             <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in perfilCtrl.listNewCategorias">
               <div class="col-xs-12 col-md-12 sc-fieldset-head flex-row">
                 <div class="sc-label sc-text-lg-sm sc-p-t-xs sc-p-r-lg">{{categoria.label}}</div>
-                <div class="sc-p-h-xs">
+<!--                 <div class="sc-p-h-xs">
                   <i class="sc-icon sc-icon-lapis sc-badge-hover-yellow" ng-click="perfilCtrl.editItem()"></i>
-                </div>
+                </div> -->
                 <div class="sc-p-h-xs">
                   <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
                 </div>
                 <div class="sc-p-h-xs">
-                  <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem()"></i>
+                  <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem(categoria)"></i>
                 </div>
               </div>
               <div class="ng-hide col-xs-12 sc-p-h-none" ng-show="perfilCtrl.newItem">
@@ -104,10 +104,10 @@
                   <div class="sc-label">Novo Item:</div>
                   <label class="sc-input-group">
                     <input class="sc-input sc-input-default sc-input-block" ng-model="perfilCtrl.newItemName" type="text">
-                    <button ng-click="perfilCtrl.addItem()" class="sc-btn sc-btn-green">
+                    <button ng-click="perfilCtrl.addItem(categoria)" class="sc-btn sc-btn-green">
                       <i class="sc-icon sc-icon-mais-1"></i>
                     </button>
-                    <button ng-click="perfilCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
+                    <button ng-click="perfilCtrl.cadastrarItem(categoria)" class="sc-btn sc-btn-red">
                       <i class="sc-icon sc-icon-lixeira-2"></i>
                     </button>
                   </label>
@@ -170,13 +170,15 @@
         </form>
       </div>
     </div>
-  	<div class="ng-hide" ng-show="perfisCtrl.list.length == 0">Nenhum perfil foi cadastrado ainda!</div>
+  	<div class="sc-fieldset" ng-if="perfisCtrl.list.length == 0">
+      <div class="sc-fieldset-head align-center" style="border-bottom: none;">Nenhum perfil foi cadastrado ainda!</div>
+    </div>
   	<div>
 	  	<ul class="sc-accordion">
 				<li class="" ng-repeat="perfil in perfilCtrl.list" ng-init="perfilCtrl.init(perfil)">
 					<div class="sc-accordion-head flex-row">
 						<div class="fcol-xs-auto">
-							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
+							<div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.perfilName}}</div>
 						</div>
             <div class="fcol-xs-3em" sc-stop-click>
               <div class="sc-dropdown" ng-click="perfil.menu.toggle()">
@@ -360,7 +362,7 @@
                   <textarea class="sc-input sc-input-default sc-input-block" ng-model="passagem.detalhes" rows="5" cols="30"></textarea>
                 </div>
               </form>
-            </div>
+            </div> <!-- somente edição dos perfis -->
           </div>
 				</li>
 			</ul>
