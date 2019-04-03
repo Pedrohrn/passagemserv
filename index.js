@@ -16,7 +16,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 })
 
 .controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', function($s, scModal, scToggle) {
-	$s.categoriasCtrl = {
+	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento' },
 		 { id: 2, label: 'Acontecimento' },
@@ -35,17 +35,18 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		rmv: function(index){
 			this.list.splice(index, 1);
-			$s.newPerfilCtrl.listNewCategorias.splice(index, 1);
+			$s.perfilCtrl.listNewCategorias.splice(index, 1);
 		},
 
 		add: function(){
 			this.list.unshift({ id: this.list.length+1, label: this.newCategoria});
+			$s.perfilCtrl.listNewCategorias.unshift({ id: this.list.length+1, label: this.newCategoria});
 			this.newCategoria = '';
 			console.log(this.list);
 		},
 	};
 
-	$s.perfilCtrl = {
+	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
 				nome: 'Portaria Social',
@@ -87,45 +88,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 		],
+		categorias: [],
+		novaCategoria: false,
+		listNewCategorias: [],
+		newItem: false,
+		itens: [],
 
-		modal: new scModal(),
-
-		perfilNovo: false,
+		perfilNovo: false, // toggle do formulário de novo perfil
 
 		novoPerfil: function(){
 			this.perfilNovo = !this.perfilNovo;
-		},
-
-		modalToggle: function () {
-			this.modal.open()
-		},
-
-		init: function(perfil){
-			perfil.edit = new scToggle()
-			perfil.menu = new scToggle()
-		},
-
-		close: function () {
-			this.modal.close()
-		},
-
-		menuPerfilOpen: false,
-
-		togglePerfisMenu: function(){
-			this.menuPerfilOpen = !this.menuPerfilOpen;
-		},
-	}
-
-	$s.newPerfilCtrl = {
-		categorias: [],
-		listNewCategorias: [],
-		novaCategoria: false,
-		itens: [],
-		newItem: false,
-
-		salvarNovoPerfil: function(){
-			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
-			console.log($s.perfilCtrl.list);
 		},
 
 		criarCategoria: function(){ //toggle do campo de adicionador de categoria
@@ -142,11 +114,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.listNewCategorias.splice(index, 1);
 		},
 
-		cadastrarItem: function(){
+		cadastrarItem: function(){ //toggle do input de item name
 			this.newItem = !this.newItem;
 		},
 
-		addItem:function(){
+		addItem:function(){ //adiciona um item à categoria
 			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
 			this.newItemName = '';
 			this.newItemHasQtd = false;
@@ -157,9 +129,30 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		deleteItem: function(index){
 			this.itens.splice(index, 1);
 		},
+
+		salvarNovoPerfil: function(){
+			$s.perfilCtrl.list.push({ id: $s.perfilCtrl.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
+			console.log($s.perfilCtrl.list);
+		},
+
+		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
+			perfil.edit = new scToggle()
+			perfil.menu = new scToggle()
+		},
+
+		modal: new scModal(),
+
+		modalToggle: function () { // abrir/fechar modal
+			this.modal.open()
+		},
+
+		close: function () {
+			this.modal.close()
+		},
+
 	}
 
-	$s.listCtrl = {
+	$s.listCtrl = { //lista de passagens
 		list: [
 			{	id: 1,
 				entrou: 'Porteiro 1',
@@ -256,7 +249,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	}
 
-	$s.itemCtrl = {
+	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
 		init: function(passagem) {
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
@@ -296,7 +289,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		}
 	}
 
-	$s.novaPassagemCtrl = {
+	$s.novaPassagemCtrl = { //controle e exibição do cadastro de uma nova passagem
 		new: false,
 		listCategorias: [],
 		novaCategoria: false,
@@ -347,7 +340,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 	}
 
-  $s.admCtrl = {
+  $s.admCtrl = { //lista fictícia da administraçao
   	grupos: [
 	  	{ id: 1,
 	  		label: 'Síndico',
@@ -372,7 +365,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   	],
   }
 
-	$s.porteirosCtrl = {
+	$s.porteirosCtrl = { //lista fictícia de porteiros
 		porteirosList: [
 			{nome: 'Porteiro 1'},
 			{nome: 'Porteiro 2'},
@@ -381,7 +374,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	}
 
-	$s.filtroCtrl = {
+	$s.filtroCtrl = { //controle e exibição do filtro avançado na tela principal
 		avancado: false,
 		filtroParams: [],
 		count: 0,
@@ -404,7 +397,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 	}
 
-	$s.menuAdmCtrl = {
+	$s.menuAdmCtrl = { //controle de exibição do toolbar principal (gerenciamento de perfis e histórico)
 		toggleMenu: function() {
 			this.menuOpen = !this.menuOpen
 		}
