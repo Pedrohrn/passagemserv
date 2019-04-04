@@ -86,12 +86,9 @@
                 </label>
               </div>
             </div>
-            <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in perfilCtrl.listNewCategorias">
+            <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in perfilCtrl.categorias">
               <div class="col-xs-12 col-md-12 sc-fieldset-head flex-row">
                 <div class="sc-label sc-text-lg-sm sc-p-t-xs sc-p-r-lg">{{categoria.label}}</div>
-<!--                 <div class="sc-p-h-xs">
-                  <i class="sc-icon sc-icon-lapis sc-badge-hover-yellow" ng-click="perfilCtrl.editItem()"></i>
-                </div> -->
                 <div class="sc-p-h-xs">
                   <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
                 </div>
@@ -108,7 +105,7 @@
                       <i class="sc-icon sc-icon-mais-1"></i>
                     </button>
                     <button ng-click="perfilCtrl.cadastrarItem(categoria)" class="sc-btn sc-btn-red">
-                      <i class="sc-icon sc-icon-lixeira-2"></i>
+                      <i class="sc-icon sc-icon-fechar-1"></i>
                     </button>
                   </label>
                 </div>
@@ -145,10 +142,10 @@
                         <input class="sc-checkbox sc-checkbox-gray" type="checkbox">
                       </label>
                       <div class="col-xs-3 col-md-2 col-lg-2">
-                        <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
+                        <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999">
                       </div>
                       <div class="fcol-xs-auto">
-                        <input class="sc-input-default sc-input-thin" ng-model="item.itemName" value="{{item.itemName}}" type="text">
+                        <input class="sc-input-default sc-input-thin" ng-model="item.nome" value="{{item.nome}}" type="text">
                       </div>
                       <div class="">
                         <label>
@@ -166,6 +163,7 @@
           <div class="clear"></div>
           <div class="sc-p-t-xxl pull-right">
             <button ng-click="perfilCtrl.salvarNovoPerfil()" class="sc-btn sc-btn-green">Salvar Perfil</button>
+            <button ng-click="perfilCtrl.novoPerfil()" class="sc-btn sc-btn-red">Cancelar</button>
           </div>
         </form>
       </div>
@@ -305,7 +303,7 @@
                               <i class="sc-icon sc-icon-mais-1"></i>
                             </button>
                             <button ng-click="perfilCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
-                              <i class="sc-icon sc-icon-lixeira-2"></i>
+                              <i class="sc-icon sc-icon-fechar-1"></i>
                             </button>
                           </label>
                         </div>
@@ -342,10 +340,10 @@
                                 <input class="sc-checkbox sc-checkbox-gray" type="checkbox">
                               </label>
                               <div class="col-xs-3 col-sm-2">
-                                <input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999">
+                                <input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999">
                               </div>
                               <div class="fcol-xs-auto">
-                                <input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.itemName || item.nome}}">
+                                <input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome || item.nome}}">
                               </div>
                               <div class="fcol-xs-1 align-right">
                                 <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem($index)"></i>
@@ -372,4 +370,5 @@
   <div class="sc-modal-footer">
     <button ng-click="perfilCtrl.close()" class="sc-btn">Fechar</button>
   </div>
+
 </div>

@@ -12,7 +12,11 @@
       </div>
     </div>
     <div class="col-xs-6">
-      <div class="sc-text sc-dropdown sc-btn sc-btn-clean sc-text-blue" ng-click="passagem.notificacoes.toggle()">Notificações</div>
+      <div class="sc-text sc-dropdown sc-btn sc-btn-clean" ng-click="passagem.notificacoes.toggle()">
+        <span class="">
+          <i class="sc-icon sc-icon-carta-4"></i>Notificações
+        </span>
+      </div>
       <div class="sc-p-none sc-p-t-md sc-m-h-md" ng-show="passagem.notificacoes.opened" ng-repeat="grupo in admCtrl.grupos">
         <div class="sc-label sc-text-blue">{{grupo.label}}
           <div class="sc-fieldset">

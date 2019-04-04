@@ -15,7 +15,7 @@
       <section id="top-bar-content" class="fix">
         <div class="flex-row">
           <div class="left sc-p-r-lg">
-            <button ng-click="novaPassagemCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">Nova Passagem</button>
+            <button ng-click="formCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">Nova Passagem</button>
           </div>
           <div class="sc-p-r-lg fcol-xs-auto fcol-sm-50 fcol-lg-33">
             <form class="sc-input-group">
@@ -57,8 +57,8 @@
       <section class="sc-bg-white">
         <div>
           <ul multi-check-group class="sc-accordion">
-            <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="novaPassagemCtrl.new">
-              <div class="sc-accordion-head flex-row" ng-click="novaPassagemCtrl.novaPassagem()">
+            <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="formCtrl.new">
+              <div class="sc-accordion-head flex-row" ng-click="formCtrl.novaPassagem()">
                 <div class="sc-accordion-col-3 align-center">
                   <i class="sc-text-xl sc-icon-mais-1"></i>
                 </div>
@@ -103,31 +103,31 @@
                 </div>
                 <div class="fcol-xs-3em align-center" sc-stop-click>
                   <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
-                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened}"></i>
+                    <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened, 'sc-badge-hover-white': passagem.acc.opened}"></i>
                     <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menu.opened" style="display: block;">
-                      <li>
+                      <li ng-if="passagem.status == 'Pendente'">
                         <span>Passar serviço</span>
                       </li>
                       <li ng-click="passagem.edit.toggle()">
                         <span>Editar</span>
                       </li>
-                      <li>
+                      <li ng-click="passagem.edit.toggle(); itemCtrl.duplicate()">
                         <span>Duplicar passagem</span>
                       </li>
-                      <li>
+                      <li ng-click="itemCtrl.disable()">
                         <span>Desativar</span>
                       </li>
-                      <li>
+                      <li ng-click="itemCtrl.rmv(index)">
                         <span>Excluir</span>
                       </li>
-                      <li>
+                      <li ng-click="itemCtrl.showLog()">
                         <span>Histórico</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened">
+              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened">
                 <div ng-if="!passagem.edit.opened">
                   <div ng-include="'templates/show.html'"></div>
                 </div>

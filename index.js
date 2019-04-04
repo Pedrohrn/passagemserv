@@ -35,12 +35,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		rmv: function(index){
 			this.list.splice(index, 1);
-			$s.perfilCtrl.listNewCategorias.splice(index, 1);
+			$s.perfilCtrl.categorias.splice(index, 1);
 		},
 
 		add: function(){
 			this.list.unshift({ id: this.list.length+1, label: this.newCategoria});
-			$s.perfilCtrl.listNewCategorias.unshift({ id: this.list.length+1, label: this.newCategoria});
+			$s.perfilCtrl.categorias.unshift({ id: this.list.length+1, label: this.newCategoria});
 			this.newCategoria = '';
 			console.log(this.list);
 		},
@@ -96,7 +96,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 		categorias: [],
 		novaCategoria: false,
-		listNewCategorias: [],
 		newItem: false,
 		newItemHasQtd: false,
 		newItemQtd: 0,
@@ -114,12 +113,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
-			this.listNewCategorias.push({id: this.listNewCategorias.length+1, label: this.newCategoria});
-			console.log(this.listNewCategorias);
+			this.categorias.push({id: this.categorias.length+1, label: this.newCategoria, eventosList: this.itens});
+			console.log(this.categorias);
 		},
 
 		removerCategoria: function(index){ //remover da lista de categorias do perfil, e não da lista principal de categorias
-			this.listNewCategorias.splice(index, 1);
+			this.categorias.splice(index, 1);
 		},
 
 		cadastrarItem: function(categoria){ //toggle do input de item name
@@ -127,7 +126,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addItem:function(){ //adiciona um item à categoria
-			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
+			this.itens.push({ id: this.itens.length+1, nome: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
 			this.newItemName = '';
 			this.newItemHasQtd = false;
 			this.newItemQtd = 0;
@@ -136,16 +135,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		deleteItem: function(index){
 			this.itens.splice(index, 1);
+			console.log(this.itens);
 		},
 
 		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, nome: this.newPerfilName, categorias: this.categorias});
+			this.list.push({ id: this.list.length+1, perfilName: this.newPerfilName, categorias: this.categorias});
 			console.log(this.list);
 		},
 
 		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
+			if (perfil.edit.opened == true) {
+				this.itens = this.list.categorias.eventosList;
+			}
+			console.log(perfil.edit.opened)
 		},
 
 		modal: new scModal(),
@@ -260,6 +264,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	}
 
 	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
+		duplicar: false,
 		init: function(passagem) {
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
@@ -272,6 +277,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.acc.toggle()
 			if (!passagem.id) { passagem.edit.toggle() }
 		},
+
+		duplicate: function(passagem){
+			this.duplicar = !this.duplicar
+		},
 	}
 
 	$s.formCtrl = {
@@ -279,6 +288,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		edit: false,
 		new: false,
 		newRecord: false,
+
+		new: false,
+		listCategorias: [],
+		novaCategoria: false,
+		itens: [],
+		newItem: false,
+		itensTamanho: false,
+		newItemHasQtd: false,
 
 		init: function(passagem) {
 			this.obj = passagem || {}
@@ -292,21 +309,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				this.params = obj
 			}
 		},
-
-/*		set: function(perfil){
-			console.log($s.currentPerfil);
-			this.currentPerfil = $s.perfilCtrl.list.copy();
-		}*/
-	}
-
-	$s.novaPassagemCtrl = { //controle e exibição do cadastro de uma nova passagem
-		new: false,
-		listCategorias: [],
-		novaCategoria: false,
-		itens: [],
-		newItem: false,
-		itensTamanho: false,
-		newItemHasQtd: false,
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
@@ -348,6 +350,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		deleteItem: function(index){
 			this.itens.splice(index, 1);
 		},
+
+/*		set: function(perfil){
+			console.log($s.currentPerfil);
+			this.currentPerfil = $s.perfilCtrl.list.copy();
+		}*/
 	}
 
   $s.admCtrl = { //lista fictícia da administraçao

@@ -1,19 +1,13 @@
-<form ng-submit="submit()" class="sc-p-t-md sc-p-h-lg">
+<form class="sc-p-t-md sc-p-h-lg">
 	<!-- Geral -->
 	<div class="sc-fieldset sc-m-t-o">
-		<div class="sc-p-t-xl align-right" ng-if="!passagem.edit.opened && !novaPassagemCtrl.new">
-			<span class="criado_por infos_informativo">
-				<b class="titulo">Criado por:</b>
-				<span>{{porteiroAtual}}, em {{dataCriacao}}, às {{horaCriacao}} - {{diaCriacao}}.</span>
-			</span>
-		</div>
 
 		<div>
 			<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 				<label>
 					<div class="sc-label">Quem sai:</div>
 					<select class="sc-input-default sc-input-block" ng-options="porteiro.nome for porteiro in porteirosCtrl.porteirosList" ng-model="passagem.saindo" selected="selected">
-						<option ng-selected="false" value="{{passagem.entrou}}">Selecione</option>
+						<option ng-selected="false" value="">Selecione</option>
 					</select>
 				</label>
 			</div>
@@ -57,15 +51,15 @@
 	<div class="sc-fieldset">
 		<div class="sc-fieldset-head">
 			<span class="sc-label sc-text-xxl">{{currentPerfil.perfilName || 'Categorias'}}</span>
-			<button ng-click="novaPassagemCtrl.criarCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+			<button ng-click="formCtrl.criarCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 		</div>
 
 		<div>
-			<div ng-if="novaPassagemCtrl.novaCategoria" style="max-width: 21em;">
+			<div ng-if="formCtrl.novaCategoria" style="max-width: 21em;">
 				<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
 					<div class="sc-label">Categoria:</div>
 					<label class="sc-input-group">
-						<select class="sc-input-default sc-input-block" ng-options="categoria.label for categoria in categoriasCtrl.list" ng-model="novaPassagemCtrl.newCategoria">
+						<select class="sc-input-default sc-input-block" ng-options="categoria.label for categoria in categoriasCtrl.list" ng-model="formCtrl.newCategoria">
 							<option ng-selected="false" value="">Selecione ou cadastre</option>
 						</select>
 						<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
@@ -89,10 +83,10 @@
 								</ul>
 							</span>
 						</button>
-						<button ng-click="novaPassagemCtrl.addCategoria()" class="sc-btn sc-btn-green">
+						<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green">
 							<i class="sc-icon sc-icon-mais-1"></i>
 						</button>
-						<button ng-click="novaPassagemCtrl.criarCategoria()" class="sc-btn sc-btn-red">
+						<button ng-click="formCtrl.criarCategoria()" class="sc-btn sc-btn-red">
 							<i class="sc-icon sc-icon-fechar-1"></i>
 						</button>
 					</label>
@@ -110,45 +104,82 @@
 					</label>
 				</div> <!-- adicionador de categorias -->
 			</div>
-			<div class="sc-fieldset" ng-repeat="categoria in currentPerfil.categorias || novaPassagemCtrl.listCategorias"> <!-- fieldset das categorias -->
+			<div class="sc-fieldset" ng-repeat="categoria in currentPerfil.categorias || formCtrl.listCategorias"> <!-- fieldset das categorias -->
 				<div class="sc-fieldset-head flex-row">
 					<div class="sc-label sc-p-t-xs sc-p-r-lg">
 						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label || categoria.label}}">
 					</div>
 					<div class="sc-p-h-xs sc-p-t-xs">
-						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="novaPassagemCtrl.removerCategoria($index)"></i>
+						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.removerCategoria($index)"></i>
 					</div>
 					<div class="sc-p-h-xs sc-p-t-xs">
-						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="novaPassagemCtrl.cadastrarItem($index)"></i>
+						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem($index)"></i>
 					</div>
 				</div>
-				<div class=" sc-p-h-none" ng-if="novaPassagemCtrl.newItem"> <!-- adicionador de itens -->
+				<div class=" sc-p-h-none" ng-if="formCtrl.newItem"> <!-- adicionador de itens -->
 					<div class="col-xs-12 col-sm-6 col-md-4">
 						<div class="sc-label">Novo Item:</div>
 						<label class="sc-input-group">
-							<input class="sc-input sc-input-default sc-input-block" ng-model="novaPassagemCtrl.newItemName" type="text">
-							<button ng-click="novaPassagemCtrl.addItem()" class="sc-btn sc-btn-green">
+							<input class="sc-input sc-input-default sc-input-block" ng-model="formCtrl.newItemName" type="text">
+							<button ng-click="formCtrl.addItem()" class="sc-btn sc-btn-green">
 								<i class="sc-icon sc-icon-mais-1"></i>
 							</button>
-							<button ng-click="novaPassagemCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
-								<i class="sc-icon sc-icon-lixeira-2"></i>
+							<button ng-click="formCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
+								<i class="sc-icon sc-icon-fechar-1"></i>
 							</button>
 						</label>
 					</div>
-					<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+					<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm" ng-if="'{{categoria.label}}' == 'Funcionamento'">
 						<label>
 							<div class="sc-label">Quantidade?</div>
 							<span class="sc-toggle sc-m-t-sm">
-								<input class="ng-empty" ng-model="novaPassagemCtrl.newItemHasQtd" type="checkbox">
+								<input class="ng-empty" ng-model="formCtrl.newItemHasQtd" type="checkbox">
 								<span label-false="Não" label-true="Sim"></span>
 							</span>
 						</label>
 					</div>
-					<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm " ng-if="novaPassagemCtrl.newItemHasQtd">
+					<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm " ng-if="formCtrl.newItemHasQtd">
 						<label>
 							<div class="sc-label">Quantidade:</div>
-							<input class="col-lg-6 sc-input-default sc-input-block" ng-model="novaPassagemCtrl.newItemQtd">
+							<input class="col-lg-6 sc-input-default sc-input-block" ng-model="formCtrl.newItemQtd">
 						</label>
+					</div>
+					<div ng-if="'{{categoria.label}}' == 'Acontecimento'">
+						<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+							<label>
+								<div class="sc-label">Ocorrido:</div>
+								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemOcorrido" type="text">
+							</label>
+						</div>
+						<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+							<label>
+								<div class="sc-label">Local do ocorrido:</div>
+								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemLocal" type="text">
+							</label>
+						</div>
+					</div>
+					<div ng-if="'{{categoria.label}}' == 'Empréstimos'">
+						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+							<label>
+								<div class="sc-label">Ação:</div>
+								<select class="sc-input-default sc-input-block" ng-model="formCtrl.newItemAcao">
+									<option value="devolucao" label="Devolução">Devolução</option>
+									<option value="emprestimo" label="Empréstimo">Empréstimo</option>
+								</select>
+							</label>
+						</div>
+						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+							<label>
+								<div class="sc-label">Unidade/Pessoa:</div>
+								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemUnidade_pessoa" type="text">
+							</label>
+						</div>
+						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
+							<label>
+								<div class="sc-label">Tipo pessoa:</div>
+								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemTipo_pessoa" type="text">
+							</label>
+						</div>
 					</div>
 					<div class="clear"></div>
 				</div>
@@ -170,13 +201,13 @@
 									<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
 								</label>
 								<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1" style="max-width: 8em;">
-									<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="1" max="999" style="max-width: 4.1em;">
+									<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999" style="max-width: 4.1em;">
 								</div>
 								<div class="fcol-xs-auto">
 									<input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}">
 								</div>
 								<div class="fcol-xs-1 align-right">
-                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="novaPassagemCtrl.deleteItem($index)"></i>
+                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="formCtrl.deleteItem($index)"></i>
                 </div>
 							</div>
 						</li>
@@ -193,8 +224,8 @@
 	</div>
 
 	<div class="sc-p-t-md align-right">
-		<button class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="novaPassagemCtrl.salvarEPassarPassagem()">Salvar e passar</button>
-		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="novaPassagemCtrl.salvarPassagem()">Salvar</button>
+		<button class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvarEPassar()">Salvar e passar</button>
+		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar()">Salvar</button>
 		<button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="passagem.edit.toggle()">Cancelar</button>
 	</div>
 </form>
