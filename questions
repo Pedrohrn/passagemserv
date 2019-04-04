@@ -6,3 +6,22 @@ Acredito que a mais complexa seria a de ocorrências, por ter a questão de visu
 Mensagens de erros: formulários : Quem entra/sai, senhas; categorias (caso tente adicionar uma categoria que já existe na lista); titulo de perfil (caso seja igual à algum que já exista); ao adicionar novos itens (caso tente salvar ou adicionar sem preencher o input);
 
 alertas: perfil alterado/cadastrado; formulário (caso exista algum erro no preenchimento); cancelar/fechar formulários (confirmação de possível perda de dados);
+
+==================================================
+
+passagens  = []
+categorias = []
+
+
+Passagem
+	pessoa_saiu_id (pessoa_saiu)
+	# pessoa_saiu_senha
+	pessoa_entrou_id (pessoa_entrou)
+	# pessoa_entrou_senha
+
+	objetos
+		categoria_id
+
+		items
+			titulo
+			quantidade

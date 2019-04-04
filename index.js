@@ -1,4 +1,4 @@
-app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle'])
+app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle', 'sc.commons.service.scAlert', 'sc.commons.scTopMessages'])
 
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
   $locationProvider.html5Mode({
@@ -15,7 +15,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   };
 })
 
-.controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', function($s, scModal, scToggle) {
+.run(function($rootScope, scAlert, scTopMessages) {
+	$rootScope.scAlert = scAlert
+	$rootScope.scTopMessages = scTopMessages
+})
+
+.controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento' },
@@ -109,6 +114,27 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		perfilNovo: false, // toggle do formulário de novo perfil
 
+		current: "",
+		set: function() {
+			if (this.current == "") { return }
+			console.log('alçsdf')
+
+			// scAlert.open({
+			// 	title: "Atenção, Deseja atualizar o formulário com o perfil selecionado?",
+			// 	messages: "Todos os dados serão perdidos",
+			// 	buttons: [
+			// 		{ label: "Não", color: 'gray' },
+			// 		{
+			// 			label: "Sim", color: 'yellow', action: function() {
+			// 				$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
+			// 			}
+			// 		}
+			// 	]
+			// })
+
+			$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
+		},
+
 		novoPerfil: function(){
 			this.perfilNovo = !this.perfilNovo;
 		},
@@ -119,7 +145,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
-			this.categorias.push({id: this.categorias.length+1, label: this.newCategoria, eventosList: this.itens});
+			this.categorias.push({id: this.categorias.length+1, eventosList: []});
 			console.log(this.categorias);
 		},
 
@@ -172,8 +198,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.listCtrl = { //lista de passagens
 		list: [
 			{	id: 1,
-				entrou: 'Porteiro 1',
-				saiu: 'Porteiro 2',
+				pessoa_entrou: 'Porteiro 1',
+				pessoa_saiu: 'Porteiro 2',
 				data: 20032019,
 				horario: 203031,
 				status: 'Pendente',
@@ -204,8 +230,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 
 			{	id: 2,
-				entrou: 'Porteiro 2',
-				saiu: 'Porteiro 1',
+				pessoa_entrou: 'Porteiro 2',
+				pessoa_saiu: 'Porteiro 1',
 				data: 21032019,
 				horario: 203031,
 				status: 'Realizada',
@@ -236,8 +262,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 
 			{	id: 3,
-				entrou: 'Porteiro 1',
-				saiu: 'Porteiro 2',
+				pessoa_entrou: 'Porteiro 1',
+				pessoa_saiu: 'Porteiro 2',
 				data: 22032019,
 				horario: 203031,
 				status: 'Realizada',
@@ -304,20 +330,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		newItemHasQtd: false,
 
 		init: function(passagem) {
-			this.obj = passagem || {}
+			obj = passagem || {}
 
 			// usar alguma coias para copiar o obj 'passagem'
 			this.newRecord = !obj.id
 
-			if (newRecord) {
+			if (this.newRecord) {
 				$s.listCtrl.list.push(obj)
 			} else {
 				this.params = obj
 			}
-		},
-
-		itemInit: function(categoria) {
-
 		},
 
 		novaPassagem: function(){ //abrir o formulário
@@ -336,9 +358,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(this.novaCategoria);
 		},
 
-		addCategoria: function(){
-			this.listCategorias.push(this.newCategoria);
-			console.log(this.listCategorias);
+		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
+			this.listCategorias.unshift({id: this.listCategorias.length+1, eventosList: []});
 		},
 
 		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -346,7 +367,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		cadastrarItem: function(categoria){
-			this.newItem = !this.newItem;
+			console.log(categoria)
+			categoria.eventosList.unshift({})
 		},
 
 		addItem:function(categoria){
@@ -361,7 +383,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.itens.splice(index, 1);
 		},
 
-/*		set: function(perfil){
+	/*		set: function(perfil){
 			console.log($s.currentPerfil);
 			this.currentPerfil = $s.perfilCtrl.list.copy();
 		}*/

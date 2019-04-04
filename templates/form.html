@@ -38,7 +38,7 @@
 			<div class="col-xs-6 col-md-4 col-lg-6">
 				<label>
 					<div class="sc-label">Perfil:</div>
-					<select class="sc-input-default sc-input-block" ng-change="formCtrl.set()" ng-options="perfil.perfilName for perfil in perfilCtrl.list" ng-model="currentPerfil">
+					<select class="sc-input-default sc-input-block" ng-change="perfilCtrl.set()" ng-options="perfil.perfilName for perfil in perfilCtrl.list" ng-model="perfilCtrl.current">
 						<option ng-selected="false" value="">Selecione um perfil</option>
 					</select>
 				</label>
@@ -50,8 +50,8 @@
 	<!-- Categorias -->
 	<div class="sc-fieldset">
 		<div class="sc-fieldset-head">
-			<span class="sc-label sc-text-xxl">{{currentPerfil.perfilName || 'Categorias'}}</span>
-			<button ng-click="formCtrl.criarCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+			<span class="sc-label sc-text-xxl">{{perfilCtrl.current.perfilName || 'Categorias'}}</span>
+			<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 		</div>
 
 		<div>
@@ -104,84 +104,59 @@
 					</label>
 				</div> <!-- adicionador de categorias -->
 			</div>
-			<div class="sc-fieldset" ng-repeat="categoria in currentPerfil.categorias || formCtrl.listCategorias"> <!-- fieldset das categorias -->
-				<div class="sc-fieldset-head flex-row">
-					<div class="sc-label sc-p-t-xs sc-p-r-lg">
-						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label || categoria.label}}">
+			<div class="sc-fieldset" ng-repeat="categoria in formCtrl.listCategorias" ng-init="formCtrl.itemInit(categoria)"> <!-- fieldset das categorias -->
+				<div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
+					<div class="sc-text-sm">
+						<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
+							<label class="sc-input-group">
+								<select class="sc-input-default sc-input-block" ng-options="cat.label for cat in categoriasCtrl.list" ng-model="categoria.categoria">
+									<option ng-selected="false" value="">Selecione ou cadastre</option>
+								</select>
+								<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
+									<span>
+										<i class="sc-icon sc-icon-reticiencias-v"></i>
+									</span>
+									<span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
+										<ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
+											<li ng-click="categoriasCtrl.new()">
+												<div>Nova categoria</div>
+											</li>
+											<li ng-click="categoriasCtrl.edit($index)">
+												<div>Editar</div>
+											</li>
+											<li ng-click="categoriasCtrl.disable()">
+												<div>Desativar</div>
+											</li>
+											<li ng-click="categoriasCtrl.rmv($index)">
+												<div>Excluir</div>
+											</li>
+										</ul>
+									</span>
+								</button>
+							</label>
+						</div>
+						<div class="" ng-if="categoriasCtrl.novaCategoria">
+							<label class="sc-input-group">
+								<input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
+								<button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
+									<i class="sc-icon sc-icon-mais-1"></i>
+								</button>
+								<button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
+									<i class="sc-icon sc-icon-fechar-1"></i>
+								</button>
+							</label>
+						</div>
 					</div>
-					<div class="sc-p-h-xs sc-p-t-xs">
+
+					<!-- <div class="sc-label sc-p-t-xs sc-p-r-lg">
+						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label || categoria.label}}">
+					</div> -->
+					<div class="sc-m-l-md">
+						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem(categoria)"></i>
+					</div>
+					<div class="sc-m-l-md">
 						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.removerCategoria($index)"></i>
 					</div>
-					<div class="sc-p-h-xs sc-p-t-xs">
-						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem($index)"></i>
-					</div>
-				</div>
-				<div class=" sc-p-h-none" ng-if="formCtrl.newItem"> <!-- adicionador de itens -->
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						<div class="sc-label">Novo Item:</div>
-						<label class="sc-input-group">
-							<input class="sc-input sc-input-default sc-input-block" ng-model="formCtrl.newItemName" type="text">
-							<button ng-click="formCtrl.addItem(categoria)" class="sc-btn sc-btn-green">
-								<i class="sc-icon sc-icon-mais-1"></i>
-							</button>
-							<button ng-click="formCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
-								<i class="sc-icon sc-icon-fechar-1"></i>
-							</button>
-						</label>
-					</div>
-					<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm" ng-if="'{{categoria.label}}' == 'Funcionamento'">
-						<label>
-							<div class="sc-label">Quantidade?</div>
-							<span class="sc-toggle sc-m-t-sm">
-								<input class="ng-empty" ng-model="formCtrl.newItemHasQtd" type="checkbox">
-								<span label-false="Não" label-true="Sim"></span>
-							</span>
-						</label>
-					</div>
-					<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm " ng-if="formCtrl.newItemHasQtd">
-						<label>
-							<div class="sc-label">Quantidade:</div>
-							<input class="col-lg-6 sc-input-default sc-input-block" ng-model="formCtrl.newItemQtd">
-						</label>
-					</div>
-					<div ng-if="'{{categoria.label}}' == 'Acontecimento'">
-						<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-							<label>
-								<div class="sc-label">Ocorrido:</div>
-								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemOcorrido" type="text">
-							</label>
-						</div>
-						<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-							<label>
-								<div class="sc-label">Local do ocorrido:</div>
-								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemLocal" type="text">
-							</label>
-						</div>
-					</div>
-					<div ng-if="'{{categoria.label}}' == 'Empréstimos'">
-						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-							<label>
-								<div class="sc-label">Ação:</div>
-								<select class="sc-input-default sc-input-block" ng-model="formCtrl.newItemAcao">
-									<option value="devolucao" label="Devolução">Devolução</option>
-									<option value="emprestimo" label="Empréstimo">Empréstimo</option>
-								</select>
-							</label>
-						</div>
-						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-							<label>
-								<div class="sc-label">Unidade/Pessoa:</div>
-								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemUnidade_pessoa" type="text">
-							</label>
-						</div>
-						<div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-							<label>
-								<div class="sc-label">Tipo pessoa:</div>
-								<input class="sc-input-default sc-input-block" ng-model="formCtrl.newItemTipo_pessoa" type="text">
-							</label>
-						</div>
-					</div>
-					<div class="clear"></div>
 				</div>
 
 				<div class="sc-p-t-xs">

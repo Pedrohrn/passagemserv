@@ -2,10 +2,10 @@
   <div class="sc-fieldset flex-row ng-animation-slider">
     <div class="col-xs-6 sc-p-l-sm">
       <div class="sc-text-gray sc-p-xs">Quem sai:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.saiu}}</span>
+        <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_saiu}}</span>
       </div>
       <div class="sc-text-gray sc-p-xs">Quem entra:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.entrou}}</span>
+        <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_entrou}}</span>
       </div>
       <div class="sc-text-gray sc-p-xs">Data e hora:
         <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.horario}}</span>
@@ -36,8 +36,8 @@
   <div class="sc-fieldset flex-row">
     <div class="fcol-xs-100 fcol-md-50 sc-p-r-md-md fcol-xs-auto">
       <div class="sc-text-gray sc-p-xs">Eu,
-        <span class="sc-text-blue"> <b>{{passagem.saiu}}</b></span>, passo o posto de serviço para o(a)
-        <span class="sc-text-blue"> <b>{{passagem.entrou}}</b></span>, de acordo com as informações abaixo:
+        <span class="sc-text-blue"> <b>{{passagem.pessoa_saiu}}</b></span>, passo o posto de serviço para o(a)
+        <span class="sc-text-blue"> <b>{{passagem.pessoa_entrou}}</b></span>, de acordo com as informações abaixo:
       </div>
     </div>
     <div class="sc-text-blue sc-text-xxl fcol-xs-100">{{passagem.perfil}}</div>
