@@ -1,2 +1,8 @@
 Verificar a viabilidade de integrar essa nova tela com as telas de Encomendas e Ocorrências.
 Acredito que a mais complexa seria a de ocorrências, por ter a questão de visualização limitada por porteiros.
+
+
+==================================================
+Mensagens de erros: formulários : Quem entra/sai, senhas; categorias (caso tente adicionar uma categoria que já existe na lista); titulo de perfil (caso seja igual à algum que já exista); ao adicionar novos itens (caso tente salvar ou adicionar sem preencher o input);
+
+alertas: perfil alterado/cadastrado; formulário (caso exista algum erro no preenchimento); cancelar/fechar formulários (confirmação de possível perda de dados);

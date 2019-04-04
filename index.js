@@ -39,10 +39,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		add: function(){
-			this.list.unshift({ id: this.list.length+1, label: this.newCategoria});
-			$s.perfilCtrl.categorias.unshift({ id: this.list.length+1, label: this.newCategoria});
+			this.list.push({ id: this.list.length+1, label: this.newCategoria});
+			if ($s.perfilCtrl.perfilNovo) {
+				$s.perfilCtrl.categorias.unshift({ id: $s.perfilCtrl.categorias.length+1, label: this.newCategoria});
+			} else {
+				$s.formCtrl.listCategorias.unshift({ id: $s.formCtrl.listCategorias.length+1, label: this.newCategoria});
+			};
 			this.newCategoria = '';
 			console.log(this.list);
+			console.log($s.perfilCtrl.categorias);
+			console.log($s.formCtrl.listCategorias);
 		},
 	};
 
@@ -62,7 +68,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 2,
 						label: 'Acontecimento',
 						eventosList: [
-							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 0 },
+							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 38 },
 							{ id: 2, nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
 						],
 					},
@@ -74,21 +80,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 1,
 						label: 'Funcionamento',
 						eventosList: [
-							{ id: 1, nome: 'Porrtão Funcionando', 			hasQtd: true, qtd: 10 },
-							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 10 },
-							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Portão Funcionando',  		hasQtd: true, qtd: 10 },
+							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 5 },
+							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
 					{ id: 2,
 						label: 'Acontecimento',
 						eventosList: [
-							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 7 },
 						],
 					},
 					{ id: 3,
 						label: 'Teste',
 						eventosList: [
-							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 10 },
+							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 6 },
 						],
 					},
 				],
@@ -310,6 +316,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
+		itemInit: function(categoria) {
+
+		},
+
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
 		},
@@ -327,7 +337,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){
-			this.listCategorias.push({id: this.listCategorias.length+1, label: this.newCategoria});
+			this.listCategorias.push(this.newCategoria);
 			console.log(this.listCategorias);
 		},
 
@@ -335,11 +345,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.listCategorias.splice(index, 1);
 		},
 
-		cadastrarItem: function(){
+		cadastrarItem: function(categoria){
 			this.newItem = !this.newItem;
 		},
 
-		addItem:function(){
+		addItem:function(categoria){
 			if (this.newItemHasQtd == false) {
 				this.newItemQtd = 0;
 			};
