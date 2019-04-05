@@ -1,4 +1,4 @@
-app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle', 'sc.commons.service.scAlert', 'sc.commons.scTopMessages'])
+app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle', 'sc.commons.service.scAlert', 'sc.commons.scTopMessages', 'sc.commons.filters.nl2br' ])
 
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
   $locationProvider.html5Mode({
@@ -30,8 +30,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		novaCategoria: false,
 		showOpts: false,
 
-		showOptions: function(){
-			this.showOpts = !this.showOpts;
+		showOptions: function(categoria){
+			categoria.showOpts = !categoria.showOpts;
 		},
 
 		new: function(){
@@ -63,16 +63,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				perfilName: 'Portaria Social',
 				categorias: [
 					{ id: 1,
-						label: 'Funcionamento',
-						eventosList: [
+						categoria: 'Equipamentos',
+						itens: [
 							{ id: 1, nome: 'Portão Funcionando', 			hasQtd: true, qtd: 4 },
 							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
 							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
 					{ id: 2,
-						label: 'Acontecimento',
-						eventosList: [
+						categoria: 'Acontecimento',
+						itens: [
 							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 38 },
 							{ id: 2, nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
 						],
@@ -83,22 +83,22 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				perfilName: 'Portaria de Serviço',
 				categorias: [
 					{ id: 1,
-						label: 'Funcionamento',
-						eventosList: [
+						categoria: 'Funcionamento',
+						itens: [
 							{ id: 1, nome: 'Portão Funcionando',  		hasQtd: true, qtd: 10 },
 							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 5 },
 							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
 					{ id: 2,
-						label: 'Acontecimento',
-						eventosList: [
+						categoria: 'Acontecimento',
+						itens: [
 							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 7 },
 						],
 					},
 					{ id: 3,
-						label: 'Teste',
-						eventosList: [
+						categoria: 'Teste',
+						itens: [
 							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 6 },
 						],
 					},
@@ -115,24 +115,32 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		perfilNovo: false, // toggle do formulário de novo perfil
 
 		current: "",
+
 		set: function() {
 			if (this.current == "") { return }
 			console.log('alçsdf')
 
-			// scAlert.open({
-			// 	title: "Atenção, Deseja atualizar o formulário com o perfil selecionado?",
-			// 	messages: "Todos os dados serão perdidos",
-			// 	buttons: [
-			// 		{ label: "Não", color: 'gray' },
-			// 		{
-			// 			label: "Sim", color: 'yellow', action: function() {
-			// 				$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
-			// 			}
-			// 		}
-			// 	]
-			// })
+			scAlert.open({
+				title: "Atenção!",
+				messages: [
+					{ msg: 'O perfil de passagem foi alterado, o que pode causar a perda de dados das categorias atuais do formulário.' },
+					{ msg: 'O que deseja fazer?' },
+					],
+				buttons: [
+					{ label: "Mesclar", color: 'blue', action: function() {
+							$s.formCtrl.listCategorias = Object.assign($s.formCtrl.listCategorias, $s.formCtrl.listCategorias, $s.perfilCtrl.current.categorias)
+						}
+					},
+					{
+						label: "Sobreescrever", color: 'yellow', action: function() {
+							$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
+						}
+					},
+					{ label: "Cancelar", color: 'gray', action: scAlert.close() },
+				]
+			})
 
-			$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
+			//$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
 		},
 
 		novoPerfil: function(){
@@ -145,7 +153,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
-			this.categorias.push({id: this.categorias.length+1, eventosList: []});
+			this.categorias.push({id: this.categorias.length+1, itens: []});
 			console.log(this.categorias);
 		},
 
@@ -179,7 +187,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
 			if (perfil.edit.opened == true) {
-				this.itens = this.list.categorias.eventosList;
+				this.itens = this.list.categorias.itens;
 			}
 			console.log(perfil.edit.opened)
 		},
@@ -204,24 +212,24 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				horario: 203031,
 				status: 'Pendente',
 				perfilName: 'Portaria Social',
-				categorias: [
+				objetos: [
 					{ id: 1,
-						label: 'Funcionamento',
-						eventosList: [
+						categoria: 'Funcionamento',
+						itens: [
 							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ id: 3, nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
 					{ id: 2,
-						label: 'Acontecimentos',
-						eventosList: [
+						categoria: 'Acontecimentos',
+						itens: [
 							{ id: 1, nome: 'Discussão ', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
 					{ id: 3,
-						label: 'Empréstimos',
-						eventosList: [
+						categoria: 'Empréstimos',
+						itens: [
 							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
 						],
 					},
@@ -236,24 +244,24 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				horario: 203031,
 				status: 'Realizada',
 				perfilName: 'Portaria de Serviço',
-				categorias: [
+				objetos: [
 					{ id: 1,
-						label: 'Funcionamento',
-						eventosList: [
+						categoria: 'Funcionamento',
+						itens: [
 							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ id: 3, nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
 					{ id: 2,
-						label: 'Acontecimentos',
-						eventosList: [
+						categoria: 'Acontecimentos',
+						itens: [
 							{ id: 1, nome: 'Discussão ', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
 					{ id: 3,
-						label: 'Empréstimos',
-						eventosList: [
+						categoria: 'Empréstimos',
+						itens: [
 							{ id: 1, nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
 						],
 					},
@@ -268,24 +276,24 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				horario: 203031,
 				status: 'Realizada',
 				perfilName: 'Portaria Social',
-				categorias: [
+				objetos: [
 					{ id: 1,
-						label: 'Funcionamento',
-						eventosList: [
+						categoria: 'Funcionamento',
+						itens: [
 							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ id: 3, nome: 'Interfone ', hasQtd: true, qtd: 7 },
 						],
 					},
 					{ id: 2,
-						label: 'Acontecimentos',
-						eventosList: [
+						categoria: 'Acontecimentos',
+						itens: [
 							{ id: 4, nome: 'Objeto danificado', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
 						],
 					},
 					{ id: 3,
-						label: 'Empréstimos',
-						eventosList: [
+						categoria: 'Empréstimos',
+						itens: [
 							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
 						],
 					},
@@ -346,20 +354,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.new = !this.new;
 		},
 
-		tamanhos: function(){ //função para exibir a linha de títulos somente se a lista tiver algum elemento.
-			if (this.itens.length > 0){
-				this.itensTamanho = !this.itensTamanho;
-			};
-			console.log(itensTamanho);
-		},
-
 		criarCategoria: function(){
 			this.novaCategoria = !this.novaCategoria;
-			console.log(this.novaCategoria);
 		},
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
-			this.listCategorias.unshift({id: this.listCategorias.length+1, eventosList: []});
+			this.listCategorias.unshift({id: this.listCategorias.length+1, itens: []});
 		},
 
 		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -367,26 +367,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		cadastrarItem: function(categoria){
-			console.log(categoria)
-			categoria.eventosList.unshift({})
+			console.log(categoria.itens)
+			categoria.itens.unshift({})
 		},
 
-		addItem:function(categoria){
-			if (this.newItemHasQtd == false) {
-				this.newItemQtd = 0;
-			};
-			this.itens.push({ id: this.itens.length+1, itemName: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
-			console.log(this.itens);
+		deleteItem: function(categoria, index){
+			categoria.itens.splice(index, 1);
 		},
 
-		deleteItem: function(index){
-			this.itens.splice(index, 1);
-		},
-
-	/*		set: function(perfil){
-			console.log($s.currentPerfil);
-			this.currentPerfil = $s.perfilCtrl.list.copy();
-		}*/
 	}
 
   $s.admCtrl = { //lista fictícia da administraçao

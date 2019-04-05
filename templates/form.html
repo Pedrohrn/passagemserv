@@ -38,8 +38,7 @@
 			<div class="col-xs-6 col-md-4 col-lg-6">
 				<label>
 					<div class="sc-label">Perfil:</div>
-					<select class="sc-input-default sc-input-block" ng-change="perfilCtrl.set()" ng-options="perfil.perfilName for perfil in perfilCtrl.list" ng-model="perfilCtrl.current">
-						<option ng-selected="false" value="">Selecione um perfil</option>
+					<select class="sc-input-default sc-input-block" ng-change="perfilCtrl.set()" ng-options="perfil.perfilName for perfil in perfilCtrl.list" ng-model="perfilCtrl.current" selected="selected">
 					</select>
 				</label>
 			</div>
@@ -50,73 +49,25 @@
 	<!-- Categorias -->
 	<div class="sc-fieldset">
 		<div class="sc-fieldset-head">
-			<span class="sc-label sc-text-xxl">{{perfilCtrl.current.perfilName || 'Categorias'}}</span>
+			<span class="sc-label sc-text-xxl">Objetos</span>
 			<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 		</div>
 
 		<div>
-			<div ng-if="formCtrl.novaCategoria" style="max-width: 21em;">
-				<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
-					<div class="sc-label">Categoria:</div>
-					<label class="sc-input-group">
-						<select class="sc-input-default sc-input-block" ng-options="categoria.label for categoria in categoriasCtrl.list" ng-model="formCtrl.newCategoria">
-							<option ng-selected="false" value="">Selecione ou cadastre</option>
-						</select>
-						<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
-							<span>
-								<i class="sc-icon sc-icon-reticiencias-v"></i>
-							</span>
-							<span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
-								<ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
-									<li ng-click="categoriasCtrl.new()">
-										<div>Nova categoria</div>
-									</li>
-									<li ng-click="categoriasCtrl.edit($index)">
-										<div>Editar</div>
-									</li>
-									<li ng-click="categoriasCtrl.disable()">
-										<div>Desativar</div>
-									</li>
-									<li ng-click="categoriasCtrl.rmv($index)">
-										<div>Excluir</div>
-									</li>
-								</ul>
-							</span>
-						</button>
-						<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green">
-							<i class="sc-icon sc-icon-mais-1"></i>
-						</button>
-						<button ng-click="formCtrl.criarCategoria()" class="sc-btn sc-btn-red">
-							<i class="sc-icon sc-icon-fechar-1"></i>
-						</button>
-					</label>
-				</div>
-				<div class="" ng-if="categoriasCtrl.novaCategoria">
-					<div class="sc-label">Nova Categoria</div>
-					<label class="sc-input-group">
-						<input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-						<button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
-							<i class="sc-icon sc-icon-mais-1"></i>
-						</button>
-						<button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
-							<i class="sc-icon sc-icon-fechar-1"></i>
-						</button>
-					</label>
-				</div> <!-- adicionador de categorias -->
-			</div>
-			<div class="sc-fieldset" ng-repeat="categoria in formCtrl.listCategorias" ng-init="formCtrl.itemInit(categoria)"> <!-- fieldset das categorias -->
+
+			<div class="sc-fieldset" ng-repeat="categoria in formCtrl.listCategorias"> <!-- fieldset das categorias -->
 				<div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
 					<div class="sc-text-sm">
 						<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
 							<label class="sc-input-group">
-								<select class="sc-input-default sc-input-block" ng-options="cat.label for cat in categoriasCtrl.list" ng-model="categoria.categoria">
-									<option ng-selected="false" value="">Selecione ou cadastre</option>
+								<select class="sc-input-default sc-input-block" ng-options="cat.label for cat in categoriasCtrl.list" ng-selected="cat.label=='{{categoria.categoria}}'" ng-model="categoria.categoria">
+									<option value="">Selecione ou cadastre</option>
 								</select>
-								<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
+								<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
 									<span>
 										<i class="sc-icon sc-icon-reticiencias-v"></i>
 									</span>
-									<span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
+									<span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoria.showOpts">
 										<ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
 											<li ng-click="categoriasCtrl.new()">
 												<div>Nova categoria</div>
@@ -148,9 +99,6 @@
 						</div>
 					</div>
 
-					<!-- <div class="sc-label sc-p-t-xs sc-p-r-lg">
-						<input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label || categoria.label}}">
-					</div> -->
 					<div class="sc-m-l-md">
 						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem(categoria)"></i>
 					</div>
@@ -163,18 +111,12 @@
 					<ul>
 						<li class="" ng-if="categoria">
 							<div class="flex-row sc-p-v-md sc-label sc-text-blue">
-								<label class="">
-									<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
-								</label>
 								<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1 sc-text-medium sc-label">Qtde</div>
 								<div class="col-xs-auto sc-text-medium sc-label">Item</div>
 							</div>
 						</li>
-						<li ng-repeat="item in categoria.eventosList" class="sc-p-b-sm">
+						<li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
 							<div class="flex-row">
-								<label class="sc-p-t-md">
-									<input class="sc-checkbox sc-checkbox-gray" type="checkbox">
-								</label>
 								<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1" style="max-width: 8em;">
 									<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999" style="max-width: 4.1em;">
 								</div>
@@ -182,7 +124,7 @@
 									<input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}">
 								</div>
 								<div class="fcol-xs-1 align-right">
-                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="formCtrl.deleteItem($index)"></i>
+                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="formCtrl.deleteItem(categoria, $index)"></i>
                 </div>
 							</div>
 						</li>

@@ -35,7 +35,7 @@
               </div>
               <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menuAdmCtrl.menuOpen" style="display: block;">
                 <li ng-click="perfilCtrl.modalToggle()">
-                  <span>Perfil Checklist</span>
+                  <span>Perfis de passagem</span>
                 </li>
                 <li ng-click="menuAdmCtrl.abrirModalLog()">
                   <span>Histórico</span>
@@ -158,8 +158,8 @@
             <div ng-repeat="input in scAlert.inputs track by $index" style="display: inline">
               <label>
                 <div class="sc-label">{{input.label}}</div>
-                <input ng-if="input.type != 'date'" ng-required="input.required" type="{{input.type || 'text'}}" ng-model="input.value" class="sc-input-default"></input>
-                <input ng-if="input.type == 'date'" ng-required="input.required" sc-date-input ng-model="input.value" class="sc-input-default"></input>
+                <input ng-if="input.type != 'date'" ng-required="input.required" type="{{input.type || 'text'}}" ng-model="input.value" class="sc-input-default">
+                <input ng-if="input.type == 'date'" ng-required="input.required" sc-date-input ng-model="input.value" class="sc-input-default">
               </label>
             </div>
           </div>
