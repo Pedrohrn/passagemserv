@@ -40,19 +40,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		rmv: function(index){
 			this.list.splice(index, 1);
-			$s.perfilCtrl.categorias.splice(index, 1);
+			$s.perfilCtrl.objetos.splice(index, 1);
 		},
 
 		add: function(){
 			this.list.push({ id: this.list.length+1, label: this.newCategoria});
 			if ($s.perfilCtrl.perfilNovo) {
-				$s.perfilCtrl.categorias.unshift({ id: $s.perfilCtrl.categorias.length+1, label: this.newCategoria});
+				$s.perfilCtrl.objetos.unshift({ id: $s.perfilCtrl.objetos.length+1, label: this.newCategoria});
 			} else {
 				$s.formCtrl.listCategorias.unshift({ id: $s.formCtrl.listCategorias.length+1, label: this.newCategoria});
 			};
 			this.newCategoria = '';
 			console.log(this.list);
-			console.log($s.perfilCtrl.categorias);
+			console.log($s.perfilCtrl.objetos);
 			console.log($s.formCtrl.listCategorias);
 		},
 	};
@@ -60,18 +60,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
-				perfilName: 'Portaria Social',
+				perfil: 'Portaria Social',
 				categorias: [
-					{ id: 1,
-						categoria: 'Equipamentos',
+					{ categoria: 'Equipamentos',
 						itens: [
 							{ id: 1, nome: 'Portão Funcionando', 			hasQtd: true, qtd: 4 },
 							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
 							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
-					{ id: 2,
-						categoria: 'Acontecimento',
+					{ categoria: 'Acontecimento',
 						itens: [
 							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 38 },
 							{ id: 2, nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
@@ -80,24 +78,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 			{ id: 2,
-				perfilName: 'Portaria de Serviço',
+				perfil: 'Portaria de Serviço',
 				categorias: [
-					{ id: 1,
-						categoria: 'Funcionamento',
+					{ categoria: 'Funcionamento',
 						itens: [
 							{ id: 1, nome: 'Portão Funcionando',  		hasQtd: true, qtd: 10 },
 							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 5 },
 							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
 						],
 					},
-					{ id: 2,
-						categoria: 'Acontecimento',
+					{ categoria: 'Acontecimento',
 						itens: [
 							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ id: 3,
-						categoria: 'Teste',
+					{ categoria: 'Teste',
 						itens: [
 							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 6 },
 						],
@@ -167,7 +162,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfilName: this.newPerfilName, categorias: this.listCategorias});
+			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, categorias: this.listCategorias});
 			console.log(this.list);
 		},
 
@@ -199,26 +194,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 20032019,
 				horario: 203031,
 				status: 'Pendente',
-				perfilName: 'Portaria Social',
+				perfil: 'Portaria Social',
 				objetos: [
-					{ id: 1,
-						categoria: 'Funcionamento',
+					{ categoria: [ { id: 1, label: 'Funcionamento'} ],
 						itens: [
-							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ id: 3, nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
+							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
+							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ id: 2,
-						categoria: 'Acontecimentos',
+					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
 						itens: [
-							{ id: 1, nome: 'Discussão ', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
+							{ nome: 'Discussão ', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
-					{ id: 3,
-						categoria: 'Empréstimos',
+					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
 						itens: [
-							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
+							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
 						],
 					},
 				],
@@ -231,26 +223,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 21032019,
 				horario: 203031,
 				status: 'Realizada',
-				perfilName: 'Portaria de Serviço',
+				perfil: 'Portaria de Serviço',
 				objetos: [
-					{ id: 1,
-						categoria: 'Funcionamento',
+					{ categoria: [ { id: 1, label: 'Funcionamento'} ],
 						itens: [
-							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ id: 3, nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
+							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
+							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ id: 2,
-						categoria: 'Acontecimentos',
+					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
 						itens: [
-							{ id: 1, nome: 'Discussão ', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
+							{ nome: 'Discussão ', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
-					{ id: 3,
-						categoria: 'Empréstimos',
+					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
 						itens: [
-							{ id: 1, nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
+							{ nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
 						],
 					},
 				],
@@ -263,26 +252,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				data: 22032019,
 				horario: 203031,
 				status: 'Realizada',
-				perfilName: 'Portaria Social',
+				perfil: 'Portaria Social',
 				objetos: [
-					{ id: 1,
-						categoria: 'Funcionamento',
+					{	categoria: [ { id: 1, label: 'Funcionamento'} ],
 						itens: [
-							{ id: 1, nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ id: 2, nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ id: 3, nome: 'Interfone ', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
+							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
+							{ nome: 'Interfone ', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ id: 2,
-						categoria: 'Acontecimentos',
+					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
 						itens: [
-							{ id: 4, nome: 'Objeto danificado', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
+							{ nome: 'Objeto danificado', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
 						],
 					},
-					{ id: 3,
-						categoria: 'Empréstimos',
+					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
 						itens: [
-							{ id: 1, nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
+							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
 						],
 					},
 				],
@@ -367,8 +353,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															data: passagem.data,
 															horario: passagem.horario,
 															status: 'Realizada',
-															perfilName: $s.perfilCtrl.current.perfilName,
-															objetos: passagem.listObjetos,
+															perfil: $s.perfilCtrl.current.perfil,
+															objetos: this.listCategorias,
 															obs: passagem.detalhes,
 														});
 			console.log($s.listCtrl.list);
@@ -381,7 +367,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															data: passagem.data,
 															horario: passagem.horario,
 															status: 'Pendente',
-															perfilName: $s.perfilCtrl.current.perfilName,
+															perfil: $s.perfilCtrl.current.perfil,
 															objetos: passagem.listObjetos,
 															obs: passagem.detalhes,
 														});
