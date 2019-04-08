@@ -123,12 +123,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
 							$s.formCtrl.listCategorias = Object.assign($s.formCtrl.listCategorias, $s.formCtrl.listCategorias, $s.perfilCtrl.current.categorias)
-						}
+						},
+						tooltip: 'Mescla categorias/itens abaixo com os do perfil selecionado.',
 					},
 					{
 						label: "Sobreescrever", color: 'yellow', action: function() {
 							$s.formCtrl.listCategorias = angular.copy($s.perfilCtrl.current.categorias)
-						}
+						},
+						tooltip: 'Sobreescreve categorias/itens abaixo pelos itens do perfil selecionado.',
 					},
 					{ label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
@@ -196,19 +198,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				status: 'Pendente',
 				perfil: 'Portaria Social',
 				objetos: [
-					{ categoria: [ { id: 1, label: 'Funcionamento'} ],
+					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
+					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Discussão ', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
-					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
+					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
 						],
@@ -225,19 +227,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				status: 'Realizada',
 				perfil: 'Portaria de Serviço',
 				objetos: [
-					{ categoria: [ { id: 1, label: 'Funcionamento'} ],
+					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
+					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Discussão ', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
-					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
+					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
 						],
@@ -254,19 +256,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				status: 'Realizada',
 				perfil: 'Portaria Social',
 				objetos: [
-					{	categoria: [ { id: 1, label: 'Funcionamento'} ],
+					{	categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
 							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
 							{ nome: 'Interfone ', hasQtd: true, qtd: 7 },
 						],
 					},
-					{ categoria: [ { id: 2, label: 'Acontecimento'} ],
+					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Objeto danificado', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
 						],
 					},
-					{ categoria: [ { id: 3, label: 'Empréstimos'} ],
+					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
 						],
@@ -279,6 +281,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
 		duplicar: false,
+		duplicata: [],
 		init: function(passagem) {
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
@@ -294,6 +297,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		duplicate: function(passagem){
 			this.duplicar = !this.duplicar
+			this.duplicata = angular.copy(passagem)
+			console.log(this.duplicata)
 		},
 	}
 
@@ -368,7 +373,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															horario: passagem.horario,
 															status: 'Pendente',
 															perfil: $s.perfilCtrl.current.perfil,
-															objetos: passagem.listObjetos,
+															objetos: this.listCategorias,
 															obs: passagem.detalhes,
 														});
 			console.log($s.listCtrl.list);
