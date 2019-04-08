@@ -118,10 +118,10 @@
 						<li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
 							<div class="flex-row">
 								<div class="col-xs-3 col-md-1 col-sm-2 col-lg-1" style="max-width: 8em;">
-									<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999" style="max-width: 4.1em;">
+									<input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
 								</div>
 								<div class="fcol-xs-auto">
-									<input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}">
+									<input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}" ng-model="item.nome">
 								</div>
 								<div class="fcol-xs-1 align-right">
                   <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="formCtrl.deleteItem(categoria, $index)"></i>
@@ -141,8 +141,8 @@
 	</div>
 
 	<div class="sc-p-t-md align-right">
-		<button class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvarEPassar()">Salvar e passar</button>
-		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar()">Salvar</button>
+		<button ng-if="passagem.status != 'Realizada'" class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvarEPassar(passagem)">Salvar e passar</button>
+		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar(passagem)">Salvar</button>
 		<button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="passagem.edit.toggle()">Cancelar</button>
 	</div>
 </form>

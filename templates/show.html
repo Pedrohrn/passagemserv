@@ -40,7 +40,7 @@
         <span class="sc-text-blue"> <b>{{passagem.pessoa_entrou}}</b></span>, de acordo com as informações abaixo:
       </div>
     </div>
-    <div class="sc-text-blue sc-text-xxl fcol-xs-100">{{passagem.perfil}}</div>
+    <div class="sc-text-blue sc-text-xxl fcol-xs-100">{{passagem.perfilName}}</div>
     <table ng-repeat="objeto in passagem.objetos" class="sc-table sc-m-h-lg sc-fieldset col-xs-12">
       <thead>
         <tr>
@@ -73,4 +73,10 @@
       </tbody>
     </table>
   </div>
+</div>
+<div class="sc-fieldset sc-p-lg">
+  <label>
+    <div class="sc-label">Observações:</div>
+    <textarea class="sc-input-default sc-input-block" rows="5" cols="30" value="{{passagem.obs}}"></textarea>
+  </label>
 </div>

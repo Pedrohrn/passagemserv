@@ -105,18 +105,17 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 		],
-		categorias: [],
+
+		new: false,
+		listCategorias: [],
 		novaCategoria: false,
-		newItem: false,
-		newItemHasQtd: false,
-		newItemQtd: 0,
 		itens: [],
 
 		perfilNovo: false, // toggle do formulário de novo perfil
 
 		current: "",
 
-		set: function() {
+		set: function() { //set do perfil, que muda o form
 			if (this.current == "") { return }
 			console.log('alçsdf')
 
@@ -149,37 +148,26 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		criarCategoria: function(){ //toggle do campo de adicionador de categoria
 			this.novaCategoria = !this.novaCategoria;
-			console.log(this.novaCategoria);
 		},
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
-			this.categorias.push({id: this.categorias.length+1, itens: []});
-			console.log(this.categorias);
+			this.listCategorias.unshift({id: this.listCategorias.length+1, itens: []});
 		},
 
 		removerCategoria: function(index){ //remover da lista de categorias do perfil, e não da lista principal de categorias
-			this.categorias.splice(index, 1);
+			this.listCategorias.splice(index, 1);
 		},
 
-		cadastrarItem: function(categoria){ //toggle do input de item name
-			this.newItem = !this.newItem;
+		cadastrarItem: function(categoria){ //adicionador de itens
+			categoria.itens.unshift({})
 		},
 
-		addItem:function(){ //adiciona um item à categoria
-			this.itens.push({ id: this.itens.length+1, nome: this.newItemName, hasQtd: this.newItemHasQtd, qtd: this.newItemQtd});
-			this.newItemName = '';
-			this.newItemHasQtd = false;
-			this.newItemQtd = 0;
-			console.log(this.itens);
-		},
-
-		deleteItem: function(index){
-			this.itens.splice(index, 1);
-			console.log(this.itens);
+		deleteItem: function(categoria, index){
+			categoria.itens.splice(index, 1);
 		},
 
 		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfilName: this.newPerfilName, categorias: this.categorias});
+			this.list.push({ id: this.list.length+1, perfilName: this.newPerfilName, categorias: this.listCategorias});
 			console.log(this.list);
 		},
 
@@ -333,9 +321,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		listCategorias: [],
 		novaCategoria: false,
 		itens: [],
-		newItem: false,
-		itensTamanho: false,
-		newItemHasQtd: false,
 
 		init: function(passagem) {
 			obj = passagem || {}
@@ -373,6 +358,34 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		deleteItem: function(categoria, index){
 			categoria.itens.splice(index, 1);
+		},
+
+		salvarEPassar: function(passagem){
+			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
+															pessoa_entrou: passagem.entrando.nome,
+															pessoa_saiu: passagem.saindo.nome,
+															data: passagem.data,
+															horario: passagem.horario,
+															status: 'Realizada',
+															perfilName: $s.perfilCtrl.current.perfilName,
+															objetos: passagem.listObjetos,
+															obs: passagem.detalhes,
+														});
+			console.log($s.listCtrl.list);
+		},
+
+		salvar: function(passagem){
+			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
+															pessoa_entrou: passagem.entrando.nome,
+															pessoa_saiu: passagem.saindo.nome,
+															data: passagem.data,
+															horario: passagem.horario,
+															status: 'Pendente',
+															perfilName: $s.perfilCtrl.current.perfilName,
+															objetos: passagem.listObjetos,
+															obs: passagem.detalhes,
+														});
+			console.log($s.listCtrl.list);
 		},
 
 	}

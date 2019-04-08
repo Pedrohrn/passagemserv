@@ -27,13 +27,6 @@
             </label>
           </div>
           <div class="clear"></div>
-          <div class="col-xs-12 sc-p-t-xl ng-hide" ng-show="perfilCtrl.newPerfilName">
-            <div class="flex-row">
-              <div class="col-xs-8">
-                <div class="sc-label sc-text-xxl sc-p-t-sm">{{perfilCtrl.newPerfilName}}</div>
-              </div>
-            </div>
-          </div>
           <div class="col-xs-12 sc-fieldset">
             <div class="col-xs-12 col-sm-5 sc-p-t-xxxl">
               <button ng-click="perfilCtrl.criarCategoria()" class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
@@ -96,35 +89,6 @@
                   <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem(categoria)"></i>
                 </div>
               </div>
-              <div class="ng-hide col-xs-12 sc-p-h-none" ng-show="perfilCtrl.newItem">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                  <div class="sc-label">Novo Item:</div>
-                  <label class="sc-input-group">
-                    <input class="sc-input sc-input-default sc-input-block" ng-model="perfilCtrl.newItemName" type="text">
-                    <button ng-click="perfilCtrl.addItem(categoria)" class="sc-btn sc-btn-green">
-                      <i class="sc-icon sc-icon-mais-1"></i>
-                    </button>
-                    <button ng-click="perfilCtrl.cadastrarItem(categoria)" class="sc-btn sc-btn-red">
-                      <i class="sc-icon sc-icon-fechar-1"></i>
-                    </button>
-                  </label>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3 sc-p-t-xl sc-p-t-none-sm">
-                  <label>
-                    <div class="sc-label">Quantidade?</div>
-                    <span class="sc-toggle sc-m-t-sm">
-                      <input class="ng-empty" ng-model="perfilCtrl.newItemHasQtd" type="checkbox">
-                      <span label-false="Não" label-true="Sim"></span>
-                    </span>
-                  </label>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3 ng-hide" ng-show="perfilCtrl.newItemHasQtd">
-                  <label>
-                    <div class="sc-label">Quantidade:</div>
-                    <input class="sc-input-default sc-input-block" ng-model="perfilCtrl.newItemQtd">
-                  </label>
-                </div>
-              </div>
               <div class="col-xs-12 sc-p-t-xs">
                 <ul>
                   <li>
@@ -135,10 +99,10 @@
                   <li ng-repeat="item in perfilCtrl.itens" class="sc-p-b-sm">
                     <div class="flex-row">
                       <div class="col-xs-3 col-md-2 col-lg-2">
-                        <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999">
+                        <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" type="number" min="0" max="999">
                       </div>
                       <div class="fcol-xs-auto">
-                        <input class="sc-input-default sc-input-thin" ng-model="item.nome" value="{{item.nome}}" type="text">
+                        <input class="sc-input-default sc-input-thin" type="text">
                       </div>
                       <div class="">
                         <label>
