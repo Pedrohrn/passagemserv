@@ -61,7 +61,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		list: [
 			{ id: 1,
 				perfil: 'Portaria Social',
-				categorias: [
+				objetos: [
 					{ categoria: 'Equipamentos',
 						itens: [
 							{ id: 1, nome: 'Portão Funcionando', 			hasQtd: true, qtd: 4 },
@@ -79,7 +79,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 			{ id: 2,
 				perfil: 'Portaria de Serviço',
-				categorias: [
+				objetos: [
 					{ categoria: 'Funcionamento',
 						itens: [
 							{ id: 1, nome: 'Portão Funcionando',  		hasQtd: true, qtd: 10 },
@@ -100,7 +100,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			},
 		],
-
 		new: false,
 		listCategorias: [],
 		novaCategoria: false,
@@ -122,7 +121,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					],
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
-							$s.formCtrl.listCategorias = Object.assign($s.formCtrl.listCategorias, $s.formCtrl.listCategorias, $s.perfilCtrl.current.categorias)
+							$s.formCtrl.listCategorias = $s.formCtrl.listCategorias.concat($s.perfilCtrl.current.categorias)
 						},
 						tooltip: 'Mescla categorias/itens abaixo com os do perfil selecionado.',
 					},
@@ -279,29 +278,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	}
 
-	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
-		duplicar: false,
-		duplicata: [],
-		init: function(passagem) {
-			passagem.acc = new scToggle()
-			passagem.menu = new scToggle()
-			passagem.notificacoes = new scToggle()
-			passagem.edit = new scToggle()
-			if (!passagem.id) { this.accToggle(passagem) }
-		},
-
-		accToggle: function(passagem) {
-			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
-		},
-
-		duplicate: function(passagem){
-			this.duplicar = !this.duplicar
-			this.duplicata = angular.copy(passagem)
-			console.log(this.duplicata)
-		},
-	}
-
 	$s.formCtrl = {
 		params: [],
 		edit: false,
@@ -312,6 +288,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		listCategorias: [],
 		novaCategoria: false,
 		itens: [],
+
+		novaPassagem: function(){ //abrir o formulário
+			this.new = !this.new;
+		},
 
 		init: function(passagem) {
 			obj = passagem || {}
@@ -326,8 +306,17 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		novaPassagem: function(){ //abrir o formulário
-			this.new = !this.new;
+		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Deseja realmente fechar o formulário? Todos os dados não salvos serão perdidos.'}
+				],
+				buttons: [
+					{ label: 'Sim', color: 'yellow', action: this.novaPassagem() },
+					{ label: 'Não', color: 'gray', action: scAlert.close() },
+				]
+			})
 		},
 
 		criarCategoria: function(){
@@ -336,6 +325,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de categorias DO PERFIL
 			this.listCategorias.unshift({id: this.listCategorias.length+1, itens: []});
+			console.log(this.listCategorias);
 		},
 
 		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -366,19 +356,65 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvar: function(passagem){
-			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
-															pessoa_entrou: passagem.entrando.nome,
-															pessoa_saiu: passagem.saindo.nome,
-															data: passagem.data,
-															horario: passagem.horario,
-															status: 'Pendente',
-															perfil: $s.perfilCtrl.current.perfil,
-															objetos: this.listCategorias,
-															obs: passagem.detalhes,
-														});
-			console.log($s.listCtrl.list);
+			if (this.new == true) {
+				$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
+																pessoa_entrou: passagem.entrando.nome,
+																pessoa_saiu: passagem.saindo.nome,
+																data: passagem.data,
+																horario: passagem.horario,
+																status: 'Pendente',
+																perfil: $s.perfilCtrl.current.perfil,
+																objetos: this.listCategorias,
+																obs: passagem.detalhes,
+															});
+				console.log($s.listCtrl.list);
+			}
+/*			if (passagem.edit.opened == true) {
+				passagem
+			}*/
+		},
+	}
+
+	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
+		duplicar: false,
+		duplicata: [],
+		init: function(passagem) {
+			passagem.acc = new scToggle()
+			passagem.menu = new scToggle()
+			passagem.notificacoes = new scToggle()
+			passagem.edit = new scToggle()
+			if (!passagem.id) { this.accToggle(passagem) }
+			if (passagem.edit.opened == true) {
+				$s.formCtrl.listCategorias = angular.copy(passagem)
+			}
 		},
 
+		accToggle: function(passagem) {
+			passagem.acc.toggle()
+			if (!passagem.id) { passagem.edit.toggle() }
+		},
+
+		duplicate: function(passagem){
+			$s.formCtrl.novaPassagem()
+			this.duplicar = !this.duplicar
+			$s.formCtrl.list = angular.copy(passagem)
+			console.log(this.duplicata)
+		},
+
+		rmv: function(index) {
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
+				],
+				buttons: [
+					{ label: 'Excluir', color: 'red', action: function() {
+							$s.listCtrl.list.splice(index, 1);
+					}},
+					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
+				],
+			})
+		},
 	}
 
   $s.admCtrl = { //lista fictícia da administraçao

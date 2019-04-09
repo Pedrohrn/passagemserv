@@ -58,7 +58,7 @@
         <div>
           <ul multi-check-group class="sc-accordion">
             <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="formCtrl.new">
-              <div class="sc-accordion-head flex-row" ng-click="formCtrl.novaPassagem()">
+              <div class="sc-accordion-head flex-row" ng-click="formCtrl.alerta()">
                 <div class="sc-accordion-col-3 align-center">
                   <i class="sc-text-xl sc-icon-mais-1"></i>
                 </div>
@@ -111,16 +111,16 @@
                       <li ng-click="passagem.edit.toggle()">
                         <span>Editar</span>
                       </li>
-                      <li ng-click="formCtrl.novaPassagem(); itemCtrl.duplicate(passagem)">
+                      <li ng-click="itemCtrl.duplicate(passagem)">
                         <span>Duplicar passagem</span>
                       </li>
-                      <li ng-click="itemCtrl.disable()">
+                      <li ng-click="itemCtrl.disable(passagem)">
                         <span>Desativar</span>
                       </li>
                       <li ng-click="itemCtrl.rmv(index)">
                         <span>Excluir</span>
                       </li>
-                      <li ng-click="itemCtrl.showLog()">
+                      <li ng-click="itemCtrl.showLog(passagem)">
                         <span>Histórico</span>
                       </li>
                     </ul>

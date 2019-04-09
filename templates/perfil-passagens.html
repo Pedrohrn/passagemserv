@@ -9,106 +9,102 @@
     <div>
       <div class="sc-panel-body grid-container sc-m-b-md">
         <form class="sc-m-t-md" ng-submit="perfilCtrl.newPerfil()">
-          <div class="col-xs-auto col-md-5 col-sm-5 sc-p-t-l sc-p-h-none sc-p-r-lg">
-            <label>
-              <div class="sc-label">Título do Perfil</div>
-              <input class="sc-input-default sc-input-block" ng-model="perfilCtrl.new_perfil" type="text">
-            </label>
-          </div>
-          <div class="col-xs-auto col-md-6 col-lg-4 col-sm-5 sc-p-l-xl sc-p-t-none-md">
-            <label>
-              <div class="sc-label">Porteiros podem adicionar novos itens?</div>
+          <div class="sc-fieldset col-xs-12">
+            <div class="col-xs-auto col-md-5 col-sm-5">
               <label>
-                <span class="sc-toggle sc-m-t-sm">
-                  <input ng-model="perfilPassagemCtrl.config.impedir_porteiros_cadastrarem_novos_itens" type="checkbox">
-                  <span label-false="Não" label-true="Sim"></span>
-                </span>
+                <div class="sc-label">Título do Perfil</div>
+                <input class="sc-input-default sc-input-block"  ng-model="perfilCtrl.new_perfil" type="text">
               </label>
-            </label>
+            </div>
+            <div class="col-xs-auto col-md-6 col-lg-4 col-sm-5">
+              <label>
+                <div class="sc-label">Porteiros podem adicionar novos itens?</div>
+                <label>
+                  <span class="sc-toggle sc-m-t-sm">
+                    <input ng-model="perfilPassagemCtrl.config.impedir_porteiros_cadastrarem_novos_itens" type="checkbox">
+                    <span label-false="Não" label-true="Sim"></span>
+                  </span>
+                </label>
+              </label>
+            </div>
           </div>
           <div class="clear"></div>
-          <div class="col-xs-12 sc-fieldset">
-            <div class="col-xs-12 col-sm-5 sc-p-t-xxxl">
-              <button ng-click="perfilCtrl.criarCategoria()" class="sc-btn sc-btn-green" type="button">Adicionar Categoria</button>
+          <div class="sc-fieldset">
+            <div class="sc-fieldset-head">
+              <span class="sc-label sc-text-xxl sc-p-t-sm">Objetos</span>
+              <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7" ng-show="perfilCtrl.novaCategoria">
-              <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
-                <div class="sc-label">Categoria:</div>
-                <label class="sc-input-group">
-                  <select class="sc-input sc-input-default sc-input-block" ng-model="perfilCtrl.newCategoria">
-                    <option value="">Selecione ou cadastre</option>
-                    <option ng-repeat="categoria in categoriasCtrl.list" value="{{categoria.label}}" label="{{categoria.label}}">{{categoria.label}}</option>
-                  </select>
-                  <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
-                    <i class="sc-icon sc-icon-reticiencias-v"></i>
-                    <span class="sc-dropdown ng-hide" ng-show=categoriasCtrl.showOpts>
-                      <ul class="sc-dropdown-menu pull-center" style="display: block; top: 0.9em;">
-                        <li ng-click="categoriasCtrl.new()">
-                          <div>Nova Categoria</div>
-                        </li>
-                        <li ng-click="categoriasCtrl.edit($index)">
-                          <div>Editar</div>
-                        </li>
-                        <li ng-click="categoriasCtrl.disable()">
-                          <div>Desativar</div>
-                        </li>
-                        <li ng-click="categoriasCtrl.rmv($index)">
-                          <div>Excluir</div>
-                        </li>
-                      </ul>
-                    </span>
-                  </button>
-                  <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green">
-                    <i class="sc-icon sc-icon-mais-1"></i>
-                  </button>
-                  <button ng-click="perfilCtrl.criarCategoria()" class="sc-btn sc-btn-red">
-                    <i class="sc-icon sc-icon-fechar-1"></i>
-                  </button>
-                </label>
-              </div>
-              <div class="ng-hide" ng-show="categoriasCtrl.novaCategoria">
-                <div class="sc-label">Nova categoria:</div>
-                <label class="sc-input-group">
-                  <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-                  <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
-                    <i class="sc-icon sc-icon-visto-1"></i>
-                  </button>
-                  <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
-                    <i class="sc-icon sc-icon-fechar-1"></i>
-                  </button>
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-12 sc-fieldset" ng-repeat="categoria in perfilCtrl.objetos">
-              <div class="col-xs-12 col-md-12 sc-fieldset-head flex-row">
-                <div class="sc-label sc-text-lg-sm sc-p-t-xs sc-p-r-lg">{{categoria.label}}</div>
-                <div class="sc-p-h-xs">
-                  <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
+
+            <div class="sc-fieldset sc-m-h-md" ng-repeat="categoria in perfilCtrl.listCategorias">
+              <div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
+                <div class="sc-text-sm">
+                  <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
+                    <label class="sc-input-group">
+                      <select class="sc-input-default sc-input-block" ng-options="cat.label for cat in categoriasCtrl.list" ng-model="categoria.categoria">
+                        <option value="">Selecione ou cadastre</option>
+                      </select>
+                      <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
+                        <span>
+                          <i class="sc-icon sc-icon-reticiencias-v"></i>
+                        </span>
+                        <span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
+                          <ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
+                            <li ng-click="categoriasCtrl.new()">
+                              <div>Nova categoria</div>
+                            </li>
+                            <li ng-click="categoriasCtrl.edit($index)">
+                              <div>Editar</div>
+                            </li>
+                            <li ng-click="categoriasCtrl.disable()">
+                              <div>Desativar</div>
+                            </li>
+                            <li ng-click="categoriasCtrl.rmv($index)">
+                              <div>Excluir</div>
+                            </li>
+                          </ul>
+                        </span>
+                      </button>
+                    </label>
+                  </div>
+                  <div class="" ng-if="categoriasCtrl.novaCategoria">
+                    <label class="sc-input-group">
+                      <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
+                      <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
+                        <i class="sc-icon sc-icon-mais-1"></i>
+                      </button>
+                      <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
+                        <i class="sc-icon sc-icon-fechar-1"></i>
+                      </button>
+                    </label>
+                  </div>
                 </div>
-                <div class="sc-p-h-xs">
+
+                <div class="sc-m-l-md">
                   <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem(categoria)"></i>
                 </div>
+                <div class="sc-m-l-md">
+                  <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
+                </div>
               </div>
-              <div class="col-xs-12 sc-p-t-xs">
+
+              <div class="sc-p-t-xs">
                 <ul>
-                  <li>
-                    <div class="col-xs-3 col-md-2 sc-text-medium sc-label"><b>Qtde</b></div>
-                    <div class="col-xs-auto sc-text-medium sc-label"><b>Item</b></div>
+                  <li class="" ng-if="categoria">
+                    <div class="flex-row sc-p-v-md sc-label sc-text-blue">
+                      <div class="fcol-xs-20 sc-text-medium sc-label">Qtde</div>
+                      <div class="fcol-xs-auto sc-text-medium sc-label">Item</div>
+                    </div>
                   </li>
-                  <li ng-repeat="item in perfilCtrl.itens" class="sc-p-b-sm">
+                  <li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
                     <div class="flex-row">
-                      <div class="col-xs-3 col-md-2 col-lg-2">
-                        <input class="col-xs-12 col-md-10 sc-input-default sc-input-thin" type="number" min="0" max="999">
+                      <div class="fcol-xs-20">
+                        <input class="sc-input-default sc-input-thin" value="{{item.qtd}}" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
                       </div>
                       <div class="fcol-xs-auto">
-                        <input class="sc-input-default sc-input-thin" type="text">
+                        <input class="fcol-xs-60 sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}" ng-model="item.nome">
                       </div>
-                      <div class="">
-                        <label>
-                          <div class="fcol-xs-auto">
-                            <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem($index)"></i>
-                          </div>
-                        </label>
+                      <div class="fcol-xs-1 align-right">
+                        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
                       </div>
                     </div>
                   </li>
@@ -116,10 +112,9 @@
               </div>
             </div>
           </div>
-          <div class="clear"></div>
-          <div class="sc-p-t-xxl pull-right">
-            <button ng-click="perfilCtrl.salvarNovoPerfil()" class="sc-btn sc-btn-green">Salvar Perfil</button>
-            <button ng-click="perfilCtrl.novoPerfil()" class="sc-btn sc-btn-red">Cancelar</button>
+          <div class="align-right">
+            <button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-md" ng-click="perfilCtrl.salvarNovoPerfil()">Salvar</button>
+            <button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-l-md" ng-click="perfil.edit.toggle()">Cancelar</button>
           </div>
         </form>
       </div>
@@ -163,7 +158,7 @@
 
           <div class="sc-accordion-body" ng-if="perfil.edit.opened">
             <div class="grid-container sc-m-b-md">
-              <form>
+              <form class="sc-m-t-md" ng-submit="perfilCtrl.newPerfil()">
                 <div class="sc-fieldset col-xs-12">
                   <div class="col-xs-auto col-md-5 col-sm-5">
                     <label>
@@ -186,124 +181,83 @@
                 <div class="clear"></div>
                 <div class="sc-fieldset">
                   <div class="sc-fieldset-head">
-                    <span class="sc-label sc-text-xxl sc-p-t-sm">{{perfil.perfil || 'Categorias'}}</span>
-                    <button ng-click="perfilCtrl.criarCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+                    <span class="sc-label sc-text-xxl sc-p-t-sm">Objetos</span>
+                    <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
                   </div>
-                  <div>
-                    <div ng-if="perfilCtrl.novaCategoria" style="max-width: 21em;">
-                      <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
-                        <div class="sc-label">Categoria:</div>
-                        <label class="sc-input-group">
-                          <select class="sc-input-default sc-input-block" ng-model="perfilCtrl.newCategoria">
-                            <option value="">Selecione ou cadastre</option>
-                            <option ng-repeat="categoria in categoriasCtrl.list" value="{{categoria.label}}" label="{{categoria.label}}"></option>
-                          </select>
-                          <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions()">
-                            <span>
-                              <i class="sc-icon sc-icon-reticiencias-v"></i>
-                            </span>
-                            <span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
-                              <ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
-                                <li ng-click="categoriasCtrl.new()">
-                                  <div>Nova categoria</div>
-                                </li>
-                                <li ng-click="categoriasCtrl.edit($index)">
-                                  <div>Editar</div>
-                                </li>
-                                <li ng-click="categoriasCtrl.disable()">
-                                  <div>Desativar</div>
-                                </li>
-                                <li ng-click="categoriasCtrl.rmv($index)">
-                                  <div>Excluir</div>
-                                </li>
-                              </ul>
-                            </span>
-                          </button>
-                          <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green">
-                            <i class="sc-icon sc-icon-mais-1"></i>
-                          </button>
-                          <button ng-click="perfilCtrl.criarCategoria()" class="sc-btn sc-btn-red">
-                            <i class="sc-icon sc-icon-fechar-1"></i>
-                          </button>
-                        </label>
-                      </div>
-                      <div class="" ng-if="categoriasCtrl.novaCategoria">
-                        <div class="sc-label">Nova Categoria</div>
-                        <label class="sc-input-group">
-                          <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-                          <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
-                            <i class="sc-icon sc-icon-mais-1"></i>
-                          </button>
-                          <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
-                            <i class="sc-icon sc-icon-fechar-1"></i>
-                          </button>
-                        </label>
-                      </div>
-                    </div>
-                    <div class="sc-fieldset" ng-repeat="categoria in perfil.categorias">
-                      <div class="sc-fieldset-head flex-row">
-                        <div class="sc-label sc-p-t-xs sc-p-r-lg">
-                          <input class="sc-input-default sc-input-thin sc-input-block" value="{{categoria.label}}">
-                        </div>
-                        <div class="sc-p-h-xs sc-p-t-xs">
-                          <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
-                        </div>
-                        <div class="sc-p-h-xs sc-p-t-xs">
-                          <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem($index)"></i>
-                        </div>
-                      </div>
-                      <div class=" sc-p-h-none" ng-if="perfilCtrl.newItem">
-                        <div class="col-xs-12 col-sm-6 col-md-4">
-                          <div class="sc-label">Novo Item:</div>
+                  <div class="sc-fieldset sc-m-h-md" ng-repeat="categoria in perfil.objetos">
+                    <div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
+                      <div class="sc-text-sm">
+                        <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
                           <label class="sc-input-group">
-                            <input class="sc-input sc-input-default sc-input-block" ng-model="perfilCtrl.newItemName" type="text">
-                            <button ng-click="perfilCtrl.addItem()" class="sc-btn sc-btn-green">
+                            <select class="sc-input-default sc-input-block" ng-options="cat.label for cat in categoriasCtrl.list" ng-model="categoria.categoria">
+                              <option value="">Selecione ou cadastre</option>
+                            </select>
+                            <button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
+                              <span>
+                                <i class="sc-icon sc-icon-reticiencias-v"></i>
+                              </span>
+                              <span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
+                                <ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
+                                  <li ng-click="categoriasCtrl.new()">
+                                    <div>Nova categoria</div>
+                                  </li>
+                                  <li ng-click="categoriasCtrl.edit($index)">
+                                    <div>Editar</div>
+                                  </li>
+                                  <li ng-click="categoriasCtrl.disable()">
+                                    <div>Desativar</div>
+                                  </li>
+                                  <li ng-click="categoriasCtrl.rmv($index)">
+                                    <div>Excluir</div>
+                                  </li>
+                                </ul>
+                              </span>
+                            </button>
+                          </label>
+                        </div>
+                        <div class="" ng-if="categoriasCtrl.novaCategoria">
+                          <div class="sc-label">Nova Categoria</div>
+                          <label class="sc-input-group">
+                            <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
+                            <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
                               <i class="sc-icon sc-icon-mais-1"></i>
                             </button>
-                            <button ng-click="perfilCtrl.cadastrarItem()" class="sc-btn sc-btn-red">
+                            <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
                               <i class="sc-icon sc-icon-fechar-1"></i>
                             </button>
                           </label>
                         </div>
-                        <div class="col-xs-6 col-sm-2 col-md-2 col-lg-1 sc-p-t-xl sc-p-t-none-sm">
-                          <label>
-                            <div class="sc-label">Quantidade?</div>
-                            <span class="sc-toggle sc-m-t-sm">
-                              <input class="ng-empty" ng-model="perfilCtrl.newItemHasQtd" type="checkbox">
-                              <span label-false="Não" label-true="Sim"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-1 sc-p-t-xl sc-p-t-none-sm " ng-if="perfilCtrl.newItemHasQtd">
-                          <label>
-                            <div class="sc-label">Quantidade:</div>
-                            <input class="col-lg-6 sc-input-default sc-input-block" ng-model="perfilCtrl.newItemQtd">
-                          </label>
-                        </div>
                       </div>
-                      <div class="sc-p-t-xs">
-                        <ul>
-                          <li class="" ng-if="categoria">
-                            <div class="flex-row sc-p-v-md sc-label sc-text-blue">
-                              <div class="col-xs-3 col-sm-2 sc-text-medium sc-label">Qtde</div>
-                              <div class="col-xs-auto sc-text-medium sc-label">Item</div>
-                            </div>
-                          </li>
-                          <li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
-                            <div class="flex-row">
-                              <div class="col-xs-3 col-sm-2">
-                                <input class="fcol-md-90 sc-input-default sc-input-thin" value="{{item.qtd}}" type="number" min="0" max="999">
-                              </div>
-                              <div class="fcol-xs-auto">
-                                <input class="sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome || item.nome}}">
-                              </div>
-                              <div class="fcol-xs-1 align-right">
-                                <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem($index)"></i>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
+                      <div class="sc-m-l-md">
+                        <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem(categoria)"></i>
                       </div>
+                      <div class="sc-m-l-md">
+                        <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria($index)"></i>
+                      </div>
+                    </div>
+
+                    <div class="sc-p-t-xs">
+                      <ul>
+                        <li class="" ng-if="categoria">
+                          <div class="flex-row sc-p-v-md sc-label sc-text-blue">
+                            <div class="fcol-xs-20 sc-text-medium sc-label">Qtde</div>
+                            <div class="fcol-xs-auto sc-text-medium sc-label">Item</div>
+                          </div>
+                        </li>
+                        <li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
+                          <div class="flex-row">
+                            <div class="fcol-xs-20">
+                              <input class="sc-input-default sc-input-thin" value="{{item.qtd}}" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
+                            </div>
+                            <div class="fcol-xs-auto">
+                              <input class="fcol-xs-60 sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}" ng-model="item.nome">
+                            </div>
+                            <div class="fcol-xs-1 align-right">
+                              <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -312,7 +266,7 @@
                   <button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-l-md" ng-click="perfil.edit.toggle()">Cancelar</button>
                 </div>
               </form>
-            </div> <!-- somente edição dos perfis -->
+            </div> <!-- somente edição dos perfis --> <!-- edição dos perfis -->
           </div>
         </li>
       </ul>
