@@ -35,7 +35,7 @@
               <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
             </div>
 
-            <div class="sc-fieldset sc-m-h-md" ng-repeat="categoria in perfilCtrl.listCategorias">
+            <div class="sc-fieldset sc-m-h-md" ng-repeat="categoria in perfilCtrl.listObjetos">
               <div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
                 <div class="sc-text-sm">
                   <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
@@ -121,7 +121,7 @@
     </div>
   </div>
 
-  <div class="sc-modal-body">
+  <div class="sc-modal-body"> <!-- tela de edição de perfis -->
     <div class="" ng-if="perfilCtrl.list.length == 0">
       <div class="sc-p-xxxl sc-text-gray sc-text-xl align-center" style="border-bottom: none;">Nenhum perfil foi cadastrado ainda!</div>
     </div>
