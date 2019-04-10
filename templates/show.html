@@ -8,7 +8,7 @@
         <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_entrou}}</span>
       </div>
       <div class="sc-text-gray sc-p-xs">Data e hora:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.horario}}</span>
+        <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.horario | date: "hh/mm"}}</span>
       </div>
     </div>
     <div class="col-xs-6">
@@ -54,7 +54,7 @@
       <tbody>
         <tr>
           <td><b>Nome</b></td>
-          <td class="align-right" ng-if="objeto.categoria == 'Funcionamento'"><b>Qtd</b></td>
+          <td class="align-right"><b>Qtd</b></td>
           <td ng-if="objeto.categoria == 'Acontecimentos'" class=""><b>Ocorrido</b></td>
           <td ng-if="objeto.categoria == 'Acontecimentos'" class="hidden-xs"><b>Local do ocorrido</b></td>
           <td ng-if="objeto.categoria == 'Empréstimos'" class=""><b>Ação</b></td>
@@ -63,7 +63,7 @@
         </tr>
         <tr ng-repeat="registro in objeto.itens">
           <td>{{registro.nome}}</td>
-          <td class="align-right" ng-if="objeto.categoria == 'Funcionamento'">{{registro.qtd}}</td>
+          <td class="align-right">{{registro.qtd}}</td>
           <td ng-if="objeto.categoria == 'Acontecimentos'" class="">{{registro.ocorrido}}</td>
           <td ng-if="objeto.categoria == 'Acontecimentos'" class="hidden-xs">{{registro.local}}</td>
           <td ng-if="objeto.categoria == 'Empréstimos'" class="">{{registro.acao}}</td>

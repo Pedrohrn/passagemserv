@@ -23,10 +23,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 .controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
-		 { id: 1, label: 'Funcionamento' },
-		 { id: 2, label: 'Acontecimento' },
-		 { id: 3, label: 'Empréstimos' },
+		 	{ id: 1, label: 'Funcionamento' },
+		 	{ id: 2, label: 'Acontecimento' },
+		 	{ id: 3, label: 'Empréstimos' },
 		],
+/*		porteirosList: [
+			{ id: 1, nome: 'Porteiro 1'},
+			{ id: 2, nome: 'Porteiro 2'},
+			{ id: 3, nome: 'Porteiro 3'},
+			{ id: 4, nome: 'Porteiro 4'},
+		],*/
 		novaCategoria: false,
 		showOpts: false,
 
@@ -62,17 +68,17 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			{ id: 1,
 				perfil: 'Portaria Social',
 				objetos: [
-					{ categoria: 'Equipamentos',
+					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
-							{ id: 1, nome: 'Portão Funcionando', 			hasQtd: true, qtd: 4 },
-							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 6 },
-							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
+							{ nome: 'Portão Funcionando', 		 qtd: 4 },
+							{ nome: 'Câmeras funcionando', 	 qtd: 6 },
+							{ nome: 'Interfone funcionando',  qtd: 2 },
 						],
 					},
-					{ categoria: 'Acontecimento',
+					{ categoria: { id: 2, label: 'Acontecimento' },
 						itens: [
-							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: false, qtd: 38 },
-							{ id: 2, nome: 'Retirada de chaves de espaço comum', hasQtd: true, qtd: 10 },
+							{ nome: 'Entrada de fornecedores', qtd: 38 },
+							{ nome: 'Retirada de chaves de espaço comum', qtd: 10 },
 						],
 					},
 				],
@@ -80,21 +86,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			{ id: 2,
 				perfil: 'Portaria de Serviço',
 				objetos: [
-					{ categoria: 'Funcionamento',
+					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
-							{ id: 1, nome: 'Portão Funcionando',  		hasQtd: true, qtd: 10 },
-							{ id: 2, nome: 'Câmeras funcionando', 		hasQtd: true, qtd: 5 },
-							{ id: 3, nome: 'Interfone funcionando', 	hasQtd: true, qtd: 2 },
+							{ nome: 'Portão Funcionando',  	 qtd: 10 },
+							{ nome: 'Câmeras funcionando', 	 qtd: 5 },
+							{ nome: 'Interfone funcionando',  qtd: 2 },
 						],
 					},
-					{ categoria: 'Acontecimento',
+					{ categoria: { id: 2, label: 'Acontecimento' },
 						itens: [
-							{ id: 1, nome: 'Entrada de fornecedores', hasQtd: true, qtd: 7 },
+							{ nome: 'Entrada de fornecedores', qtd: 7 },
 						],
 					},
-					{ categoria: 'Teste',
+					{ categoria: { id: 3, label: 'Empréstimos' },
 						itens: [
-							{ id: 1, nome: 'Testando', hasQtd: true, qtd: 6 },
+							{ nome: 'Testando', qtd: 6 },
 						],
 					},
 				],
@@ -108,6 +114,18 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		perfilNovo: false, // toggle do formulário de novo perfil
 
 		current: "",
+
+		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
+			perfil.edit = new scToggle()
+			perfil.menu = new scToggle()
+			if (perfil.edit.opened == true) {
+				this.listObjetos = this.listObjetos.concat(perfil.objetos)
+				console.log(this.listObjetos)
+			}
+			console.log(perfil.edit.opened)
+			console.log(perfil.objetos)
+			console.log(this.listObjetos)
+		},
 
 		set: function() { //set do perfil, que muda o form
 			if (this.current == "") { return }
@@ -167,14 +185,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(this.list);
 		},
 
-		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
-			perfil.edit = new scToggle()
-			perfil.menu = new scToggle()
-			if (perfil.edit.opened == true) {
-				this.itens = this.list.objetos.itens;
-			}
-			console.log(perfil.edit.opened)
-		},
 
 		modal: new scModal(),
 
@@ -199,9 +209,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
-							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', qtd: 2 },
+							{ nome: 'Câmeras funcionando', qtd: 6 },
+							{ nome: 'Interfone funcionando', qtd: 7 },
 						],
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
@@ -228,14 +238,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
-							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ nome: 'Interfone funcionando', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', qtd: 2 },
+							{ nome: 'Câmeras funcionando', qtd: 6 },
+							{ nome: 'Interfone funcionando', qtd: 7 },
 						],
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
-							{ nome: 'Discussão ', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
+							{ nome: 'Discussão ', qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
 						],
 					},
 					{ categoria: { id: 3, label: 'Empréstimos'} ,
@@ -257,14 +267,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				objetos: [
 					{	categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
-							{ nome: 'Portão funcionando', hasQtd: true, qtd: 2 },
-							{ nome: 'Câmeras funcionando', hasQtd: true, qtd: 6 },
-							{ nome: 'Interfone ', hasQtd: true, qtd: 7 },
+							{ nome: 'Portão funcionando', qtd: 2 },
+							{ nome: 'Câmeras funcionando', qtd: 6 },
+							{ nome: 'Interfone ', qtd: 7 },
 						],
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
-							{ nome: 'Objeto danificado', hasQtd: false, qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
+							{ nome: 'Objeto danificado', qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
 						],
 					},
 					{ categoria: { id: 3, label: 'Empréstimos'} ,
@@ -278,6 +288,48 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	}
 
+	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
+		duplicar: false,
+		duplicata: [],
+		init: function(passagem) {
+			passagem.acc = new scToggle()
+			passagem.menu = new scToggle()
+			passagem.notificacoes = new scToggle()
+			passagem.edit = new scToggle()
+			if (!passagem.id) { this.accToggle(passagem) }
+			if (passagem.edit.opened == true) {
+				$s.formCtrl.listObjetos = angular.copy(passagem)
+			}
+		},
+
+		accToggle: function(passagem) {
+			passagem.acc.toggle()
+			if (!passagem.id) { passagem.edit.toggle() }
+		},
+
+		duplicate: function(passagem){
+			$s.formCtrl.novaPassagem()
+			this.duplicar = !this.duplicar
+			this.duplicata = angular.copy(passagem)
+			console.log(this.duplicata)
+		},
+
+		rmv: function(index) {
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
+				],
+				buttons: [
+					{ label: 'Excluir', color: 'red', action: function() {
+							$s.listCtrl.list.splice(index, 1);
+					}},
+					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
+				],
+			})
+		},
+	}
+
 	$s.formCtrl = {
 		params: [],
 		edit: false,
@@ -288,6 +340,26 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		listObjetos: [],
 		novaCategoria: false,
 		itens: [],
+
+		porteiroVal: function(passagem) {
+			var pessoa_entrou =  passagem.pessoa_entrou
+			var pessoa_saiu = passagem.pessoa_saiu
+			if (this.pessoa_entrou == this.pessoa_saiu) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+						{ msg: 'O porteiro escolhido foi selecionado como o porteiro que está entrando.' },
+						{ msg: 'Por favor, selecione outro.'},
+					],
+					buttons: [
+						{ label: 'Fechar', color: 'gray', action: function() {
+								this.pessoa_saiu == null
+							}
+						}
+					],
+				})
+			} else { return }
+		},
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
@@ -323,8 +395,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
+		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos da edição/nova passagem
+			this.listObjetos.unshift({ itens: [] });
 			console.log(this.listObjetos);
 		},
 
@@ -343,9 +415,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		salvarEPassar: function(passagem){
 			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
-															pessoa_entrou: passagem.entrando.nome,
-															pessoa_saiu: passagem.saindo.nome,
-															data: passagem.data,
+															pessoa_entrou: passagem.pessoa_entrou,
+															pessoa_saiu: passagem.pessoa_saiu,
+															data: new Date(),
 															horario: passagem.horario,
 															status: 'Realizada',
 															perfil: $s.perfilCtrl.current.perfil,
@@ -358,9 +430,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		salvar: function(passagem){
 			if (this.new == true) {
 				$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
-																pessoa_entrou: passagem.entrando.nome,
-																pessoa_saiu: passagem.saindo.nome,
-																data: passagem.data,
+																pessoa_entrou: passagem.pessoa_entrou,
+																pessoa_saiu: passagem.pessoa_saiu,
+																data: new Date(),
 																horario: passagem.horario,
 																status: 'Pendente',
 																perfil: $s.perfilCtrl.current.perfil,
@@ -369,51 +441,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															});
 				console.log($s.listCtrl.list);
 			}
-/*			if (passagem.edit.opened == true) {
-				passagem
-			}*/
-		},
-	}
-
-	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
-		duplicar: false,
-		duplicata: [],
-		init: function(passagem) {
-			passagem.acc = new scToggle()
-			passagem.menu = new scToggle()
-			passagem.notificacoes = new scToggle()
-			passagem.edit = new scToggle()
-			if (!passagem.id) { this.accToggle(passagem) }
-			if (passagem.edit.opened == true) {
-				$s.formCtrl.listObjetos = angular.copy(passagem)
-			}
-		},
-
-		accToggle: function(passagem) {
-			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
-		},
-
-		duplicate: function(passagem){
-			$s.formCtrl.novaPassagem()
-			this.duplicar = !this.duplicar
-			$s.formCtrl.list = angular.copy(passagem)
-			console.log(this.duplicata)
-		},
-
-		rmv: function(index) {
-			scAlert.open({
-				title: 'Atenção!',
-				messages: [
-					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
-				],
-				buttons: [
-					{ label: 'Excluir', color: 'red', action: function() {
-							$s.listCtrl.list.splice(index, 1);
-					}},
-					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
-				],
-			})
 		},
 	}
 
@@ -444,10 +471,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.porteirosCtrl = { //lista fictícia de porteiros
 		porteirosList: [
-			{nome: 'Porteiro 1'},
-			{nome: 'Porteiro 2'},
-			{nome: 'Porteiro 3'},
-			{nome: 'Porteiro 4'},
+			{ id: 1, nome: 'Porteiro 1'},
+			{ id: 2, nome: 'Porteiro 2'},
+			{ id: 3, nome: 'Porteiro 3'},
+			{ id: 4, nome: 'Porteiro 4'},
 		],
 	}
 

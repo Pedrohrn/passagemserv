@@ -9,6 +9,18 @@ alertas: perfil alterado/cadastrado; formulário (caso exista algum erro no pree
 
 ==================================================
 
+Remover toda lógica do formulário para um controller separado
+
+app = angular.module('passagem-servico')
+
+.controller( 'PassagemServico::FormCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
+
+}]);
+
+
+
+==================================================
+
 passagens  = []
 categorias = []
 
@@ -27,4 +39,11 @@ Passagem
 			quantidade
 ==================================================
  desativar passagem: pra que serve?
+ mover o menu de categorias para outro lugar. não há razão em ter um menu para cada categoria na lista. é melhor fazer um menu controlador geral para cada todas elas
 
+
+
+==================================================
+todo:
+
+aumentar os inputs de itens (geral)
