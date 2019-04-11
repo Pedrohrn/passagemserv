@@ -47,7 +47,7 @@
                         <span>
                           <i class="sc-icon sc-icon-reticiencias-v"></i>
                         </span>
-                        <span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoriasCtrl.showOpts">
+                        <span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoria.showOpts">
                           <ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
                             <li ng-click="categoriasCtrl.new()">
                               <div>Nova categoria</div>
@@ -114,7 +114,7 @@
           </div>
           <div class="align-right">
             <button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-l-md" ng-click="perfilCtrl.salvarNovoPerfil()">Salvar</button>
-            <button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-l-md" ng-click="perfil.edit.toggle()">Cancelar</button>
+            <button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-l-md" ng-click="perfilCtrl.novoPerfil()">Cancelar</button>
           </div>
         </form>
       </div>
@@ -147,7 +147,7 @@
                     <span ng-if="!perfil.disabled">Desativar perfil</span>
                     <span ng-if="perfil.disabled">Ativar Perfil</span>
                   </li>
-                  <li ng-click="perfilCtrl.rmv($index)">
+                  <li ng-click="perfilCtrl.rmv(perfil)">
                     <span>Excluir</span>
                   </li>
                   <li ng-click="perfilCtrl.showLog()">
@@ -173,7 +173,7 @@
                       <div class="sc-label">Porteiros podem adicionar novos itens?</div>
                       <label>
                         <span class="sc-toggle sc-m-t-sm">
-                          <input ng-model="perfilPassagemCtrl.config.impedir_porteiros_cadastrarem_novos_itens" type="checkbox">
+                          <input ng-model="perfil.porteiros_podem_adicionar_itens" type="checkbox">
                           <span label-false="Não" label-true="Sim"></span>
                         </span>
                       </label>

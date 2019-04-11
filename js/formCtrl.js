@@ -307,7 +307,6 @@ angular.module('passagem-servico')
 				console.log($s.listCtrl.list);
 			}
 		},
-
 	};
 
 }]);

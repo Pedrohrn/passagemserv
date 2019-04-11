@@ -29,3 +29,9 @@
 .sc-p-none-xs {
 	padding: 0 !important;
 }
+
+@media (max-width: 479px) {
+	body .sc-text-sm-xs {
+		font-size: 0.8em;
+	}
+}
