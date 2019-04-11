@@ -314,14 +314,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(this.duplicata)
 		},
 
-		rmv: function(index) {
+		rmv: function() {
 			scAlert.open({
 				title: 'Atenção!',
 				messages: [
 					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
 				],
 				buttons: [
-					{ label: 'Excluir', color: 'red', action: function() {
+					{ label: 'Excluir', color: 'red', action: function(index) {
 							$s.listCtrl.list.splice(index, 1);
 					}},
 					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
@@ -340,26 +340,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		listObjetos: [],
 		novaCategoria: false,
 		itens: [],
-
-		porteiroVal: function(passagem) {
-			var pessoa_entrou =  passagem.pessoa_entrou
-			var pessoa_saiu = passagem.pessoa_saiu
-			if (this.pessoa_entrou == this.pessoa_saiu) {
-				scAlert.open({
-					title: 'Atenção!',
-					messages: [
-						{ msg: 'O porteiro escolhido foi selecionado como o porteiro que está entrando.' },
-						{ msg: 'Por favor, selecione outro.'},
-					],
-					buttons: [
-						{ label: 'Fechar', color: 'gray', action: function() {
-								this.pessoa_saiu == null
-							}
-						}
-					],
-				})
-			} else { return }
-		},
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;

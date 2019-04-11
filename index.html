@@ -120,7 +120,7 @@
                       <li ng-click="itemCtrl.disable(passagem)">
                         <span>Desativar</span>
                       </li>
-                      <li ng-click="itemCtrl.rmv(index)">
+                      <li ng-click="itemCtrl.rmv()">
                         <span>Excluir</span>
                       </li>
                       <li ng-click="itemCtrl.showLog(passagem)">
@@ -130,7 +130,7 @@
                   </div>
                 </div>
               </div>
-              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened">
+              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened" ng-controller="'js/formCtrl.js'">
                 <div ng-if="!passagem.edit.opened">
                   <div ng-include="'templates/show.html'"></div>
                 </div>
