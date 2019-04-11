@@ -20,7 +20,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$rootScope.scTopMessages = scTopMessages
 })
 
-.controller( 'PassagemServicoCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
+.controller( 'PassagemServico::IndexCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 	{ id: 1, label: 'Funcionamento' },

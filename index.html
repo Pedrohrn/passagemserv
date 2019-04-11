@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/passagemserv.css">
     <link rel="stylesheet" href="css/sc-responsivo.css">
   </head>
-  <body ng-controller="PassagemServicoCtrl">
+  <body ng-controller="PassagemServico::IndexCtrl">
 
     <section id="top-bar" style="height: 52px;">
       <section id="top-bar-content" class="fix">
@@ -130,7 +130,7 @@
                   </div>
                 </div>
               </div>
-              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened" ng-controller="'js/formCtrl.js'">
+              <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened">
                 <div ng-if="!passagem.edit.opened">
                   <div ng-include="'templates/show.html'"></div>
                 </div>

@@ -1,4 +1,4 @@
- app = angular.module('passagem-servico')
+app = angular.module('passagem-servico').lazy
 
 .controller( 'PassagemServico::FormCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
@@ -263,6 +263,6 @@
 				console.log($s.listCtrl.list);
 			}
 		},
-	}
+	};
 
-}
+}]);
