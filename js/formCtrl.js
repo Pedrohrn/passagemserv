@@ -1,6 +1,6 @@
-app = angular.module('passagem-servico').lazy
+angular.module('passagem-servico')
 
-.controller( 'PassagemServico::FormCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
+.controller( 'PassagemServico::FormCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert){
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento' },
@@ -37,7 +37,7 @@ app = angular.module('passagem-servico').lazy
 		},
 	};
 
-	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
+/*	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
 				perfil: 'Portaria Social',
@@ -56,6 +56,7 @@ app = angular.module('passagem-servico').lazy
 						],
 					},
 				],
+				disabled: false,
 			},
 			{ id: 2,
 				perfil: 'Portaria de Serviço',
@@ -78,6 +79,30 @@ app = angular.module('passagem-servico').lazy
 						],
 					},
 				],
+				disabled: false,
+			},
+			{ id: 3,
+				perfil: 'Portaria de Serviço desativada',
+				objetos: [
+					{ categoria: { id: 1, label: 'Funcionamento' },
+						itens: [
+							{ nome: 'Portão Funcionando',  	 qtd: 10 },
+							{ nome: 'Câmeras funcionando', 	 qtd: 5 },
+							{ nome: 'Interfone funcionando',  qtd: 2 },
+						],
+					},
+					{ categoria: { id: 2, label: 'Acontecimento' },
+						itens: [
+							{ nome: 'Entrada de fornecedores', qtd: 7 },
+						],
+					},
+					{ categoria: { id: 3, label: 'Empréstimos' },
+						itens: [
+							{ nome: 'Testando', qtd: 6 },
+						],
+					},
+				],
+				disabled: true,
 			},
 		],
 		new: false,
@@ -155,10 +180,13 @@ app = angular.module('passagem-servico').lazy
 		},
 
 		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos});
+			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, disabled: false});
 			console.log(this.list);
 		},
 
+		disable_enable: function(perfil){
+			perfil.disabled = !perfil.disabled;
+		},
 
 		modal: new scModal(),
 
@@ -169,7 +197,7 @@ app = angular.module('passagem-servico').lazy
 		close: function () {
 			this.modal.close()
 		},
-	};
+	};*/
 
 	$s.formCtrl = {
 		params: [],
@@ -186,7 +214,7 @@ app = angular.module('passagem-servico').lazy
 			this.new = !this.new;
 		},
 
-		init: function(passagem) {
+		/*init: function(passagem) {
 			obj = passagem || {}
 
 			// usar alguma coias para copiar o obj 'passagem'
@@ -197,6 +225,22 @@ app = angular.module('passagem-servico').lazy
 			} else {
 				this.params = obj
 			}
+		},*/
+
+		init: function(passagem) {
+			passagem.acc = new scToggle()
+			passagem.menu = new scToggle()
+			passagem.notificacoes = new scToggle()
+			passagem.edit = new scToggle()
+			if (!passagem.id) {this.accToggle(passagem) }
+			if (passagem.edit.opened == true) {
+				$s.formCtrl.listObjetos == angular.copy(passagem)
+			}
+		},
+
+		accToggle: function(passagem) {
+			passagem.acc.toggle()
+			if (!passagem.id) { passagem.edit.toggle() }
 		},
 
 		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
@@ -236,8 +280,8 @@ app = angular.module('passagem-servico').lazy
 
 		salvarEPassar: function(passagem){
 			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
-															pessoa_entrou: passagem.entrando.nome,
-															pessoa_saiu: passagem.saindo.nome,
+															pessoa_entrou: passagem.pessoa_entrou,
+															pessoa_saiu: passagem.pessoa_saiu,
 															data: new Date(),
 															horario: passagem.horario,
 															status: 'Realizada',
@@ -251,8 +295,8 @@ app = angular.module('passagem-servico').lazy
 		salvar: function(passagem){
 			if (this.new == true) {
 				$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
-																pessoa_entrou: passagem.entrando.nome,
-																pessoa_saiu: passagem.saindo.nome,
+																pessoa_entrou: passagem.pessoa_entrou,
+																pessoa_saiu: passagem.pessoa_saiu,
 																data: new Date(),
 																horario: passagem.horario,
 																status: 'Pendente',
@@ -263,6 +307,7 @@ app = angular.module('passagem-servico').lazy
 				console.log($s.listCtrl.list);
 			}
 		},
+
 	};
 
 }]);

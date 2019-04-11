@@ -131,6 +131,7 @@
           <div class="sc-accordion-head flex-row">
             <div class="fcol-xs-auto">
               <div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.perfil}}</div>
+              <div class="sc-btn sc-btn-yellow sc-btn-sm sc-btn-thin sc-m-l-lg" ng-if="perfil.disabled">Desativado!</div>
             </div>
             <div class="fcol-xs-3em" sc-stop-click>
               <div class="sc-dropdown" ng-click="perfil.menu.toggle()">
@@ -142,8 +143,9 @@
                   <li ng-click="perfilCtrl.duplicar()">
                     <span>Duplicar perfil</span>
                   </li>
-                  <li ng-click="perfilCtrl.disable()">
-                    <span>Desativar perfil</span>
+                  <li ng-click="perfilCtrl.disable_enable(perfil)">
+                    <span ng-if="!perfil.disabled">Desativar perfil</span>
+                    <span ng-if="perfil.disabled">Ativar Perfil</span>
                   </li>
                   <li ng-click="perfilCtrl.rmv($index)">
                     <span>Excluir</span>

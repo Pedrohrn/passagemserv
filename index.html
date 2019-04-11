@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/sc-uikit.css">
     <link rel="stylesheet" href="css/sc-icons.css">
     <link rel="stylesheet" href="css/passagemserv.css">
-    <link rel="stylesheet" href="css/sc-responsivo.css">
   </head>
   <body ng-controller="PassagemServico::IndexCtrl">
 
@@ -15,7 +14,7 @@
       <section id="top-bar-content" class="fix">
         <div class="flex-row">
           <div class="left sc-p-r-lg">
-            <button ng-click="formCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">
+            <button ng-click="itemCtrl.novaPassagem()" class="sc-btn sc-btn-green" type="button">
               <span class="hidden-xs">Nova Passagem</span>
               <span class="visible-xs"><i class="sc-icon sc-icon-mais-1"></i></span>
             </button>
@@ -37,7 +36,7 @@
                 </button>
               </div>
               <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menuAdmCtrl.menuOpen" style="display: block;">
-                <li ng-click="perfilCtrl.modalToggle()">
+                <li  ng-controller="PassagemServico::FormCtrl"y ng-click="perfilCtrl.modalToggle()">
                   <span>Perfis de passagem</span>
                 </li>
                 <li ng-click="menuAdmCtrl.abrirModalLog()">
@@ -60,7 +59,7 @@
       <section class="sc-bg-white">
         <div>
           <ul multi-check-group class="sc-accordion">
-            <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="formCtrl.new">
+            <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="itemCtrl.new">
               <div class="sc-accordion-head flex-row" ng-click="formCtrl.alerta()">
                 <div class="sc-accordion-col-3 align-center">
                   <i class="sc-text-xl sc-icon-mais-1"></i>
@@ -69,7 +68,7 @@
                   <div class="sc-ellipsis-inline sc-text-bold sc-text-white">Nova passagem</div>
                 </div>
               </div>
-              <div class="sc-accordion-body ng-animation-slider">
+              <div class="sc-accordion-body ng-animation-slider" ng-controller="PassagemServico::FormCtrl">
                 <div ng-include="'templates/form.html'"></div>
               </div>
             </li>
@@ -135,7 +134,7 @@
                   <div ng-include="'templates/show.html'"></div>
                 </div>
 
-                <div ng-if="passagem.edit.opened" ng-init="formCtrl.init(passagem)">
+                <div ng-if="passagem.edit.opened" ng-controller="PassagemServico::FormCtrl">
                   <div ng-include="'templates/form.html'"></div>
                 </div>
               </div>
@@ -144,7 +143,7 @@
         </div>
       </section>
 
-      <div ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active"></div>
+      <div ng-controller="PassagemServico::FormCtrl" ng-include="'templates/perfil-passagens.html'" ng-if="perfilCtrl.modal.active"></div>
       <div ng-include="'templates/log.html'" ng-if="menuAdmCtrl.logOpen"></div>
     </div>
 
@@ -196,8 +195,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
 
     <script type="text/javascript" src="js/sc-uikit.js"></script>
-    <!-- <script type="text/javascript" src="js/sc-responsivo.js"></script> -->
     <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="js/formCtrl.js"></script>
 
   </body>
 </html>
