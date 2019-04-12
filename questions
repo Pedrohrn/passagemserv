@@ -46,9 +46,10 @@ Passagem
 ==================================================
 toDo/questions:
 
-aumentar os inputs de itens (geral)
+
 exclusão de passagens: por que está excluindo sempre e apenas o primeiro item da lista?
 exclusão de perfis: mesma coisa da exclusão de passagens.
 adicionar e editar perfis ao mesmo tempo faz com que o formulário seja espelhado (objetos). creio que dá pra corrigir criando uma nova lista de objetos e separando aquilo que é objeto de edição e aquilo que é objeto de criação de perfil. (provavelmente será necessário criar um Ctrl pro perfil e suas informações)
 clicar no botão "cancelar" ou no accordion-head "Nova passagem" não fecha o formulário, por mais que uma função exista para tal ação
-porteiros_id: eu não teria que trabalhar diretamente com o objeto? pois é necessário usar o nome dos mesmos na listagem de passagens (index) e no texto de pré-passagem. ainda nessa questão, depois de dar uma olhada, consegui corrigir para as edições de perfis já salvos. porém, ao cadastrar novos, logo na tela de cadastro, o valor {{passagem.pessoa_entrou.nome}} não é atualizado conforme eu troco de porteiros. o mesmo vale para o select de perfil.
+porteiro_id: eu não teria que trabalhar diretamente com o objeto? pois é necessário usar o nome dos mesmos na listagem de passagens (index) e no texto de pré-passagem. ainda nessa questão, depois de dar uma olhada, consegui corrigir para as edições de perfis já salvos. porém, ao cadastrar novos, logo na tela de cadastro, o valor {{passagem.pessoa_entrou.nome}} não é atualizado conforme eu troco de porteiros. o mesmo vale para o select de perfil.
+data de passagem: como deixar alinhado com os registros da coluna

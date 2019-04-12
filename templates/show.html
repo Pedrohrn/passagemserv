@@ -40,7 +40,7 @@
         <span class="sc-text-blue"> <b>{{passagem.pessoa_entrou.nome}}</b></span>, de acordo com as informações abaixo:
       </div>
     </div>
-    <div class="sc-text-blue sc-text-xxl fcol-xs-100">{{passagem.perfil}}</div>
+    <div class="sc-text-blue sc-text-xxl fcol-xs-100">{{passagem.perfil.perfil || passagem.perfil}}</div>
     <table ng-repeat="objeto in passagem.objetos" class="sc-table sc-m-h-lg sc-fieldset col-xs-12">
       <thead>
         <tr>
@@ -55,20 +55,10 @@
         <tr>
           <td><b>Nome</b></td>
           <td class="align-right"><b>Qtd</b></td>
-          <td ng-if="objeto.categoria == 'Acontecimentos'" class=""><b>Ocorrido</b></td>
-          <td ng-if="objeto.categoria == 'Acontecimentos'" class="hidden-xs"><b>Local do ocorrido</b></td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class=""><b>Ação</b></td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class="hidden-xs"><b>Unidade/Pessoa</b></td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class="hidden-xs"><b>Tipo</b></td>
         </tr>
         <tr ng-repeat="registro in objeto.itens">
           <td>{{registro.nome}}</td>
           <td class="align-right">{{registro.qtd}}</td>
-          <td ng-if="objeto.categoria == 'Acontecimentos'" class="">{{registro.ocorrido}}</td>
-          <td ng-if="objeto.categoria == 'Acontecimentos'" class="hidden-xs">{{registro.local}}</td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class="">{{registro.acao}}</td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class="hidden-xs">{{registro.unidade_pessoa}}</td>
-          <td ng-if="objeto.categoria == 'Empréstimos'" class="hidden-xs">{{registro.tipoPessoa}}</td>
         </tr>
       </tbody>
     </table>

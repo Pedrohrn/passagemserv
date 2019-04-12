@@ -37,7 +37,7 @@ angular.module('passagem-servico')
 		},
 	};
 
-/*	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
+	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
 				perfil: 'Portaria Social',
@@ -197,7 +197,7 @@ angular.module('passagem-servico')
 		close: function () {
 			this.modal.close()
 		},
-	};*/
+	};
 
 	$s.formCtrl = {
 		params: [],

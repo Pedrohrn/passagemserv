@@ -18,9 +18,24 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 .run(function($rootScope, scAlert, scTopMessages) {
 	$rootScope.scAlert = scAlert
 	$rootScope.scTopMessages = scTopMessages
+
+	window.onresize = function(){
+		console.log('sdsadsads')
+    screenWidth = window.innerWidth
+
+    $rootScope.$apply(function(){
+      $rootScope.screen = {
+        isXs: screenWidth < 479,
+        isSm: screenWidth > 479 && screenWidth <= 768,
+        isMd: screenWidth > 768 && screenWidth <= 1024,
+        isLg: screenWidth > 1024,
+      }
+    })
+  };
+  window.onresize() // iniciando 'screen'
 })
 
-.controller( 'PassagemServico::IndexCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert) {
+.controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento' },
@@ -63,8 +78,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				pessoa_saiu: { id: 2, nome: 'Porteiro 2'},
 				data: 20032019,
 				horario: 203031,
-				status: 'Pendente',
-				perfil: 'Portaria Social',
+				status: { label: 'Pendente', color: 'yellow' },
+				perfil: { id: 1, perfil: 'Portaria Social' },
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -75,12 +90,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
-							{ nome: 'Discussão ', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
+							{ nome: 'Discussão ', qtd: 1 },
 						],
 					},
 					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
-							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 101', tipoPessoa: 'Morador' },
+							{ nome: 'Bola', qtd: 3 },
 						],
 					},
 				],
@@ -92,8 +107,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				pessoa_saiu: { id: 1, nome: 'Porteiro 1'},
 				data: 21032019,
 				horario: 203031,
-				status: 'Realizada',
-				perfil: 'Portaria de Serviço',
+				status: { label: 'Realizada', color: 'green' },
+				perfil: { id: 2, perfil: 'Portaria de Serviço' },
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -104,12 +119,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
-							{ nome: 'Discussão ', qtd: '-', local: 'Hall', ocorrido: 'Fulano discutiu com beltrano' },
+							{ nome: 'Discussão ', qtd: 2 },
 						],
 					},
 					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
-							{ nome: 'Bola', acao: 'Empréstimo', unidade_pessoa: 'Fulano - Apto 101', tipoPessoa: 'Visitante' },
+							{ nome: 'Bola', qtd: 2 },
 						],
 					},
 				],
@@ -121,8 +136,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				pessoa_saiu: { id: 2, nome: 'Porteiro 2' },
 				data: 22032019,
 				horario: 203031,
-				status: 'Realizada',
-				perfil: 'Portaria Social',
+				status: { label: 'Realizada', color: 'green' },
+				perfil: { id: 1, perfil: 'Portaria Social'},
 				objetos: [
 					{	categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -133,12 +148,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 					{ categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
-							{ nome: 'Objeto danificado', qtd: '-', local: 'Hall', ocorrido: 'Morador X quebrou o vidro da portaria' },
+							{ nome: 'Objeto danificado', qtd: 30 },
 						],
 					},
 					{ categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
-							{ nome: 'Bola', acao: 'Devolução', unidade_pessoa: 'Apto 201', tipoPessoa: 'Morador' },
+							{ nome: 'Bola', qtd: 7 },
 						],
 					},
 				],
@@ -218,14 +233,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				disabled: true,
 			},
 		],
-		new: false,
 		listObjetos: [],
 		novaCategoria: false,
 		itens: [],
-
 		perfilNovo: false, // toggle do formulário de novo perfil
 
-		current: "",
+		current: [],
 
 		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
@@ -239,7 +252,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		set: function() { //set do perfil, que muda o form
-			if (this.current == "") { return }
+			if (this.current == []) { return }
 			console.log('alçsdf')
 
 			scAlert.open({
@@ -263,7 +276,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
 			})
-
 			//$s.formCtrl.listObjetos = angular.copy($s.perfilCtrl.current.objetos)
 		},
 
@@ -293,8 +305,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			categoria.itens.splice(index, 1);
 		},
 
-		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
+		salvarPerfil: function(){
+			if (!this.duplicar) {
+				this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
+			}
 			console.log(this.list);
 		},
 
@@ -316,6 +330,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			})
 		},
 
+		duplicate: function(perfil) {
+			this.perfilNovo = !this.perfilNovo
+		  this.listObjetos = angular.copy(perfil.objetos)
+		  this.new_perfil = angular.copy(perfil.perfil)
+		  this.porteiros_podem_adicionar_itens = angular.copy(perfil.porteiros_podem_adicionar_itens)
+		  console.log(this.new)
+		},
+
 		modal: new scModal(),
 
 		modalToggle: function () { // abrir/fechar modal
@@ -326,7 +348,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.modal.close()
 		},
 
-		rmv: function(perfil) {
+		rmv: function() {
 			scAlert.open({
 				title: "Atenção!",
 				messages: [
@@ -334,7 +356,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ msg: 'As passagens cadastradas anteriormente não serão afetadas, a menos que sejam editadas manualmente pelo usuário.' },
 				],
 				buttons: [
-				 { label: "Sim", color: 'yellow', action: function(perfil) { $s.perfilCtrl.list.splice(perfil, 1) } },
+				 { label: "Sim", color: 'yellow', action: function(index) { $s.perfilCtrl.list.splice(index, 1) } },
 				 { label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
 			})
@@ -347,7 +369,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		new: false,
 		newRecord: false,
 
-		new: false,
 		listObjetos: [],
 		novaCategoria: false,
 		itens: [],
@@ -383,7 +404,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		accToggle: function(passagem) {
 			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
+			if (passagem.edit.opened) { passagem.edit.toggle() }
 		},
 
 		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
@@ -430,7 +451,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															pessoa_saiu: passagem.pessoa_saiu,
 															data: new Date(),
 															horario: passagem.horario,
-															status: 'Realizada',
+															status: { label: 'Realizada', color: 'green' },
 															perfil: $s.perfilCtrl.current.perfil,
 															objetos: this.listObjetos,
 															obs: passagem.detalhes,
@@ -445,7 +466,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 																pessoa_saiu: passagem.pessoa_saiu,
 																data: new Date(),
 																horario: passagem.horario,
-																status: 'Pendente',
+																status: { label: 'Pendente', color: 'yellow' },
 																perfil: $s.perfilCtrl.current.perfil,
 																objetos: this.listObjetos,
 																obs: passagem.detalhes,
@@ -457,7 +478,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
 		duplicar: false,
-		new: false,
 		duplicata: [],
 		init: function(passagem) {
 			passagem.acc = new scToggle()
@@ -471,33 +491,31 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		},
 
-		novaPassagem: function(){ //abrir o formulário
-			this.new = !this.new;
-		},
-
-
 		accToggle: function(passagem) {
 			passagem.acc.toggle()
 			if (!passagem.id) { passagem.edit.toggle() }
 		},
 
 		duplicate: function(passagem){
-			$s.formCtrl.novaPassagem()
+			$s.formCtrl.new = !$s.formCtrl.new
 			this.duplicar = !this.duplicar
-			this.duplicata = angular.copy(passagem)
-			console.log(this.duplicata)
-			console.log($s.formCtrl.listObjetos);
+			this.params = angular.copy(passagem)
+			$s.formCtrl.listObjetos = angular.copy(passagem.objetos)
+			this.obs = angular.copy(passagem.objetos)
+			console.log(this.params)
+			console.log($s.formCtrl.listObjetos)
+			console.log(this.new)
 		},
 
-		rmv: function() {
+		rmv: function(passagem) {
 			scAlert.open({
 				title: 'Atenção!',
 				messages: [
 					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
 				],
 				buttons: [
-					{ label: 'Excluir', color: 'red', action: function(index) {
-							$s.listCtrl.list.splice(index, 1);
+					{ label: 'Excluir', color: 'red', action: function() {
+							$s.listCtrl.list.remove(passagem);
 					}},
 					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
 				],
@@ -567,5 +585,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.menuOpen = !this.menuOpen
 		}
 	}
+
+  window.onclick = function(event){
+  	$('.sc-dropdown > .sc-dropdown-menu:not(.ng-hide)').each((idx, elDropDownMenu) => {
+  		$s.$apply(function(){
+  			elDropDown = $(elDropDownMenu).parent()
+
+	  		scoped = angular.element(elDropDown).scope()
+	  		attrValue = $(elDropDown).attr('ng-click')
+
+	      model = $parse(attrValue); // note: $parse is injected in the ctor
+	      model(scoped)
+  		})
+  	})
+
+  	// $()
+  }
 
 }]);
