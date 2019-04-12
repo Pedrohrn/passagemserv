@@ -20,7 +20,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$rootScope.scTopMessages = scTopMessages
 
 	window.onresize = function(){
-		console.log('sdsadsads')
     screenWidth = window.innerWidth
 
     $rootScope.$apply(function(){
@@ -348,7 +347,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.modal.close()
 		},
 
-		rmv: function() {
+		rmv: function(perfil) {
 			scAlert.open({
 				title: "Atenção!",
 				messages: [
@@ -356,7 +355,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ msg: 'As passagens cadastradas anteriormente não serão afetadas, a menos que sejam editadas manualmente pelo usuário.' },
 				],
 				buttons: [
-				 { label: "Sim", color: 'yellow', action: function(index) { $s.perfilCtrl.list.splice(index, 1) } },
+				 { label: "Sim", color: 'yellow', action: function() { $s.perfilCtrl.list.remove(perfil) } },
 				 { label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
 			})
@@ -407,7 +406,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			if (passagem.edit.opened) { passagem.edit.toggle() }
 		},
 
-		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+		alerta: function(passagem){ //alerta ao clicar no accordion da nova passagem.
 			scAlert.open({
 				title: 'Atenção!',
 				messages: [
@@ -415,7 +414,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 				buttons: [
 					{ label: 'Sim', color: 'yellow', action: function(){
-						this.new = !this.new;
+						$s.formCtrl.new = false
+						passagem.edit.opened = false
 					} },
 					{ label: 'Não', color: 'gray', action: scAlert.close() },
 				]
@@ -581,9 +581,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	}
 
 	$s.menuAdmCtrl = { //controle de exibição do toolbar principal (gerenciamento de perfis e histórico)
-		toggleMenu: function() {
-			this.menuOpen = !this.menuOpen
-		}
+		admMenu: new scToggle(),
 	}
 
   window.onclick = function(event){

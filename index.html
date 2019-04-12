@@ -29,13 +29,9 @@
           </div>
           <div class="fcol-xs-auto hidden-xs"></div>
           <div class="fcol-xs-3em">
-            <span class="sc-dropdown pull-right">
-              <div class="sc-relative">
-                <button class="sc-btn sc-btn-grey" ng-click="menuAdmCtrl.toggleMenu()" type="button">
-                  <i class="sc-icon sc-icon-reticiencias-v"></i>
-                </button>
-              </div>
-              <ul class="sc-dropdown-menu ng-animation-slider" ng-show="menuAdmCtrl.menuOpen" style="display: block;">
+            <div class="sc-dropdown pull-right" ng-click="menuAdmCtrl.admMenu.toggle()">
+              <i class="sc-btn sc-btn-default sc-icon sc-icon-reticiencias-v"></i>
+              <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="admMenu.opened" style="display: block;">
                 <li ng-click="perfilCtrl.modalToggle()">
                   <span>Perfis de passagem</span>
                 </li>
@@ -43,7 +39,7 @@
                   <span>Histórico</span>
                 </li>
               </ul>
-            </span>
+            </div>
           </div>
         </div>
         <div id="top-bar-filter">
@@ -57,7 +53,20 @@
 
     <section id="passagem-servico" class="sc-bg-white sc-p-t-xl">
       <ul multi-check-group class="sc-accordion">
-        <li class="sc-accordion-head" style="background: #fafafa; border-bottom: 1px solid #e2e2e2; border-top: 1px solid #f2f2f2;">
+        <li class="sc-acc-blue sc-p-t-xl" style="border-top: none; border-bottom: 1px solid #e2e2e2;" ng-if="formCtrl.new">
+          <div class="sc-accordion-head flex-row" ng-click="formCtrl.alerta()">
+            <div class="sc-accordion-col-3 align-center">
+              <i class="sc-text-xl sc-icon-mais-1"></i>
+            </div>
+            <div class="fcol-xs-auto">
+              <div class="sc-ellipsis-inline sc-text-bold sc-text-white">Nova passagem</div>
+            </div>
+          </div>
+          <div class="sc-accordion-body ng-animation-slider">
+            <div ng-include="'templates/form.html'"></div>
+          </div>
+        </li>
+        <li class="sc-accordion-head" style="border-bottom: 1px solid #e2e2e2; border-top: none;">
           <div class="flex-row flex-column align-items-center sc-text-gray" style="min-height: 2.5em;">
             <label class="fcol-xs-3em fcol-order-0 align-center">
               <input ng-click="passagens.selectAll()" ng-checked="passagens.allSelected" class="sc-checkbox sc-checkbox-blue" type="checkbox">
