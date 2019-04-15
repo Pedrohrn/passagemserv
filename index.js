@@ -37,9 +37,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 .controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
-		 { id: 1, label: 'Funcionamento' },
-		 { id: 2, label: 'Acontecimento' },
-		 { id: 3, label: 'Empréstimos' },
+		 { id: 1, label: 'Funcionamento', disabled: false },
+		 { id: 2, label: 'Acontecimento', disabled: false },
+		 { id: 3, label: 'Empréstimos', disabled: false },
 		],
 		novaCategoria: false,
 		showOpts: false,
@@ -65,9 +65,33 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				$s.formCtrl.listObjetos.unshift({ id: $s.formCtrl.listObjetos.length+1, label: this.newCategoria});
 			};
 			this.newCategoria = '';
-			console.log(this.list);
-			console.log($s.formCtrl.listObjetos);
 		},
+
+		edit: function(categoria){
+			this.new = true
+			this.newCategoria = categoria.label
+		},
+
+/*		disable_enable: function(categoria) {
+			title: '';
+			if (categoria.disabled) {
+				this.title = 'Deseja reativar a categoria?'
+			} else {
+				this.title = 'Deseja desativar a categoria?'
+			}
+			scAlert.open({
+				title: this.title,
+				buttons: [
+				{ label: 'Sim', color: 'yellow', action: function() {
+				 		categoria.disabled = !categoria.disabled
+				 		console.log($s.categoriasCtrl.list)
+					}
+				},
+				{ label: 'Não', color: 'gray', action: scAlert.close()
+				}
+				],
+			})
+		}*/
 	};
 
 	$s.listCtrl = { //lista de passagens
@@ -245,14 +269,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			if (perfil.edit.opened == true) {
 				this.listObjetos = angular.copy(perfil.objetos)
 				this.current = angular.copy(perfil.perfil)
-				console.log(this.listObjetos)
 			}
-			console.log(this.listObjetos)
 		},
 
 		set: function() { //set do perfil, que muda o form
 			if (this.current == []) { return }
-			console.log('alçsdf')
 
 			scAlert.open({
 				title: "Atenção!",
@@ -280,6 +301,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		novoPerfil: function(){
 			this.perfilNovo = !this.perfilNovo;
+			this.porteiros_podem_adicionar_itens = false;
 			this.new_perfil = '';
 			this.listObjetos = [];
 		},
@@ -308,7 +330,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			if (!this.duplicar) {
 				this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
 			}
-			console.log(this.list);
 		},
 
 		disable_enable: function(perfil){
@@ -334,7 +355,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		  this.listObjetos = angular.copy(perfil.objetos)
 		  this.new_perfil = angular.copy(perfil.perfil)
 		  this.porteiros_podem_adicionar_itens = angular.copy(perfil.porteiros_podem_adicionar_itens)
-		  console.log(this.new)
 		},
 
 		modal: new scModal(),
@@ -423,7 +443,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ label: 'Não', color: 'gray', action: scAlert.close() },
 				]
 			})
-			console.log(this.new);
 		},
 
 		criarCategoria: function(){
@@ -432,7 +451,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
 			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
-			console.log(this.listObjetos);
 		},
 
 		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -440,7 +458,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		cadastrarItem: function(categoria){
-			console.log(categoria.itens)
 			categoria.itens.unshift({})
 		},
 
@@ -459,7 +476,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															objetos: this.listObjetos,
 															obs: passagem.detalhes,
 														});
-			console.log($s.listCtrl.list);
 		},
 
 		salvar: function(passagem){
@@ -474,7 +490,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 																objetos: this.listObjetos,
 																obs: passagem.detalhes,
 															});
-				console.log($s.listCtrl.list);
 			}
 		},
 	};
@@ -505,9 +520,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.params = angular.copy(passagem)
 			$s.formCtrl.listObjetos = angular.copy(passagem.objetos)
 			this.obs = angular.copy(passagem.objetos)
-			console.log(this.params)
-			console.log($s.formCtrl.listObjetos)
-			console.log(this.new)
 		},
 
 		rmv: function(passagem) {
@@ -587,7 +599,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		menuOpened: false,
 		showMenu: function() {
 			this.menuOpened = !this.menuOpened;
-			console.log(this.menuOpened)
 		},
 	}
 

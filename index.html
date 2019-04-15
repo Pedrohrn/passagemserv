@@ -19,7 +19,7 @@
               <span class="visible-xs"><i class="sc-icon sc-icon-mais-1"></i></span>
             </button>
           </div>
-          <div class="sc-p-r-lg fcol-xs-auto fcol-sm-60 fcol-lg-45">
+          <div class="sc-p-r-lg fcol-sm-60 fcol-lg-45">
             <form class="sc-input-group">
               <input class="sc-input-default" type="text">
               <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
@@ -27,7 +27,7 @@
               <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-impressora"></i></button>
             </form>
           </div>
-          <div class="fcol-xs-auto hidden-xs"></div>
+          <div class="fcol-xs-auto"></div>
           <div class="fcol-xs-3em" sc-stop-click>
             <div class="sc-dropdown" ng-click="menuAdmCtrl.showMenu()">
               <i class="sc-btn sc-btn-default sc-icon sc-icon-reticiencias-v"></i>
@@ -103,7 +103,7 @@
               <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
                 <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened, 'sc-badge-hover-white': passagem.acc.opened}"></i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menu.opened" style="display: block;">
-                  <li ng-if="passagem.status == 'Pendente'">
+                  <li ng-if="passagem.status.label == 'Pendente'">
                     <span>Passar serviço</span>
                   </li>
                   <li ng-click="passagem.edit.toggle()">

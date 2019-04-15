@@ -3,9 +3,9 @@ angular.module('passagem-servico')
 .controller( 'PassagemServico::FormCtrl', [ '$scope', '$scModal', 'scToggle', 'scAlert', function($s, scModal, scToggle, scAlert){
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
-		 { id: 1, label: 'Funcionamento' },
-		 { id: 2, label: 'Acontecimento' },
-		 { id: 3, label: 'Empréstimos' },
+		 { id: 1, label: 'Funcionamento', disabled: false },
+		 { id: 2, label: 'Acontecimento', disabled: false },
+		 { id: 3, label: 'Empréstimos', disabled: true },
 		],
 		novaCategoria: false,
 		showOpts: false,
