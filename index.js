@@ -414,8 +414,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 				buttons: [
 					{ label: 'Sim', color: 'yellow', action: function(){
-						$s.formCtrl.new = false
-						passagem.edit.opened = false
+						 if ($s.formCtrl.new == true) {
+							$s.formCtrl.new = false
+						} else {
+							passagem.edit.opened = false
+						}
 					} },
 					{ label: 'Não', color: 'gray', action: scAlert.close() },
 				]
@@ -581,7 +584,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	}
 
 	$s.menuAdmCtrl = { //controle de exibição do toolbar principal (gerenciamento de perfis e histórico)
-		admMenu: new scToggle(),
+		menuOpened: false,
+		showMenu: function() {
+			this.menuOpened = !this.menuOpened;
+			console.log(this.menuOpened)
+		},
 	}
 
   window.onclick = function(event){

@@ -28,10 +28,10 @@
             </form>
           </div>
           <div class="fcol-xs-auto hidden-xs"></div>
-          <div class="fcol-xs-3em">
-            <div class="sc-dropdown pull-right" ng-click="menuAdmCtrl.admMenu.toggle()">
+          <div class="fcol-xs-3em" sc-stop-click>
+            <div class="sc-dropdown" ng-click="menuAdmCtrl.showMenu()">
               <i class="sc-btn sc-btn-default sc-icon sc-icon-reticiencias-v"></i>
-              <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="admMenu.opened" style="display: block;">
+              <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="menuAdmCtrl.menuOpened" style="display: block;">
                 <li ng-click="perfilCtrl.modalToggle()">
                   <span>Perfis de passagem</span>
                 </li>
