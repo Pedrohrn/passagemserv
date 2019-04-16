@@ -72,7 +72,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.newCategoria = categoria.label
 		},
 
-/*		disable_enable: function(categoria) {
+		/*disable_enable: function(categoria) {
 			title: '';
 			if (categoria.disabled) {
 				this.title = 'Deseja reativar a categoria?'
@@ -185,6 +185,47 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		],
 	};
 
+	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
+		passagem: [],
+		duplicar: false,
+		init: function(passagem) {
+			passagem.acc = new scToggle()
+			passagem.menu = new scToggle()
+			passagem.notificacoes = new scToggle()
+			passagem.edit = new scToggle()
+			if (!passagem.id) { this.accToggle(passagem) }
+		},
+
+		accToggle: function(passagem) {
+			passagem.acc.toggle()
+			if (!passagem.id) { passagem.edit.toggle() }
+		},
+
+		duplicate: function(passagem){
+			$s.formCtrl.new = !$s.formCtrl.new
+			this.duplicar = !this.duplicar
+			this.passagem = angular.copy(passagem)
+			console.log(this.passagem)
+			console.log($s.formCtrl.new)
+		},
+
+		rmv: function(passagem) {
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
+				],
+				buttons: [
+					{ label: 'Excluir', color: 'red', action: function() {
+							$s.listCtrl.list.remove(passagem)
+							scTopMessages.open("Registro excluído com sucesso!", {timeout: 3000})
+					}},
+					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
+				],
+			})
+		},
+	}
+
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		list: [
 			{ id: 1,
@@ -273,10 +314,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		set: function(passagem) { //set do perfil, que muda o form
-			if (passagem.perfil == []) { return }
-				if (!passagem.perfil) {
-					passagem.objetos = []
-				}
+			if (passagem.perfil == []) { passagem.objetos = [{ id: 1}] }
+				console.log(passagem.perfil)
+			console.log(passagem.objetos)
 
 			scAlert.open({
 				title: "Atenção!",
@@ -383,10 +423,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	};
 
 	$s.formCtrl = {
-		params: [],
-		edit: false,
 		new: false,
-		newRecord: false,
 		passagem: [],
 		listObjetos: [],
 		novaCategoria: false,
@@ -395,6 +432,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
+			passagem = [];
 		},
 
 		/*init: function(passagem) {
@@ -416,6 +454,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
 			//if (!passagem.id) {this.accToggle(passagem) }
+			if ($s.itemCtrl.duplicar == true) {
+				passagem = $s.itemCtrl.passagem
+			}
 		},
 
 		accToggle: function(passagem) {
@@ -495,65 +536,26 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 	};
 
-	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
-		init: function(passagem) {
-			passagem.acc = new scToggle()
-			passagem.menu = new scToggle()
-			passagem.notificacoes = new scToggle()
-			passagem.edit = new scToggle()
-			if (!passagem.id) { this.accToggle(passagem) }
-		},
-
-		accToggle: function(passagem) {
-			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
-		},
-
-		duplicate: function(passagem){
-			$s.formCtrl.new = !$s.formCtrl.new
-			passagem = angular.copy(passagem)
-			passagem.objetos = angular.copy(passagem.objetos)
-			this.obs = angular.copy(passagem.obs)
-			console.log(passagem)
-		},
-
-		rmv: function(passagem) {
-			scAlert.open({
-				title: 'Atenção!',
-				messages: [
-					{ msg: 'Deseja realmente excluir essa passagem? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.'},
-				],
-				buttons: [
-					{ label: 'Excluir', color: 'red', action: function() {
-							$s.listCtrl.list.remove(passagem)
-							scTopMessages.open("Registro excluído com sucesso!", {timeout: 3000})
-					}},
-					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
-				],
-			})
-		},
-	}
-
   $s.admCtrl = { //lista fictícia da administraçao
   	grupos: [
 	  	{ id: 1,
 	  		label: 'Síndico',
 	  		membros: [
-	  			{ id: 1, user: 'Márcio' },
+	  			{ id: 1, user: 'Márcio', email: 'user@usermail.com' },
 	  		],
 	  	},
 	  	{ id: 2,
 	  		label: 'Subsíndico',
 	  		membros: [
-	  			{ id: 1, user: 'Rafael' },
+	  			{ id: 1, user: 'Rafael', email: 'user@usermail.com' },
 	  		],
 	  	},
 	  	{ id: 3,
 	  		label: 'Administração',
 	  		membros: [
-	  			{ id: 1, user: 'Ana' },
-	  			{ id: 2, user: 'Maria' },
-	  			{ id: 3, user: 'Lúcio' },
+	  			{ id: 1, user: 'Ana', email: 'user@usermail.com' },
+	  			{ id: 2, user: 'Maria', email: 'user@usermail.com' },
+	  			{ id: 3, user: 'Lúcio', email: 'user@usermail.com' },
 	  		],
 	  	},
   	],
@@ -571,6 +573,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.filtroCtrl = { //controle e exibição do filtro avançado na tela principal
 		avancado: false,
 		filtroParams: [],
+		busca_param: '',
+		filtro_param: '',
 
 		abrirFiltroAvancado: function() {
 			this.avancado = !this.avancado;
@@ -583,6 +587,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		rmv: function(index) {
 			this.filtroParams.splice(index)
+		},
+
+		buscaParam: function(){
+			this.busca_param = this.filtro_param
+			if (this.filtro_param == '') {
+				this.filtro_param = undefined
+			}
 		}
 	}
 

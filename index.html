@@ -21,8 +21,8 @@
           </div>
           <div class="sc-p-r-lg fcol-sm-60 fcol-lg-45">
             <form class="sc-input-group">
-              <input class="sc-input-default" type="text">
-              <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
+              <input class="sc-input-default" ng-model="filtroCtrl.filtro_param" type="text">
+              <button class="sc-btn sc-btn-blue" ng-click="filtroCtrl.buscaParam()" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
               <button ng-click="filtroCtrl.abrirFiltroAvancado()" class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
               <button class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-impressora"></i></button>
             </form>
@@ -79,7 +79,10 @@
             <div class="fcol-xs-3em sc-p-sm fcol-order-5"></div>
           </div>
         </li>
-        <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened || passagem.edit.opened, 'sc-acc-{{passagem.status.color}}-lighter sc-text-{{passagem.status.color}}-dark': !passagem.acc.opened && screen.isXs}">
+        <div class="sc-accordion-elastic-col sc-p-lg" ng-if="listCtrl.list.length == 0">
+          <i class="sc-icon-exclamacao-1 sc-icon-fw">Nenhuma passagem encontrada!</i>
+        </div>
+        <li ng-repeat="passagem in listCtrl.list | filter: filtroCtrl.busca_param" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened || passagem.edit.opened, 'sc-acc-{{passagem.status.color}}-lighter sc-text-{{passagem.status.color}}-dark': !passagem.acc.opened && screen.isXs}">
           <div class="sc-accordion-head sc-text-gray flex-row flex-column align-items-center" ng-click="itemCtrl.accToggle(passagem)">
             <label class="fcol-xs-3em sc-p-sm align-center fcol-order-0">
               <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
@@ -88,11 +91,11 @@
               <span class="sc-border-radius sc-text-white sc-p-v-xs sc-p-h-lg sc-text-sm sc-bg-{{passagem.status.color}}">{{passagem.status.label}}</span>
             </div>
             <div class="fcol-xs-auto sc-p-sm fcol-order-1">
-              <i class="sc-icon sc-icon-seta-8-baixo sc-p-r-md hidden-xs"></i>
+              <i class="sc-icon sc-icon-seta-8-baixo sc-p-r-md hidden-xs" ng-class="{'sc-text-red': !passagem.acc.opened || passagem.edit.opened}"></i>
               <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened || passagem.edit.opened }">{{passagem.pessoa_saiu.nome}}</div>
             </div>
             <div class="fcol-xs-auto sc-p-sm fcol-order-2">
-              <i class="sc-icon sc-icon-seta-8-cima sc-p-r-md hidden-xs"></i>
+              <i class="sc-icon sc-icon-seta-8-cima sc-p-r-md hidden-xs" ng-class="{'sc-text-green': !passagem.acc.opened || passagem.edit.opened}"></i>
               <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened || passagem.edit.opened }">{{passagem.pessoa_entrou.nome}}</div>
             </div>
             <div class="fcol-xs-7em sc-p-sm align-center fcol-order-3">
