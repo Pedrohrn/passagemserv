@@ -274,6 +274,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		set: function(passagem) { //set do perfil, que muda o form
 			if (passagem.perfil == []) { return }
+				if (!passagem.perfil) {
+					passagem.objetos = []
+				}
 
 			scAlert.open({
 				title: "Atenção!",
@@ -283,22 +286,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					],
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
-							$s.formCtrl.listObjetos = $s.formCtrl.listObjetos.concat(passagem.perfil.objetos)
-							console.log($s.formCtrl.listObjetos)
-							console.log(passagem.perfil.objetos)
+							passagem.objetos = passagem.objetos.concat(passagem.perfil.objetos)
 						},
 						tooltip: 'Mescla objetos/itens abaixo com os do perfil selecionado.',
 					},
 					{
 						label: "Sobreescrever", color: 'yellow', action: function() {
-							$s.formCtrl.listObjetos = angular.copy(passagem.perfil.objetos)
+							passagem.objetos = angular.copy(passagem.perfil.objetos)
 						},
 						tooltip: 'Sobreescreve objetos/itens abaixo pelos itens do perfil selecionado.',
 					},
 					{ label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
 			})
-			//$s.formCtrl.listObjetos = angular.copy($s.perfilCtrl.current.objetos)
 		},
 
 		novoPerfil: function(){
@@ -387,7 +387,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		edit: false,
 		new: false,
 		newRecord: false,
-
+		passagem: [],
 		listObjetos: [],
 		novaCategoria: false,
 		itens: [],
@@ -416,10 +416,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
 			//if (!passagem.id) {this.accToggle(passagem) }
-			if (passagem.edit.opened == true) {
-				this.listObjetos = angular.copy(passagem.objetos)
-			}
-			console.log($s.formCtrl.listObjetos)
 		},
 
 		accToggle: function(passagem) {
@@ -453,12 +449,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
+		addCategoria: function(passagem){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+			passagem.objetos.unshift({id: passagem.objetos.length+1, itens: []});
 		},
 
-		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
-			this.listObjetos.splice(index, 1);
+		removerCategoria: function(passagem, index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
+			passagem.objetos.splice(index, 1);
 		},
 
 		cadastrarItem: function(categoria){
@@ -477,7 +473,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															horario: passagem.horario,
 															status: { label: 'Realizada', color: 'green' },
 															perfil: passagem.perfil,
-															objetos: this.listObjetos,
+															objetos: passagem.objetos,
 															obs: passagem.detalhes,
 														});
 			console.log($s.listCtrl.list)
@@ -492,7 +488,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 																horario: passagem.horario,
 																status: { label: 'Pendente', color: 'yellow' },
 																perfil: passagem.perfil,
-																objetos: this.listObjetos,
+																objetos: passagem.objetos,
 																obs: passagem.detalhes,
 															});
 			}
@@ -500,18 +496,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	};
 
 	$s.itemCtrl = { //controlador geral das passagens (exibição de conteúdo e ações)
-		duplicar: false,
-		duplicata: [],
 		init: function(passagem) {
 			passagem.acc = new scToggle()
 			passagem.menu = new scToggle()
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
 			if (!passagem.id) { this.accToggle(passagem) }
-			if (passagem.edit.opened == true) {
-				$s.formCtrl.listObjetos = angular.copy(passagem)
-			}
-
 		},
 
 		accToggle: function(passagem) {
@@ -521,10 +511,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		duplicate: function(passagem){
 			$s.formCtrl.new = !$s.formCtrl.new
-			this.duplicar = !this.duplicar
-			this.params = angular.copy(passagem)
-			$s.formCtrl.listObjetos = angular.copy(passagem.objetos)
-			this.obs = angular.copy(passagem.objetos)
+			passagem = angular.copy(passagem)
+			passagem.objetos = angular.copy(passagem.objetos)
+			this.obs = angular.copy(passagem.obs)
+			console.log(passagem)
 		},
 
 		rmv: function(passagem) {
@@ -581,24 +571,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	$s.filtroCtrl = { //controle e exibição do filtro avançado na tela principal
 		avancado: false,
 		filtroParams: [],
-		count: 0,
 
 		abrirFiltroAvancado: function() {
 			this.avancado = !this.avancado;
 		},
 
-		newFiltroPeriodo: false,
-
-		addPeriodo: function(){
-			this.newFiltroPeriodo = !this.newFiltroPeriodo;
-		},
-
 		newPeriodo: function(){
-			this.filtroParams.push({dataInicial: this.newDataInicial, dataFinal: this.newDataFinal, tipoData: this.newTipoData});
-			this.newDataFinal = '';
-			this.newDataInicial = '';
-			this.newTipoData = '';
+			this.filtroParams.push({ data_inicial: this.newDataInicial, data_final: this.newDataFinal, tipo_data: this.newTipoData})
+			console.log(this.filtroParams)
 		},
+
+		rmv: function(index) {
+			this.filtroParams.splice(index)
+		}
 	}
 
 	$s.menuAdmCtrl = { //controle de exibição do toolbar principal (gerenciamento de perfis e histórico)

@@ -56,30 +56,31 @@
     </div>
   </div>
   <div class="clear"></div>
-  <div class="ng-hide" ng-show="filtroCtrl.newFiltroPeriodo">
+  <div ng-if="filtroCtrl.filtroParams.length > 0">
     <hr>
-    <div class="" ng-repeat="data in filtroCtrl.params.datas">
-      <div id="periodo">
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+    <div class="sc-p-v-sm" ng-repeat="data in filtroCtrl.filtroParams">
+      <div id="periodo" class="flex-row">
+        <div class="sc-p-h-md" style="max-width: 12em;">
           <div class="sc-label">Início</div>
-          <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.newDataInicial" max="3000-12-31" type="date">
+          <input class="sc-input-default sc-input-block" date-input="date-input" ng-value="data.data_inicial" ng-model="data.newDataInicial" max="3000-12-31" type="date">
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <div class="sc-p-h-md" style="max-width: 12em;">
           <div class="sc-label">Fim</div>
-          <input class="sc-input-default sc-input-block" date-input="date-input" ng-model="filtroCtrl.newDataFinal" max="3000-12-31" type="date">
+          <input class="sc-input-default sc-input-block" date-input="date-input" ng-value="data.data_final" ng-model="data.newDataFinal" max="3000-12-31" type="date">
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 sc-p-h-md sc-p-b-md">
+        <div class="sc-p-h-md">
           <div class="sc-label">Tipo de Data:</div>
-          <select class="sc-input-default sc-input-block" ng-model="filtroCtrl.newTipoData">
+          <select class="sc-input-default sc-input-block" ng-model="data.newTipoData">
             <option value="" class="" selected="selected">Todos</option>
             <option value="criadoEm" label="Criado em">Criado em</option>
             <option value="passadaEm" label="Passada em">Passada em</option>
           </select>
         </div>
-        <div class="fcol-xs-default align-self-flex-end sc-p-h-md sc-p-b-md">
-          <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="filtroCtrl.params.newPeriods.remove(data)"></i>
+        <div class="col-xs-auto sc-p-t-xl align-self-center">
+          <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="filtroCtrl.rmv($index)"></i>
         </div>
       </div>
+      <div class="clear"></div>
     </div>
   </div>
   <hr>
@@ -91,7 +92,7 @@
     <div class="sc-btn-icon"><i class="sc-icon sc-icon-fechar-1"></i></div>
     <div class="sc-btn-text">Limpar busca</div>
   </button>
-  <button ng-click="filtroCtrl.addPeriodo()" class="sc-btn sc-btn-awesomeness sc-btn-green sc-m-l-md" type="button">
+  <button ng-click="filtroCtrl.newPeriodo()" class="sc-btn sc-btn-awesomeness sc-btn-green sc-m-l-md" type="button">
     <div class="sc-btn-icon"><i class="sc-icon sc-icon-calendario-2"></i></div>
     <div class="sc-btn-text">Adicionar Período</div>
   </button>

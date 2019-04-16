@@ -4,7 +4,7 @@
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 			<label>
 				<div class="sc-label">Quem sai:</div>
-				<select class="sc-input-default sc-input-block"  ng-model="passagem.pessoa_saiu" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_entrou.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
+				<select class="sc-input-default sc-input-block" ng-class="{'error': passagem.pessoa_saiu == '' }" ng-model="passagem.pessoa_saiu" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_entrou.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
 				</select>
 			</label>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 sc-p-t-xl">
 			<label>
 				<div class="sc-label">Quem entra:</div>
-				<select class="sc-input-default sc-input-block" ng-model="passagem.pessoa_entrou" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_saiu.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
+				<select class="sc-input-default sc-input-block" ng-class="{'error': passagem.pessoa_entrou == '' }" ng-model="passagem.pessoa_entrou" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_saiu.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
 				</select>
 			</label>
 		</div>
@@ -45,11 +45,11 @@
 	<div class="sc-fieldset">
 		<div class="sc-fieldset-head">
 			<span class="sc-label sc-text-xxl">Objetos</span>
-			<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+			<button ng-click="formCtrl.addCategoria(passagem)" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 		</div>
 
 		<div>
-			<div class="sc-fieldset" ng-repeat="categoria in formCtrl.listObjetos && passagem.objetos"> <!-- fieldset dos objetos -->
+			<div class="sc-fieldset" ng-repeat="categoria in passagem.objetos"> <!-- fieldset dos objetos -->
 				<div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
 					<div class="sc-text-sm">
 						<div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
@@ -97,7 +97,7 @@
 						<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem(categoria)"></i>
 					</div>
 					<div class="sc-m-l-md">
-						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.removerCategoria($index)"></i>
+						<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.removerCategoria(passagem, $index)"></i>
 					</div>
 				</div>
 
