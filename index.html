@@ -79,7 +79,7 @@
             <div class="fcol-xs-3em sc-p-sm fcol-order-5"></div>
           </div>
         </li>
-        <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened, 'sc-acc-{{passagem.status.color}}-lighter sc-text-{{passagem.status.color}}-dark': !passagem.acc.opened && screen.isXs}">
+        <li ng-repeat="passagem in listCtrl.list" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened || passagem.edit.opened, 'sc-acc-{{passagem.status.color}}-lighter sc-text-{{passagem.status.color}}-dark': !passagem.acc.opened && screen.isXs}">
           <div class="sc-accordion-head sc-text-gray flex-row flex-column align-items-center" ng-click="itemCtrl.accToggle(passagem)">
             <label class="fcol-xs-3em sc-p-sm align-center fcol-order-0">
               <input multi-check class="sc-checkbox sc-checkbox-blue" ng-model="passagem.checked" type="checkbox">
@@ -89,24 +89,24 @@
             </div>
             <div class="fcol-xs-auto sc-p-sm fcol-order-1">
               <div class="icone seta-vermelha"></div>
-              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.pessoa_saiu.nome}}</div>
+              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened || passagem.edit.opened }">{{passagem.pessoa_saiu.nome}}</div>
             </div>
             <div class="fcol-xs-auto sc-p-sm fcol-order-2">
               <div class="icone seta-verde"></div>
-              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.pessoa_entrou.nome}}</div>
+              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened || passagem.edit.opened }">{{passagem.pessoa_entrou.nome}}</div>
             </div>
             <div class="fcol-xs-7em sc-p-sm align-center fcol-order-3">
-              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened }">{{passagem.data | date: "dd/MM/yyyy" }}</div>
+              <div class="sc-ellipsis-inline sc-text-bold" ng-class="{'sc-text-white': passagem.acc.opened || passagem.edit.opened }">{{passagem.data | date: "dd/MM/yyyy" }}</div>
             </div>
             <div class="fcol-xs-7em sc-p-sm fcol-order-4 visible-xs"></div>
             <div class="fcol-xs-3em sc-p-sm align-center fcol-order-5" sc-stop-click>
               <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
-                <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened, 'sc-badge-hover-white': passagem.acc.opened}"></i>
+                <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened, 'sc-badge-hover-white': passagem.acc.opened || passagem.edit.opened}"></i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menu.opened" style="display: block;">
                   <li ng-if="passagem.status.label == 'Pendente'">
                     <span>Passar serviço</span>
                   </li>
-                  <li ng-click="passagem.edit.toggle()">
+                  <li ng-click="passagem.edit.toggle(passagem)">
                     <span>Editar</span>
                   </li>
                   <li ng-click="itemCtrl.duplicate(passagem)">

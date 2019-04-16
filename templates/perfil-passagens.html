@@ -87,20 +87,20 @@
                 <ul>
                   <li class="" ng-if="categoria.itens.length > 0">
                     <div class="flex-row sc-p-v-md sc-label sc-text-blue">
-                      <div class="fcol-xs-20 sc-text-medium sc-label">Qtde</div>
-                      <div class="fcol-xs-auto sc-text-medium sc-label">Item</div>
+                      <div class="col-xs-3 col-md-1 col-sm-2 sc-text-medium sc-label">Qtde</div>
+                      <div class="sc-p-l-md col-xs-auto sc-text-medium sc-label">Item</div>
                     </div>
                   </li>
                   <li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
                     <div class="flex-row">
-                      <div class="fcol-xs-20">
-                        <input class="sc-input-default sc-input-thin" value="{{item.qtd}}" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
+                      <div class="col-xs-3 col-md-1 col-sm-2">
+                        <input class="fcol-md-90 sc-input-default sc-input-thin" ng-value="item.qtd" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
                       </div>
-                      <div class="fcol-xs-auto">
+                      <div class="sc-p-l-md fcol-xs-auto">
                         <input class="fcol-xs-60 sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}" ng-model="item.nome">
                       </div>
                       <div class="fcol-xs-1 align-right">
-                        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
+                        <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
                       </div>
                     </div>
                   </li>
@@ -233,20 +233,20 @@
                     <ul>
                       <li class="" ng-if="categoria.itens.length > 0">
                         <div class="flex-row sc-p-v-md sc-label sc-text-blue">
-                          <div class="fcol-xs-20 sc-text-medium sc-label">Qtde</div>
-                          <div class="fcol-xs-auto sc-text-medium sc-label">Item</div>
+                          <div class="col-xs-3 col-md-1 col-sm-2 sc-text-medium sc-label">Qtde</div>
+                          <div class="sc-p-l-md col-xs-auto sc-text-medium sc-label">Item</div>
                         </div>
                       </li>
                       <li ng-repeat="item in categoria.itens" class="sc-p-b-sm">
                         <div class="flex-row">
-                          <div class="fcol-xs-20">
-                            <input class="sc-input-default sc-input-thin" value="{{item.qtd}}" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
+                          <div class="col-xs-3 col-md-1 col-sm-2">
+                            <input class="fcol-md-90 sc-input-default sc-input-thin" ng-value="item.qtd" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
                           </div>
-                          <div class="fcol-xs-auto">
+                          <div class="sc-p-l-md fcol-xs-auto">
                             <input class="fcol-xs-60 sc-input-default sc-input-thin col-xs-6" type="text" value="{{item.nome}}" ng-model="item.nome">
                           </div>
                           <div class="fcol-xs-1 align-right">
-                            <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red sc-text-lg" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
+                            <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>
                           </div>
                         </div>
                       </li>

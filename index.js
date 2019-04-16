@@ -232,7 +232,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				disabled: false,
 			},
 			{ id: 3,
-				perfil: 'Portaria de Serviço desativada',
+				perfil: 'Portaria de Serviço 2',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -261,7 +261,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		itens: [],
 		perfilNovo: false, // toggle do formulário de novo perfil
 
-		current: [],
+		perfil: [],
 
 		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
@@ -272,8 +272,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		set: function() { //set do perfil, que muda o form
-			if (this.current == []) { return }
+		set: function(passagem) { //set do perfil, que muda o form
+			if (passagem.perfil == []) { return }
 
 			scAlert.open({
 				title: "Atenção!",
@@ -283,13 +283,15 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					],
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
-							$s.formCtrl.listObjetos = $s.formCtrl.listObjetos.concat($s.perfilCtrl.current.objetos)
+							$s.formCtrl.listObjetos = $s.formCtrl.listObjetos.concat(passagem.perfil.objetos)
+							console.log($s.formCtrl.listObjetos)
+							console.log(passagem.perfil.objetos)
 						},
 						tooltip: 'Mescla objetos/itens abaixo com os do perfil selecionado.',
 					},
 					{
 						label: "Sobreescrever", color: 'yellow', action: function() {
-							$s.formCtrl.listObjetos = angular.copy($s.perfilCtrl.current.objetos)
+							$s.formCtrl.listObjetos = angular.copy(passagem.perfil.objetos)
 						},
 						tooltip: 'Sobreescreve objetos/itens abaixo pelos itens do perfil selecionado.',
 					},
@@ -327,9 +329,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarPerfil: function(){
-			if (!this.duplicar) {
-				this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
-			}
+			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
 		},
 
 		disable_enable: function(perfil){
@@ -415,15 +415,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.menu = new scToggle()
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
-			if (!passagem.id) {this.accToggle(passagem) }
+			//if (!passagem.id) {this.accToggle(passagem) }
 			if (passagem.edit.opened == true) {
-				$s.formCtrl.listObjetos = angular.copy(passagem)
+				this.listObjetos = angular.copy(passagem.objetos)
 			}
+			console.log($s.formCtrl.listObjetos)
 		},
 
 		accToggle: function(passagem) {
+			if (passagem.edit.opened) {
+				passagem.edit.toggle()
+			} else {
 			passagem.acc.toggle()
-			if (passagem.edit.opened) { passagem.edit.toggle() }
+			}
 		},
 
 		alerta: function(passagem){ //alerta ao clicar no accordion da nova passagem.
@@ -472,10 +476,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															data: new Date(),
 															horario: passagem.horario,
 															status: { label: 'Realizada', color: 'green' },
-															perfil: $s.perfilCtrl.current.perfil,
+															perfil: passagem.perfil,
 															objetos: this.listObjetos,
 															obs: passagem.detalhes,
 														});
+			console.log($s.listCtrl.list)
 		},
 
 		salvar: function(passagem){
@@ -486,7 +491,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 																data: new Date(),
 																horario: passagem.horario,
 																status: { label: 'Pendente', color: 'yellow' },
-																perfil: $s.perfilCtrl.current.perfil,
+																perfil: passagem.perfil,
 																objetos: this.listObjetos,
 																obs: passagem.detalhes,
 															});
@@ -530,7 +535,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 				buttons: [
 					{ label: 'Excluir', color: 'red', action: function() {
-							$s.listCtrl.list.remove(passagem);
+							$s.listCtrl.list.remove(passagem)
+							scTopMessages.open("Registro excluído com sucesso!", {timeout: 3000})
 					}},
 					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
 				],

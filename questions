@@ -53,3 +53,12 @@ adicionar e editar perfis ao mesmo tempo faz com que o formulário seja espelhad
 
 clicar no botão "cancelar" ou no accordion-head "Nova passagem" não fecha o formulário, por mais que uma função exista para tal ação
 
+abrir/fechar accordions de edição/nova passagem tá bugadasso. abrir um ocasiona no fechamento do outro
+
+e se, depois de carregado, for necessário remover um item de uma categoria de um perfil, no ato da criação de uma nova passagem? esse item não poderá ser excluído (+aviso) ou poderá livremente ser removido da lista?
+
+colocar confirm em novas passagens, novos perfis e desativação de perfil
+
+o cadastro de um perfil e seu futuro uso significam obrigatoriedade em usar todos os itens e categorias da lista ou é mais para facilitar/agilizar o cadastro da passagem, com base em um padrão?
+
+editar passagem/cadastrar nova passagem. no primeiro caso, se eu removo o && perfil.objetos do ng-repeat de categorias do form, não consigo acessar a lista de objetos da passagem (edição). em contra-partida, é a única forma de eu conseguir criar uma nova passagem e adicionar novas categorias à mesma, bem como usar a lista de categorias e itens pré-definidos no perfil
