@@ -264,12 +264,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					},
 				],
 				permissoes: [
-					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 1, label: 'Adicionar categorias/itens', checked: true },
 					{ id: 2, label: 'Remover categorias/itens', checked: false },
-					{ id: 3, label: 'Editar itens (nomes)', checked: false },
-					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+					{ id: 3, label: 'Editar itens (nomes)', checked: true },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
 				],
-				total_permissoes: 0,
+				total_permissoes: 12,
 				porteiros_podem_adicionar_itens: true,
 				disabled: false,
 			},
@@ -297,10 +297,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				permissoes: [
 					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
 					{ id: 2, label: 'Remover categorias/itens', checked: false },
-					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 3, label: 'Editar itens (nomes)', checked: true },
 					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
 				],
-				total_permissoes: 0,
+				total_permissoes: 4,
 				porteiros_podem_adicionar_itens: false,
 				disabled: false,
 			},
@@ -327,11 +327,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 				permissoes: [
 					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
-					{ id: 2, label: 'Remover categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: true },
 					{ id: 3, label: 'Editar itens (nomes)', checked: false },
-					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
 				],
-				total_permissoes: 0,
+				total_permissoes: 8,
 				porteiros_podem_adicionar_itens: false,
 				disabled: true,
 			},
@@ -367,7 +367,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
+		init: function(perfil){ // controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
 			if (perfil.edit.opened == true) {
