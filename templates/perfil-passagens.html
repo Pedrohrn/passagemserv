@@ -15,13 +15,26 @@
               <input class="sc-input-default sc-input-block"  ng-model="perfilCtrl.new_perfil" type="text">
             </div>
             <div class="col-xs-auto col-md-6 col-lg-4">
-              <div class="sc-label">Porteiros podem adicionar novos itens?</div>
-              <label>
-                <span class="sc-toggle sc-m-t-sm">
-                  <input ng-model="perfilPassagemCtrl.config.impedir_porteiros_cadastrarem_novos_itens" type="checkbox">
-                  <span label-false="Não" label-true="Sim"></span>
-                </span>
-              </label>
+              <div class="sc-label">Permissões dos porteiros</div>
+              <span class="sc-m-l-md sc-dropdown" sc-dropdown-menu>
+                <button class="sc-btn sc-btn-blue sc-btn-thin sc-m-v-xs" ng-click="perfilCtrl.permissoesMenuToggle()" style="min-width: 8em;" type="button">
+                  <div class="flex justify-content-space-between">
+                    Permissões
+                    <span class="sc-text-sm">
+                      <i class="sc-icon-seta-5-cima"></i>
+                    </span>
+                  </div>
+                  <span class="sc-badge sc-badge-fixed sc-bg-yellow"></span>
+                </button>
+                <ul class="sc-dropdown-menu ng-animation-slider sc-scrollbar" ng-if="perfilCtrl.permissoesMenu" style="max-height: 18em; overflow: auto; width: 100%; display: block;">
+                  <li ng-repeat="permissao as permissao.label in perfilCtrl.permissoes track by permissao.id" ng-click="perfilCtrl.setPermissao(permissao)">
+                    <div>
+                      <i ng-class="{'sc-icon-quadrado-1': !permissao.checked ; 'sc-icon-visto-3': permissao.checked" class=""></i>
+                      <span>{{permissao.label}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </span>
             </div>
           </div>
           <div class="clear"></div>
@@ -161,14 +174,26 @@
                     <div class="sc-label">Título do Perfil</div>
                     <input class="sc-input-default sc-input-block"  value="{{perfil.perfil}}" type="text">
                   </div>
-                  <div class="col-xs-auto col-md-6 col-lg-4">
-                    <div class="sc-label">Porteiros podem adicionar novos itens?</div>
-                    <label>
-                      <span class="sc-toggle sc-m-t-sm">
-                        <input ng-model="perfil.porteiros_podem_adicionar_itens" type="checkbox">
-                        <span label-false="Não" label-true="Sim"></span>
-                      </span>
-                    </label>
+                  <div class="align-self-center sc-p-t-xxxl col-xs-auto col-md-6 col-lg-4">
+                    <div class="sc-m-l-md sc-dropdown" sc-dropdown-menu>
+                      <button class="sc-btn sc-btn-blue sc-btn-thin sc-m-v-xs" ng-click="perfilCtrl.permissoesMenuToggle(perfil)" style="min-width: 8em;" type="button">
+                        <div class="flex justify-content-space-between">
+                          Permissões dos porteiros
+                          <span class="sc-text-sm sc-p-l-md">
+                            <i ng-class="{'sc-icon-seta-5-cima': perfil.permissoesMenu, 'sc-icon-seta-5-baixo': !perfil.permissoesMenu}"></i>
+                          </span>
+                        </div>
+                        <span class="sc-badge sc-badge-fixed sc-bg-yellow">{{perfil.total_permissoes/perfil.permissoes.length}}</span>
+                      </button>
+                      <ul class="sc-dropdown-menu ng-animation-slider sc-scrollbar" ng-if="perfil.permissoesMenu" style="max-height: 18em; overflow: auto; display: block;">
+                        <li ng-repeat="permissao in perfil.permissoes track by permissao.id" ng-click="perfilCtrl.setPermissao(perfil, permissoes, permissao)">
+                          <div>
+                            <i ng-class="{'sc-icon-quadrado-1': !permissao.checked , 'sc-icon-visto-3': permissao.checked}" class=""></i>
+                            <span>{{permissao.label}}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>

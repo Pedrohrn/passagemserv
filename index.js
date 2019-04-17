@@ -34,6 +34,17 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   window.onresize() // iniciando 'screen'
 })
 
+.filter('buscaParam', function(){
+	return function(passagens, pessoa_entrou) {
+		var passagensList = [];
+		for (var i=0; i<passagens.length; i++) {
+			if (passagens[i].pessoa_entrou != pessoa_entrou) {
+				passagensList.push(passagens[i]);
+			}
+		}
+	}
+})
+
 .controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
@@ -48,8 +59,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			categoria.showOpts = !categoria.showOpts;
 		},
 
-		new: function(){
-			this.novaCategoria = !this.novaCategoria;
+		new: function(categoria){
+			categoria.novaCategoria = !categoria.novaCategoria;
+			console.log(categoria.novaCategoria)
 		},
 
 		rmv: function(index){
@@ -57,12 +69,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			$s.perfilCtrl.objetos.splice(index, 1);
 		},
 
-		add: function(){
+		add: function(passagem){
 			this.list.push({ id: this.list.length+1, label: this.newCategoria});
 			if ($s.perfilCtrl.perfilNovo) {
 				$s.perfilCtrl.listObjetos.unshift({ id: $s.perfilCtrl.listObjetos.length+1, label: this.newCategoria});
 			} else {
-				$s.formCtrl.listObjetos.unshift({ id: $s.formCtrl.listObjetos.length+1, label: this.newCategoria});
+				passagem.objetos.unshift({ id: passagem.objetos.length+1, label: this.newCategoria});
 			};
 			this.newCategoria = '';
 		},
@@ -227,6 +239,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 	}
 
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
+		permissoesList: [
+			{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+			{ id: 2, label: 'Remover categorias/itens', checked: false },
+			{ id: 3, label: 'Editar itens (nomes)', checked: false },
+			{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+		],
 		list: [
 			{ id: 1,
 				perfil: 'Portaria Social',
@@ -245,6 +263,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: false },
+					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+				],
+				total_permissoes: 0,
 				porteiros_podem_adicionar_itens: true,
 				disabled: false,
 			},
@@ -269,6 +294,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: false },
+					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+				],
+				total_permissoes: 0,
 				porteiros_podem_adicionar_itens: false,
 				disabled: false,
 			},
@@ -293,6 +325,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: false },
+					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+				],
+				total_permissoes: 0,
 				porteiros_podem_adicionar_itens: false,
 				disabled: true,
 			},
@@ -301,8 +340,32 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		novaCategoria: false,
 		itens: [],
 		perfilNovo: false, // toggle do formulário de novo perfil
-
+		permissoesMenu: false,
+		count: 0,
 		perfil: [],
+
+		permissoesMenuToggle: function(perfil){
+			perfil.permissoesMenu = !perfil.permissoesMenu
+		},
+
+		setPermissao: function(perfil, permissoes, permissao){
+			permissao.checked = !permissao.checked;
+			for (var i = 0; i<perfil.permissoes.length; i++) {
+				if (permissao.checked == true) {
+					perfil.total_permissoes++
+				} else {
+				perfil.total_permissoes--
+				}
+			}
+			console.log(perfil.total_permissoes)
+			console.log(permissao.checked)
+		},
+
+		total: function(perfil, permissoes, permissao){
+			for (var i = 0; i<permissoes.length; i++) {
+				if (permissao.checked == true) { perfil.total_permissoes++ }
+			}
+		},
 
 		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
@@ -424,38 +487,20 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.formCtrl = {
 		new: false,
-		passagem: [],
-		listObjetos: [],
-		novaCategoria: false,
 		itens: [],
 		current: '',
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
-			passagem = [];
 		},
 
-		/*init: function(passagem) {
-			obj = passagem || {}
-
-			// usar alguma coias para copiar o obj 'passagem'
-			this.newRecord = !obj.id
-
-			if (this.newRecord) {
-				$s.listCtrl.list.push(obj)
-			} else {
-				this.params = obj
-			}
-		},*/
-
 		init: function(passagem) {
-			passagem.acc = new scToggle()
-			passagem.menu = new scToggle()
-			passagem.notificacoes = new scToggle()
-			passagem.edit = new scToggle()
-			//if (!passagem.id) {this.accToggle(passagem) }
 			if ($s.itemCtrl.duplicar == true) {
-				passagem = $s.itemCtrl.passagem
+				angular.extend(passagem, $s.itemCtrl.passagem)
+			}
+
+			if (Object.blank(passagem)) {
+				passagem.objetos = [];
 			}
 		},
 
@@ -586,14 +631,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		rmv: function(index) {
-			this.filtroParams.splice(index)
+			this.filtroParams.splice(index, 1)
 		},
 
 		buscaParam: function(){
 			this.busca_param = this.filtro_param
-			if (this.filtro_param == '') {
-				this.filtro_param = undefined
+			if (this.busca_param == undefined) {
+				this.busca_param = ''
 			}
+			console.log(this.busca_param)
+			console.log(this.filtro_param)
 		}
 	}
 

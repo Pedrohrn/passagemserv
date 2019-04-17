@@ -79,9 +79,6 @@
             <div class="fcol-xs-3em sc-p-sm fcol-order-5"></div>
           </div>
         </li>
-        <div class="sc-accordion-elastic-col sc-p-lg" ng-if="listCtrl.list.length == 0">
-          <i class="sc-icon-exclamacao-1 sc-icon-fw">Nenhuma passagem encontrada!</i>
-        </div>
         <li ng-repeat="passagem in listCtrl.list | filter: filtroCtrl.busca_param" ng-init="itemCtrl.init(passagem)" ng-class="{'sc-acc-blue': passagem.acc.opened || passagem.edit.opened, 'sc-acc-{{passagem.status.color}}-lighter sc-text-{{passagem.status.color}}-dark': !passagem.acc.opened && screen.isXs}">
           <div class="sc-accordion-head sc-text-gray flex-row flex-column align-items-center" ng-click="itemCtrl.accToggle(passagem)">
             <label class="fcol-xs-3em sc-p-sm align-center fcol-order-0">
@@ -136,6 +133,11 @@
             <div ng-if="passagem.edit.opened">
               <div ng-include="'templates/form.html'"></div>
             </div>
+          </div>
+        </li>
+        <li ng-if="!listCtrl.list.length" class="">
+          <div class="sc-label sc-accordion-head ">
+            <i class="sc-icon-exclamacao-1 align-center col-xs-12">Nenhuma passagem encontrada!</i>
           </div>
         </li>
       </ul>
