@@ -39,7 +39,7 @@ Passagem
 			quantidade
 ==================================================
  desativar passagem: pra que serve?
- mover o menu de categorias para outro lugar. não há razão em ter um menu para cada categoria na lista. é melhor fazer um menu controlador geral para cada todas elas
+ mover o menu de categorias para outro lugar. não há razão em ter um menu para cada categoria na lista. é melhor fazer um menu controlador geral para todas elas
 
 
 
@@ -56,6 +56,3 @@ abrir/fechar accordions de edição/nova passagem tá bugadasso. abrir um ocasio
 
 colocar confirm em novas passagens, novos perfis e desativação de perfil
 
-*o cadastro de um perfil e seu futuro uso significam obrigatoriedade em usar todos os itens e categorias da lista ou é mais para facilitar/agilizar o cadastro da passagem, com base em um padrão?
-
-rever o add de categorias

@@ -53,31 +53,27 @@
 				<div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
 					<div class="sc-text-sm">
 						<div ng-if="!categoria.novaCategoria">
-							<label class="sc-input-group">
+							<label class="sc-input-group" sc-stop-click>
 								<select class="sc-input-default sc-input-block" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="categoria.categoria">
 									<option value="">Selecione ou cadastre</option>
 								</select>
-								<button class="sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
-									<span>
-										<i class="sc-icon sc-icon-reticiencias-v"></i>
-									</span>
-									<span sc-dropdown-menu class="sc-dropdown pull-right " ng-if="categoria.showOpts">
-										<ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
-											<li ng-click="categoriasCtrl.new(categoria)">
-												<div>Nova categoria</div>
-											</li>
-											<li ng-click="categoriasCtrl.edit($index)">
-												<div>Editar</div>
-											</li>
-											<li ng-click="categoriasCtrl.disable_enable(categoria)">
-												<div>Desativar</div>
-											</li>
-											<li ng-click="categoriasCtrl.rmv($index)">
-												<div>Excluir</div>
-											</li>
-										</ul>
-									</span>
-								</button>
+								<div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
+									<i class="sc-icon sc-icon-reticiencias-v"></i>
+									<ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="categoria.showOpts" style="display: block;">
+										<li ng-click="categoriasCtrl.new(categoria)">
+											<div>Nova categoria</div>
+										</li>
+										<li ng-click="categoriasCtrl.edit($index)">
+											<div>Editar</div>
+										</li>
+										<li ng-click="categoriasCtrl.disable_enable(categoria)">
+											<div>Desativar</div>
+										</li>
+										<li ng-click="categoriasCtrl.rmv($index)">
+											<div>Excluir</div>
+										</li>
+									</ul>
+								</div>
 							</label>
 						</div>
 						<div ng-if="categoria.novaCategoria">

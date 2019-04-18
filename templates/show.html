@@ -8,7 +8,7 @@
         <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_entrou.nome}}</span>
       </div>
       <div class="sc-text-gray sc-p-xs">Data e hora:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.horario | date: "hh/mm"}}</span>
+        <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.horario}}</span>
       </div>
     </div>
     <div class="flex-row col-xs-6">
@@ -18,7 +18,7 @@
         </div>
         <div class="clear"></div>
       </div>
-      <div class="col-xs-4 sc-text sc-dropdown sc-btn sc-btn-clean" ng-click="passagem.notificacoes.toggle()">
+      <div class="fcol-xs-25 sc-text sc-dropdown sc-btn sc-btn-clean" ng-click="passagem.notificacoes.toggle()" style="max-height: 2em;">
         <i class="sc-icon sc-icon-carta-4"></i>Notificações
       </div>
       <div class="col-xs-4 align-self-center" ng-if="passagem.notificacoes.opened">

@@ -34,26 +34,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   window.onresize() // iniciando 'screen'
 })
 
-.filter('buscaParam', function(){
-	return function(passagens, pessoa_entrou) {
-		var passagensList = [];
-		for (var i=0; i<passagens.length; i++) {
-			if (passagens[i].pessoa_entrou != pessoa_entrou) {
-				passagensList.push(passagens[i]);
-			}
-		}
-	}
-})
-
 .controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento', disabled: false },
-		 { id: 2, label: 'Acontecimento', disabled: false },
+		 { id: 2, label: 'Acontecimento', disabled: true },
 		 { id: 3, label: 'Empréstimos', disabled: false },
 		],
 		novaCategoria: false,
-		showOpts: false,
 
 		showOptions: function(categoria){
 			categoria.showOpts = !categoria.showOpts;
@@ -61,7 +49,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		new: function(categoria){
 			categoria.novaCategoria = !categoria.novaCategoria;
-			console.log(categoria.novaCategoria)
 		},
 
 		rmv: function(index){
@@ -83,9 +70,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			categoria.newCategoria = angular.copy(categoria.newCategoria, categoria.label)
 		},
 
-		/*disable_enable: function(categoria) {
+		disable_enable: function(categoria) {
 			title: '';
-			if (categoria.disabled) {
+			if (categoria.categoria.disabled) {
 				this.title = 'Deseja reativar a categoria?'
 			} else {
 				this.title = 'Deseja desativar a categoria?'
@@ -94,15 +81,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				title: this.title,
 				buttons: [
 				{ label: 'Sim', color: 'yellow', action: function() {
-				 		categoria.disabled = !categoria.disabled
-				 		console.log($s.categoriasCtrl.list)
+				 		categoria.categoria.disabled = !categoria.categoria.disabled
 					}
 				},
 				{ label: 'Não', color: 'gray', action: scAlert.close()
 				}
 				],
 			})
-		}*/
+		}
 	};
 
 	$s.listCtrl = { //lista de passagens
@@ -133,7 +119,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				obs: 'blablablabla teste teste teste'
+				obs: 'passagem 1',
+				disabled: false,
 			},
 
 			{	id: 2,
@@ -162,7 +149,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				obs: 'teste blablaldfdskfsdkf teste'
+				obs: 'passgem 2',
+				disabled: false,
 			},
 
 			{	id: 3,
@@ -191,7 +179,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				obs: 'teste lsfksdofpskakofskfs sdfopsdkfsdo teste'
+				obs: 'passagem 3',
+				disabled: false,
 			},
 		],
 	};
@@ -208,8 +197,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		accToggle: function(passagem) {
-			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
+			if (passagem.edit.opened) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+					 { msg: 'Deseja realmente cancelar a edição? Os dados não salvos serão perdidos.'}
+					],
+					buttons: [
+					 { label: 'Sim', color: 'yellow', action: passagem.edit.toggle() },
+					 { label: 'Não', color: 'gray', action: scAlert.close() }
+					]
+				})
+				console.log(passagem.edit.opened)
+				console.log(passagem.acc.opened)
+
+			} else {
+				passagem.acc.toggle()
+			}
 		},
 
 		duplicate: function(passagem){
@@ -235,6 +239,50 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				],
 			})
 		},
+
+		modal: new scModal(),
+
+		modalToggle: function() { // abrir/fechar modal
+			this.modal.open()
+		},
+
+		close: function() {
+			this.modal.close()
+		},
+
+		passarServico: function(passagem) {
+			passagem.status = { label: 'Realizada', color: 'green' }
+			this.modal.close()
+			console.log(passagem.status)
+			console.log($s.listCtrl.list)
+			console.log(passagem)
+		},
+
+		disable_enable: function(passagem) {
+			title: '';
+			if (passagem.disabled) {
+				this.title = 'Deseja reativar a passagem?'
+			} else {
+				this.title = 'Deseja desativar a passagem?'
+			}
+			scAlert.open({
+				title: this.title,
+				buttons: [
+				 	{ label: 'Sim', color: 'yellow', action: function() {
+				 		passagem.disabled = !passagem.disabled
+				 		if (passagem.disabled) {
+				 			passagem.status = { label: 'Desativada', color: 'red'}
+				 		} else {
+				 			passagem.status = { label: 'Pendente', color: 'yellow'}
+				 		}
+				 		}
+					},
+					{ label: 'Não', color: 'gray', action: scAlert.close()
+					}
+				]
+			})
+		},
+
 	}
 
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
@@ -268,8 +316,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 3, label: 'Editar itens (nomes)', checked: true },
 					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
 				],
-				total_permissoes: 12,
-				porteiros_podem_adicionar_itens: true,
+				total_permissoes: 3,
 				disabled: false,
 			},
 			{ id: 2,
@@ -299,12 +346,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 3, label: 'Editar itens (nomes)', checked: true },
 					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
 				],
-				total_permissoes: 4,
-				porteiros_podem_adicionar_itens: false,
+				total_permissoes: 1,
 				disabled: false,
 			},
 			{ id: 3,
-				perfil: 'Portaria de Serviço 2',
+				perfil: 'Portaria de Teste 2',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -330,8 +376,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					{ id: 3, label: 'Editar itens (nomes)', checked: false },
 					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
 				],
-				total_permissoes: 8,
-				porteiros_podem_adicionar_itens: false,
+				total_permissoes: 2,
 				disabled: true,
 			},
 		],
@@ -345,15 +390,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		setPermissao: function(perfil, permissoes, permissao){
 			permissao.checked = !permissao.checked;
-			for (var i = 0; i<perfil.permissoes.length; i++) {
-				if (permissao.checked == true) {
-					perfil.total_permissoes++
-				} else {
-				perfil.total_permissoes--
-				}
+			if (permissao.checked == true) {
+				perfil.total_permissoes++
+			} else {
+			perfil.total_permissoes--
 			}
-			console.log(perfil.total_permissoes)
-			console.log(permissao.checked)
 		},
 
 		total: function(perfil, permissoes, permissao){
@@ -366,15 +407,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
 			if (perfil.edit.opened == true) {
-				this.listObjetos = angular.copy(perfil.objetos)
-				this.current = angular.copy(perfil.perfil)
+				perfil.objetos = angular.copy(perfil.objetos)
 			}
 		},
 
 		set: function(passagem) { //set do perfil, que muda o form
 			if (passagem.perfil == []) { passagem.objetos = [{ id: 1}] }
-				console.log(passagem.perfil)
-			console.log(passagem.objetos)
 
 			scAlert.open({
 				title: "Atenção!",
@@ -401,8 +439,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		novoPerfil: function(perfil){
 			this.perfilNovo = !this.perfilNovo;
-			perfil.porteiros_podem_adicionar_itens = false;
-			perfil.new_perfil = '';
+			perfil.perfil = '';
 			perfil.objetos = [];
 		},
 
@@ -427,8 +464,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarPerfil: function(perfil){
-			this.list.push({ id: this.list.length+1, perfil: perfil.new_perfil, objetos: perfil.objetos, porteiros_podem_adicionar_itens: perfil.porteiros_podem_adicionar_itens, disabled: false});
-			console.log(this.list)
+			this.list.push({ id: this.list.length+1, perfil: perfil.perfil, objetos: perfil.objetos, disabled: false});
 		},
 
 		disable_enable: function(perfil){
@@ -452,8 +488,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		duplicate: function(perfil) {
 			this.perfilNovo = !this.perfilNovo
 		  this.listObjetos = angular.copy(perfil.objetos)
-		  this.new_perfil = angular.copy(perfil.perfil)
-		  this.porteiros_podem_adicionar_itens = angular.copy(perfil.porteiros_podem_adicionar_itens)
+		  this.perfil = angular.copy(perfil.perfil)
 		},
 
 		modal: new scModal(),
@@ -483,7 +518,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.formCtrl = {
 		new: false,
-		current: '',
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
@@ -547,32 +581,43 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		salvarEPassar: function(passagem){
+			var data = new Date();
+			var horario = data.getHours();
+			var minutos = data.getMinutes();
+			var segundos = data.getSeconds();
 			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
 															pessoa_entrou: passagem.pessoa_entrou,
 															pessoa_saiu: passagem.pessoa_saiu,
-															data: new Date(),
-															horario: passagem.horario,
+															data: data,
+															horario: horario + ':' + minutos + ':' + segundos,
 															status: { label: 'Realizada', color: 'green' },
 															perfil: passagem.perfil,
 															objetos: passagem.objetos,
 															obs: passagem.detalhes,
+															disabled: false,
 														});
-			console.log($s.listCtrl.list)
+			this.new = !this.new
 		},
 
 		salvar: function(passagem){
+			var data = new Date();
+			var horario = data.getHours();
+			var minutos = data.getMinutes();
+			var segundos = data.getSeconds();
 			if (this.new == true) {
 				$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
 																pessoa_entrou: passagem.pessoa_entrou,
 																pessoa_saiu: passagem.pessoa_saiu,
-																data: new Date(),
-																horario: passagem.horario,
+																data: data,
+																horario: horario + ':' + minutos + ':' + segundos,
 																status: { label: 'Pendente', color: 'yellow' },
 																perfil: passagem.perfil,
 																objetos: passagem.objetos,
 																obs: passagem.detalhes,
+																disabled: false,
 															});
 			}
+			this.new = !this.new
 		},
 	};
 
@@ -622,7 +667,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		newPeriodo: function(){
 			this.filtroParams.push({ data_inicial: this.newDataInicial, data_final: this.newDataFinal, tipo_data: this.newTipoData})
-			console.log(this.filtroParams)
 		},
 
 		rmv: function(index) {
@@ -634,8 +678,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			if (this.busca_param == undefined) {
 				this.busca_param = ''
 			}
-			console.log(this.busca_param)
-			console.log(this.filtro_param)
 		}
 	}
 
