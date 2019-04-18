@@ -6,7 +6,7 @@
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
 			<label>
 				<div class="sc-label">Quem entra:</div>
-				<select class="sc-input-default sc-input-block" ng-class="{'error': passagem.pessoa_entrou == '' }" ng-model="passagem.pessoa_entrou" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_saiu.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
+				<select class="sc-input-default sc-input-block" ng-class="{'error': passagem.pessoa_entrou == '' }" ng-model="itemCtrl.pessoa_entrou" ng-options="porteiro as porteiro.nome disable when porteiro.id === passagem.pessoa_saiu.id for porteiro in porteirosCtrl.porteirosList track by porteiro.id">
 				</select>
 			</label>
 		</div>

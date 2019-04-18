@@ -242,8 +242,11 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		modal: new scModal(),
 
-		modalToggle: function() { // abrir/fechar modal
+		modalToggle: function(passagem) { // abrir/fechar modal
 			this.modal.open()
+			this.pessoa_entrou = angular.copy(passagem.pessoa_entrou)
+			console.log(this.pessoa_entrou)
+			console.log(this.modal)
 		},
 
 		close: function() {
@@ -251,6 +254,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		passarServico: function(passagem) {
+			passagem.pessoa_entrou = angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
 			this.modal.close()
 			console.log(passagem.status)
