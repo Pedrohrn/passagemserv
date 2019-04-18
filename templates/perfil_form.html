@@ -37,7 +37,7 @@
   <div class="sc-fieldset sc-m-h-md sc-text-sm-xs" ng-repeat="categoria in perfilCtrl.listObjetos">
     <div class="sc-fieldset-head flex-row justify-items-center">
       <div class="sc-text-sm">
-        <div class="ng-show" ng-hide="categoriasCtrl.novaCategoria">
+        <div class="ng-show" ng-hide="categoria.novaCategoria">
           <label class="sc-input-group">
             <select class="sc-input-default sc-input-block" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="categoria.categoria">
               <option value="">Selecione ou cadastre</option>
@@ -48,7 +48,7 @@
               </span>
               <span sc-dropdown-menu class="sc-dropdown pull-right" ng-if="categoria.showOpts">
                 <ul class="sc-dropdown-menu ng-animation-slider" style="display: block; top: 2.3em;">
-                  <li ng-click="categoriasCtrl.new()">
+                  <li ng-click="categoriasCtrl.new(categoria)">
                     <div>Nova categoria</div>
                   </li>
                   <li ng-click="categoriasCtrl.edit($index)">
@@ -65,13 +65,13 @@
             </button>
           </label>
         </div>
-        <div class="" ng-if="categoriasCtrl.novaCategoria">
+        <div class="" ng-if="categoria.novaCategoria">
           <label class="sc-input-group">
             <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
             <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
               <i class="sc-icon sc-icon-mais-1"></i>
             </button>
-            <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new()">
+            <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(categoria)">
               <i class="sc-icon sc-icon-fechar-1"></i>
             </button>
           </label>

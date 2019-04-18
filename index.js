@@ -66,7 +66,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		rmv: function(index){
 			this.list.splice(index, 1);
-			$s.perfilCtrl.objetos.splice(index, 1);
 		},
 
 		add: function(passagem){
@@ -487,7 +486,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 	$s.formCtrl = {
 		new: false,
-		itens: [],
 		current: '',
 
 		novaPassagem: function(){ //abrir o formulário
