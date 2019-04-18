@@ -68,10 +68,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.list.splice(index, 1);
 		},
 
-		add: function(passagem){
+		add: function(passagem, perfil){
 			this.list.push({ id: this.list.length+1, label: this.newCategoria});
-			if ($s.perfilCtrl.perfilNovo) {
-				$s.perfilCtrl.listObjetos.unshift({ id: $s.perfilCtrl.listObjetos.length+1, label: this.newCategoria});
+			if ($s.perfilCtrl.perfilNovo || perfil.edit.opened) {
+				perfil.objetos.unshift({ id: perfil.objetos.length+1, label: this.newCategoria});
 			} else {
 				passagem.objetos.unshift({ id: passagem.objetos.length+1, label: this.newCategoria});
 			};
@@ -79,8 +79,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		edit: function(categoria){
-			this.new = true
-			this.newCategoria = categoria.label
+			categoria.novaCategoria = true
+			categoria.newCategoria = angular.copy(categoria.newCategoria, categoria.label)
 		},
 
 		/*disable_enable: function(categoria) {
@@ -335,13 +335,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				disabled: true,
 			},
 		],
-		listObjetos: [],
 		novaCategoria: false,
-		itens: [],
 		perfilNovo: false, // toggle do formulário de novo perfil
 		permissoesMenu: false,
-		count: 0,
-		perfil: [],
 
 		permissoesMenuToggle: function(perfil){
 			perfil.permissoesMenu = !perfil.permissoesMenu
@@ -403,23 +399,23 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			})
 		},
 
-		novoPerfil: function(){
+		novoPerfil: function(perfil){
 			this.perfilNovo = !this.perfilNovo;
-			this.porteiros_podem_adicionar_itens = false;
-			this.new_perfil = '';
-			this.listObjetos = [];
+			perfil.porteiros_podem_adicionar_itens = false;
+			perfil.new_perfil = '';
+			perfil.objetos = [];
 		},
 
 		criarCategoria: function(){ //toggle do campo de adicionador de categoria
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
+		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+			perfil.objetos.unshift({id: perfil.objetos.length+1, itens: []});
 		},
 
 		removerCategoria: function(index){ //remover da lista de objetos do perfil, e não da lista principal de objetos
-			this.listObjetos.splice(index, 1);
+			perfil.objetos.splice(index, 1);
 		},
 
 		cadastrarItem: function(categoria){ //adicionador de itens
@@ -430,8 +426,9 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			categoria.itens.splice(index, 1);
 		},
 
-		salvarPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, porteiros_podem_adicionar_itens: this.porteiros_podem_adicionar_itens, disabled: false});
+		salvarPerfil: function(perfil){
+			this.list.push({ id: this.list.length+1, perfil: perfil.new_perfil, objetos: perfil.objetos, porteiros_podem_adicionar_itens: perfil.porteiros_podem_adicionar_itens, disabled: false});
+			console.log(this.list)
 		},
 
 		disable_enable: function(perfil){

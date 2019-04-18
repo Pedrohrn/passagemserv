@@ -3,7 +3,7 @@
   <div class="sc-fieldset flex-row" style="margin-top: 0 !important;">
     <div class="col-xs-auto col-md-5 col-sm-5">
       <div class="sc-label">Título do Perfil</div>
-      <input class="sc-input-default sc-input-block"  value="{{perfil.perfil}}" type="text">
+      <input class="sc-input-default sc-input-block" ng-model="perfil.new_perfil" value="{{perfil.perfil}}" type="text">
     </div>
     <div class="align-self-center sc-p-t-xxxl col-xs-auto col-md-6 col-lg-4">
       <div class="sc-m-l-md sc-dropdown" sc-dropdown-menu>
@@ -32,9 +32,9 @@
 <div class="sc-fieldset">
   <div class="sc-p-l-xl sc-p-md">
     <span class="sc-label sc-text-xl sc-text-xxl-md sc-text-xl-xs">Objetos</span>
-    <button ng-click="perfilCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+    <button ng-click="perfilCtrl.addCategoria(perfil)" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
   </div>
-  <div class="sc-fieldset sc-m-h-md sc-text-sm-xs" ng-repeat="categoria in perfilCtrl.listObjetos">
+  <div class="sc-fieldset sc-m-h-md sc-text-sm-xs" ng-repeat="categoria in perfil.objetos">
     <div class="sc-fieldset-head flex-row justify-items-center">
       <div class="sc-text-sm">
         <div class="ng-show" ng-hide="categoria.novaCategoria">
@@ -51,7 +51,7 @@
                   <li ng-click="categoriasCtrl.new(categoria)">
                     <div>Nova categoria</div>
                   </li>
-                  <li ng-click="categoriasCtrl.edit($index)">
+                  <li ng-click="categoriasCtrl.edit(categoria)">
                     <div>Editar</div>
                   </li>
                   <li ng-click="categoriasCtrl.disable()">
@@ -68,7 +68,7 @@
         <div class="" ng-if="categoria.novaCategoria">
           <label class="sc-input-group">
             <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-            <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add()">
+            <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add(perfil)">
               <i class="sc-icon sc-icon-mais-1"></i>
             </button>
             <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(categoria)">
@@ -111,7 +111,7 @@
   </div>
 </div>
 <div class="align-right">
-  <button class="sc-btn sc-btn-blue" ng-click="perfilCtrl.salvarPerfil()">Salvar</button>
+  <button class="sc-btn sc-btn-blue" ng-click="perfilCtrl.salvarPerfil(perfil)">Salvar</button>
   <button class="sc-btn sc-btn-red" ng-click="perfil.edit.toggle()">Cancelar</button>
 </div>
 </form>
