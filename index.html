@@ -106,7 +106,7 @@
                   <li ng-if="passagem.status.label == 'Pendente'" ng-click="itemCtrl.modalToggle(passagem)">
                     <span>Passar serviço</span>
                   </li>
-                  <li ng-click="passagem.edit.toggle(passagem)">
+                  <li ng-click="itemCtrl.editar(passagem)">
                     <span>Editar</span>
                   </li>
                   <li ng-click="itemCtrl.duplicate(passagem)">
@@ -127,14 +127,11 @@
             </div>
           </div>
           <div ng-include="'templates/passar_serviço_modal.html'" ng-if="itemCtrl.modal.active"></div>
-          <div class="sc-accordion-body ng-animation-slider" ng-show="passagem.acc.opened || passagem.edit.opened">
-            <div ng-if="!passagem.edit.opened">
-              <div ng-include="'templates/show.html'"></div>
-            </div>
-
-            <div ng-if="passagem.edit.opened">
-              <div ng-include="'templates/form.html'"></div>
-            </div>
+          <div class="sc-accordion-body ng-animation-slider" ng-if="passagem.acc.opened && !passagem.edit.opened">
+            <div ng-include="'templates/show.html'"></div>
+          </div>
+          <div class="sc-accordion-body ng-animation-slider" ng-if="passagem.edit.opened && !passagem.acc.opened">
+            <div ng-include="'templates/form.html'"></div>
           </div>
         </li>
         <li ng-if="!listCtrl.list.length" class="">

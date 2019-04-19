@@ -17,8 +17,6 @@ app = angular.module('passagem-servico')
 
 }]);
 
-
-
 ==================================================
 
 passagens  = []
@@ -38,12 +36,12 @@ Passagem
 			titulo
 			quantidade
 ==================================================
+
  desativar passagem: pra que serve?
  mover o menu de categorias para outro lugar. não há razão em ter um menu para cada categoria na lista. é melhor fazer um menu controlador geral para todas elas
 
-
-
 ==================================================
+
 toDo/questions:
 
 algumas funções e formulários operam em conjunto. alguns deles provavelmente serão: criação/edição de passagens, criação/edição de perfis. ações de fechar e botões internos do formulário (adicionar categoria, trocar perfil, etc) também podem estar na mesma situação.
@@ -53,3 +51,13 @@ adicionar e editar perfis ao mesmo tempo faz com que o formulário seja espelhad
 tooltips da tela de confirmação da troca de perfil: como fazer com q eles fiquem a frente dos demais elementos?
 
 criar perfil para limpar formulário na tela de nova passagem
+
+==================================================
+
+known issues:
+
+consigo fazer cópia da passagem para o params, mas não consigo salvar a edição.
+
+modal de passagem trás informações de uma outra passagem (?)
+
+accordions (edição) não se fecham da forma correta
