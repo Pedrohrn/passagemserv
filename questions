@@ -50,14 +50,14 @@ adicionar e editar perfis ao mesmo tempo faz com que o formulário seja espelhad
 
 tooltips da tela de confirmação da troca de perfil: como fazer com q eles fiquem a frente dos demais elementos?
 
-criar perfil para limpar formulário na tela de nova passagem
-
 ==================================================
 
 known issues:
 
 consigo fazer cópia da passagem para o params, mas não consigo salvar a edição.
 
-modal de passagem trás informações de uma outra passagem (?)
+modal de passagem traz informações de uma outra passagem (?)
 
-accordions (edição) não se fecham da forma correta
+botão cancelar, do formulário de edição de passagens não funciona da forma correta
+
+abrir/fechar accordion ainda tá meio zuado

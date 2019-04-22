@@ -193,12 +193,14 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.menu = new scToggle()
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
-			if (!passagem.id) { this.accToggle(passagem) }
 		},
 
 		editar: function(passagem) {
 			passagem.edit.toggle()
 			this.params = angular.copy(passagem)
+			console.log('form aberto?' + passagem.edit.opened)
+			console.log(this.params)
+			console.log(passagem)
 		},
 
 		accToggle: function(passagem) {
@@ -209,15 +211,19 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					 { msg: 'Deseja realmente cancelar a edição? Os dados não salvos serão perdidos.'}
 					],
 					buttons: [
-					 { label: 'Sim', color: 'yellow', action: passagem.edit.toggle() },
+					 { label: 'Sim', color: 'yellow', action: function () {
+					 		passagem.edit.opened = !passagem.edit.opened
+					 		console.log('form aberto?' +passagem.edit.opened)
+					 		}
+					 },
 					 { label: 'Não', color: 'gray', action: scAlert.close() }
 					]
 				})
 			} else {
 				passagem.acc.toggle()
 			}
-			console.log(passagem.edit.opened)
-			console.log(passagem.acc.opened)
+			console.log('form aberto?' + passagem.edit.opened)
+			console.log('show aberto?' + passagem.acc.opened)
 		},
 
 		duplicate: function(passagem){
@@ -245,18 +251,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		modal: new scModal(),
 
-		modalToggle: function(passagem) { // abrir/fechar modal
-			this.modal.open()
-			this.pessoa_entrou = angular.copy(passagem.pessoa_entrou)
-			console.log(passagem)
-			console.log(this.pessoa_entrou)
-			console.log(this.modal)
-		},
-
-		close: function() {
-			this.modal.close()
-		},
-
 		passarServico: function(passagem) {
 			angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
@@ -264,6 +258,18 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			console.log(passagem.status)
 			console.log($s.listCtrl.list)
 			console.log(passagem)
+		},
+
+		modalToggle: function(passagem) { // abrir/fechar modal
+			this.modal.open()
+			this.pessoa_entrou = passagem.pessoa_entrou
+			console.log(passagem)
+			console.log(this.pessoa_entrou)
+			console.log(passagem)
+		},
+
+		close: function() {
+			this.modal.close()
 		},
 
 		disable_enable: function(passagem) {
@@ -530,6 +536,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
 			$s.itemCtrl.params = []
+			/*if (this.new) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+						{ msg: 'Deseja realmente fechar o formulário? Os dados não salvos serão perdidos.'}
+					],
+					buttons: [
+						{ label: 'Sim', color: 'yellow', action: function() {
+							this.new = !this.new
+							}
+						},
+						{ label: 'Não', color: 'gray', action: scAlert.close() }
+					]
+				})
+			}*/
 		},
 
 		limparForm: function(passagem) {
@@ -556,20 +577,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		alerta: function(passagem){ //alerta ao clicar no accordion da nova passagem.
-			if (passagem.edit.opened) {
+		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+			if ($s.formCtrl.new) {
 				scAlert.open({
 					title: 'Atenção!',
 					messages: [
 						{ msg: 'Deseja realmente fechar o formulário? Todos os dados não salvos serão perdidos.'}
 					],
 					buttons: [
-						{ label: 'Sim', color: 'yellow', action: passagem.edit.toggle() },
+						{ label: 'Sim', color: 'yellow', action: function() {
+							$s.formCtrl.new = !$s.formCtrl.new
+							}
+						},
 						{ label: 'Não', color: 'gray', action: scAlert.close() },
 					]
 				})
-			} else {
-				passagem.acc.toggle()
 			}
 		},
 
