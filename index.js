@@ -125,7 +125,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 			{	id: 2,
 				pessoa_entrou: { id: 2, nome:'Porteiro 2' },
-				pessoa_saiu: { id: 1, nome: 'Porteiro 1'},
+				pessoa_saiu: { id: 3, nome: 'Porteiro 3'},
 				data: 21032019,
 				horario: 203031,
 				status: { label: 'Realizada', color: 'green' },
@@ -154,8 +154,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			},
 
 			{	id: 3,
-				pessoa_entrou: { id: 1, nome: 'Porteiro 1' },
-				pessoa_saiu: { id: 2, nome: 'Porteiro 2' },
+				pessoa_entrou: { id: 3, nome: 'Porteiro 3' },
+				pessoa_saiu: { id: 4, nome: 'Porteiro 4' },
 				data: 22032019,
 				horario: 203031,
 				status: { label: 'Realizada', color: 'green' },
@@ -193,11 +193,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.menu = new scToggle()
 			passagem.notificacoes = new scToggle()
 			passagem.edit = new scToggle()
+			passagem.modal = new scModal()
 		},
 
 		editar: function(passagem) {
-			passagem.edit.toggle()
-			this.params = angular.copy(passagem)
+			if (!passagem.edit.opened) {
+				passagem.edit.opened = true
+				this.params = angular.copy(passagem)
+			} else {
+				passagem.edit.opened = false
+			}
 			console.log('form aberto?' + passagem.edit.opened)
 			console.log(this.params)
 			console.log(passagem)
@@ -212,7 +217,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					],
 					buttons: [
 					 { label: 'Sim', color: 'yellow', action: function () {
-					 		passagem.edit.opened = !passagem.edit.opened
+					 		passagem.edit.opened = false
 					 		console.log('form aberto?' +passagem.edit.opened)
 					 		}
 					 },
@@ -249,15 +254,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			})
 		},
 
-		modal: new scModal(),
-
 		passarServico: function(passagem) {
 			angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
-			this.modal.close()
-			console.log(passagem.status)
-			console.log($s.listCtrl.list)
-			console.log(passagem)
+			passagem.modal.close()
 		},
 
 		modalToggle: function(passagem) { // abrir/fechar modal
@@ -265,11 +265,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.pessoa_entrou = passagem.pessoa_entrou
 			console.log(passagem)
 			console.log(this.pessoa_entrou)
-			console.log(passagem)
-		},
-
-		close: function() {
-			this.modal.close()
 		},
 
 		disable_enable: function(passagem) {

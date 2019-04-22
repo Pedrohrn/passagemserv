@@ -135,7 +135,7 @@
 		<button ng-if="passagem.status != 'Realizada'" class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvarEPassar(passagem)">Salvar e passar</button>
 		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar(passagem)">Salvar</button>
 		<button ng-if="passagem.edit.opened" class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="itemCtrl.accToggle(passagem)">Cancelar</button>
-		<button ng-if="!passagem.edit.opened" class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.alerta()">Cancelar</button>
+		<button ng-if="formCtrl.new && !passagem.edit.opened" class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.alerta()">Cancelar</button>
 	</div>
 </form>
 
