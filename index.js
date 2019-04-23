@@ -54,8 +54,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			} else {
 				this.notifQtd =  true
 			}
-			console.log(this.notificarParams)
-			console.log(this.notifQtd)
 		}
 	};
 
@@ -75,8 +73,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			categoria.novaCategoria = !categoria.novaCategoria;
 		},
 
-		rmv: function(index){
-			this.list.splice(index, 1);
+		rmv: function(categoria){
+			this.list.remove(categoria);
 		},
 
 		add: function(passagem, perfil){
@@ -220,18 +218,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			passagem.modal = new scModal()
 		},
 
-		editar: function(passagem) {
-			if (!passagem.edit.opened) {
-				passagem.edit.opened = true
-				this.params = angular.copy(passagem)
-			} else {
-				passagem.edit.opened = false
-			}
-			console.log('form aberto?' + passagem.edit.opened)
-			console.log(this.params)
-			console.log(passagem)
-		},
-
 		accToggle: function(passagem) {
 			if (passagem.edit.opened) {
 				scAlert.open({
@@ -242,7 +228,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					buttons: [
 					 { label: 'Sim', color: 'yellow', action: function () {
 					 		passagem.edit.opened = false
-					 		console.log('form aberto?' +passagem.edit.opened)
 					 		}
 					 },
 					 { label: 'Não', color: 'gray', action: scAlert.close() }
@@ -251,15 +236,21 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			} else {
 				passagem.acc.toggle()
 			}
-			console.log('form aberto?' + passagem.edit.opened)
-			console.log('show aberto?' + passagem.acc.opened)
+		},
+
+		editar: function(passagem) {
+			if (!passagem.edit.opened) {
+				passagem.edit.opened = true
+				this.params = angular.copy(passagem)
+			} else {
+				passagem.edit.opened = false
+			}
 		},
 
 		duplicate: function(passagem){
 			$s.formCtrl.new = !$s.formCtrl.new
 			this.duplicar = !this.duplicar
 			this.params = angular.copy(passagem)
-			console.log($s.formCtrl.new)
 		},
 
 		rmv: function(passagem) {
@@ -271,7 +262,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				buttons: [
 					{ label: 'Excluir', color: 'red', action: function() {
 							$s.listCtrl.list.remove(passagem)
-							scTopMessages.open("Registro excluído com sucesso!", {timeout: 3000})
+							scTopMessages.open({ messages: [{ msg: 'Registro excluído com sucesso!'}], timeout: 3000})
 					}},
 					{ label: 'Cancelar', color: 'gray', action: scAlert.close() },
 				],
@@ -286,10 +277,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		modalToggle: function(passagem) { // abrir/fechar modal
-			this.modal.open()
-			this.pessoa_entrou = passagem.pessoa_entrou
-			console.log(passagem)
-			console.log(this.pessoa_entrou)
+			passagem.modal.open()
+			this.pessoa_entrou = angular.copy(passagem.pessoa_entrou)
 		},
 
 		disable_enable: function(passagem) {
@@ -316,8 +305,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				]
 			})
 		},
-
-	}
+	};
 
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
 		permissoesList: [
@@ -396,9 +384,10 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				disabled: true,
 			},
 		],
-		novaCategoria: false,
 		perfilNovo: false, // toggle do formulário de novo perfil
 		permissoesMenu: false,
+		params: [],
+		duplicar: false,
 
 		permissoesMenuToggle: function(perfil){
 			perfil.permissoesMenu = !perfil.permissoesMenu
@@ -407,8 +396,16 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		init: function(perfil){ // controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
-			if (perfil.edit.opened == true) {
-				perfil.objetos = angular.copy(perfil.objetos)
+			if (Object.blank(perfil)) {
+				perfil.objetos = [];
+			}
+		},
+
+		formInit: function(perfil){
+			if (Object.blank(perfil)) {
+				perfil.objetos = [];
+				perfil.perfil = '';
+				perfil.permissoes = [];
 			}
 		},
 
@@ -421,9 +418,144 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		},
 
-		set: function(passagem) { //set do perfil, que muda o form
-			if (passagem.perfil == []) { passagem.objetos = [{ id: 1}] }
+		limparForm: function(perfil){
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+				 	{ msg: 'Deseja realmente limpar o formulário abaixo?' }
+				],
+				buttons: [
+					{ label: 'Sim', color: 'yellow', action: function() { perfil.objetos = [] } },
+					{ label: 'Não', color: 'gray', action: scAlert.close() }
+				]
+			})
+		},
 
+		novoPerfil: function(perfil){
+			this.perfilNovo = !this.perfilNovo;
+		},
+
+		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+			perfil.objetos.unshift({id: perfil.objetos.length+1, itens: []});
+		},
+
+		removerCategoria: function(perfil, index){ //remover da lista de objetos do perfil, e não da lista principal de objetos
+			perfil.objetos.splice(index, 1);
+		},
+
+		cadastrarItem: function(categoria){ //adicionador de itens
+			categoria.itens.unshift({})
+		},
+
+		deleteItem: function(categoria, index){
+			categoria.itens.splice(index, 1);
+		},
+
+		salvarPerfil: function(perfil){
+			if (this.perfilNovo) {
+				this.list.push({ id: this.list.length+1, perfil: perfil.perfil, objetos: perfil.objetos, permissoes: perfil.permissoes, disabled: false});
+			}
+			if (this.duplicar) {
+				angular.extend(perfil, this.params)
+			}
+		},
+
+		disable_enable: function(perfil){
+			title: '';
+			if (perfil.disabled) {
+				this.title = 'Deseja reativar o perfil?'
+			} else {
+				this.title = 'Deseja desativar o perfil?'
+			}
+			scAlert.open({
+				title: this.title,
+				buttons: [
+					{ label: 'Sim', color: 'yellow', action: function() {
+						perfil.disabled = !perfil.disabled;
+					},},
+					{ label: 'Não', color: 'gray', action: scAlert.close()}
+				],
+			})
+		},
+
+		duplicate: function(perfil) {
+			this.duplicar = !this.duplicar
+		  this.params = angular.copy(perfil)
+		},
+
+		editar: function(perfil){
+			if (!perfil.edit.opened) {
+				perfil.edit.opened = true
+				this.params = angular.copy(perfil)
+			} else {
+				perfil.edit.opened = false
+			};
+			if (this.duplicar || this.perfilNovo) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+					 	{ msg: 'Deseja realmente fechar o formulário? Os dados não salvos serão perdidos.' }
+					],
+					buttons: [
+						{ label: 'Sim', color: 'yellow', action: function() {
+								$s.perfilCtrl.duplicar = false
+								$s.perfilCtrl.perfilNovo = false
+								$s.perfilCtrl.params = []
+							}
+						},
+						{ label: 'Não', color: 'gray', action: scAlert.close() }
+					]
+				})
+			}
+		},
+
+		rmv: function(perfil) {
+			scAlert.open({
+				title: "Atenção!",
+				messages: [
+					{ msg: 'Deseja realmente excluir este perfil? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.' },
+					{ msg: 'As passagens cadastradas anteriormente não serão afetadas, a menos que sejam editadas manualmente pelo usuário.' },
+				],
+				buttons: [
+				 { label: "Sim", color: 'yellow', action: function() { $s.perfilCtrl.list.remove(perfil) } },
+				 { label: "Cancelar", color: 'gray', action: scAlert.close() },
+				]
+			})
+		},
+
+		modal: new scModal(),
+
+		modalToggle: function () { // abrir/fechar modal
+			this.modal.open()
+		},
+
+		close: function () {
+			this.modal.close()
+		},
+	};
+
+	$s.formCtrl = {
+		new: false,
+
+		novaPassagem: function(){ //abrir o formulário
+			this.new = !this.new;
+		},
+
+		limparForm: function(passagem) {
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Os dados do formulário de objetos serão perdidos. Deseja continuar?' }
+				],
+				buttons: [
+					{ label: 'Sim', color: 'yellow', action: function(){ passagem.objetos = [] }
+				  },
+				  { label: 'Cancelar', color: 'gray', action: scAlert.close() }
+				]
+			})
+		},
+
+		setPerfil: function(passagem) { //set do perfil, que muda o form
 			scAlert.open({
 				title: "Atenção!",
 				messages: [
@@ -447,133 +579,13 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			})
 		},
 
-		novoPerfil: function(perfil){
-			this.perfilNovo = !this.perfilNovo;
-			perfil.perfil = '';
-			perfil.objetos = [];
-		},
-
-		criarCategoria: function(){ //toggle do campo de adicionador de categoria
-			this.novaCategoria = !this.novaCategoria;
-		},
-
-		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			perfil.objetos.unshift({id: perfil.objetos.length+1, itens: []});
-		},
-
-		removerCategoria: function(index){ //remover da lista de objetos do perfil, e não da lista principal de objetos
-			perfil.objetos.splice(index, 1);
-		},
-
-		cadastrarItem: function(categoria){ //adicionador de itens
-			categoria.itens.unshift({})
-		},
-
-		deleteItem: function(categoria, index){
-			categoria.itens.splice(index, 1);
-		},
-
-		salvarPerfil: function(perfil){
-			this.list.push({ id: this.list.length+1, perfil: perfil.perfil, objetos: perfil.objetos, disabled: false});
-		},
-
-		disable_enable: function(perfil){
-			title: '';
-			if (perfil.disabled) {
-				this.title = 'Deseja reativar o perfil?'
-			} else {
-				this.title = 'Deseja desativar o perfil?'
-			}
-			scAlert.open({
-				title: this.title,
-				buttons: [
-					{ label: 'Sim', color: 'yellow', action: function() {
-						perfil.disabled = !perfil.disabled;
-					},},
-					{ label: 'Não', color: 'gray', action: scAlert.close()}
-				],
-			})
-		},
-
-		duplicate: function(perfil) {
-			this.perfilNovo = !this.perfilNovo
-		  this.listObjetos = angular.copy(perfil.objetos)
-		  this.perfil = angular.copy(perfil.perfil)
-		},
-
-		modal: new scModal(),
-
-		modalToggle: function () { // abrir/fechar modal
-			this.modal.open()
-		},
-
-		close: function () {
-			this.modal.close()
-		},
-
-		rmv: function(perfil) {
-			scAlert.open({
-				title: "Atenção!",
-				messages: [
-					{ msg: 'Deseja realmente excluir este perfil? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.' },
-					{ msg: 'As passagens cadastradas anteriormente não serão afetadas, a menos que sejam editadas manualmente pelo usuário.' },
-				],
-				buttons: [
-				 { label: "Sim", color: 'yellow', action: function() { $s.perfilCtrl.list.remove(perfil) } },
-				 { label: "Cancelar", color: 'gray', action: scAlert.close() },
-				]
-			})
-		},
-	};
-
-	$s.formCtrl = {
-		new: false,
-
-		novaPassagem: function(){ //abrir o formulário
-			this.new = !this.new;
-			$s.itemCtrl.params = []
-			/*if (this.new) {
-				scAlert.open({
-					title: 'Atenção!',
-					messages: [
-						{ msg: 'Deseja realmente fechar o formulário? Os dados não salvos serão perdidos.'}
-					],
-					buttons: [
-						{ label: 'Sim', color: 'yellow', action: function() {
-							this.new = !this.new
-							}
-						},
-						{ label: 'Não', color: 'gray', action: scAlert.close() }
-					]
-				})
-			}*/
-		},
-
-		limparForm: function(passagem) {
-			scAlert.open({
-				title: 'Atenção!',
-				messages: [
-					{ msg: 'Os dados do formulário de objetos serão perdidos. Deseja continuar?' }
-				],
-				buttons: [
-					{ label: 'Sim', color: 'yellow', action: function(){ passagem.objetos = [] }
-				  },
-				  { label: 'Cancelar', color: 'gray', action: scAlert.close() }
-				]
-			})
-		},
-
 		init: function(passagem) {
-			if ($s.itemCtrl.duplicar == true) {
-				angular.extend(passagem, $s.itemCtrl.passagem)
-			}
-
 			if (Object.blank(passagem)) {
 				passagem.objetos = [];
 			}
 		},
 
-		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+		alerta: function(passagem){ //alerta ao clicar no accordion/cancelar da nova passagem.
 			if ($s.formCtrl.new) {
 				scAlert.open({
 					title: 'Atenção!',
@@ -583,6 +595,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					buttons: [
 						{ label: 'Sim', color: 'yellow', action: function() {
 							$s.formCtrl.new = !$s.formCtrl.new
+							$s.itemCtrl.params = []
 							}
 						},
 						{ label: 'Não', color: 'gray', action: scAlert.close() },
@@ -595,7 +608,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(passagem){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+		addCategoria: function(passagem){ //adiciona uma nova categoria à lista de objetos DA PASSAGEM
 			passagem.objetos.unshift({id: passagem.objetos.length+1, itens: []});
 		},
 

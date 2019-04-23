@@ -4,40 +4,66 @@ angular.module('passagem-servico')
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento', disabled: false },
-		 { id: 2, label: 'Acontecimento', disabled: false },
-		 { id: 3, label: 'Empréstimos', disabled: true },
+		 { id: 2, label: 'Acontecimento', disabled: true },
+		 { id: 3, label: 'Empréstimos', disabled: false },
 		],
 		novaCategoria: false,
-		showOpts: false,
 
 		showOptions: function(categoria){
 			categoria.showOpts = !categoria.showOpts;
 		},
 
-		new: function(){
-			this.novaCategoria = !this.novaCategoria;
+		new: function(categoria){
+			categoria.novaCategoria = !categoria.novaCategoria;
 		},
 
 		rmv: function(index){
 			this.list.splice(index, 1);
-			$s.perfilCtrl.objetos.splice(index, 1);
 		},
 
-		add: function(){
+		add: function(passagem, perfil){
 			this.list.push({ id: this.list.length+1, label: this.newCategoria});
-			if ($s.perfilCtrl.perfilNovo) {
-				$s.perfilCtrl.objetos.unshift({ id: $s.perfilCtrl.objetos.length+1, label: this.newCategoria});
+			if ($s.perfilCtrl.perfilNovo || perfil.edit.opened) {
+				perfil.objetos.unshift({ id: perfil.objetos.length+1, label: this.newCategoria});
 			} else {
-				$s.formCtrl.listObjetos.unshift({ id: $s.formCtrl.listObjetos.length+1, label: this.newCategoria});
+				passagem.objetos.unshift({ id: passagem.objetos.length+1, label: this.newCategoria});
 			};
 			this.newCategoria = '';
-			console.log(this.list);
-			console.log($s.perfilCtrl.objetos);
-			console.log($s.formCtrl.listObjetos);
 		},
+
+		edit: function(categoria){
+			categoria.novaCategoria = true
+			categoria.newCategoria = angular.copy(categoria.newCategoria, categoria.label)
+		},
+
+		disable_enable: function(categoria) {
+			title: '';
+			if (categoria.categoria.disabled) {
+				this.title = 'Deseja reativar a categoria?'
+			} else {
+				this.title = 'Deseja desativar a categoria?'
+			}
+			scAlert.open({
+				title: this.title,
+				buttons: [
+				{ label: 'Sim', color: 'yellow', action: function() {
+				 		categoria.categoria.disabled = !categoria.categoria.disabled
+					}
+				},
+				{ label: 'Não', color: 'gray', action: scAlert.close()
+				}
+				],
+			})
+		}
 	};
 
 	$s.perfilCtrl = { //controlador geral dos perfis (criação, edição e gerenciamento)
+		permissoesList: [
+			{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+			{ id: 2, label: 'Remover categorias/itens', checked: false },
+			{ id: 3, label: 'Editar itens (nomes)', checked: false },
+			{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+		],
 		list: [
 			{ id: 1,
 				perfil: 'Portaria Social',
@@ -56,6 +82,7 @@ angular.module('passagem-servico')
 						],
 					},
 				],
+				permissoes: [],
 				disabled: false,
 			},
 			{ id: 2,
@@ -79,10 +106,11 @@ angular.module('passagem-servico')
 						],
 					},
 				],
+				permissoes: [],
 				disabled: false,
 			},
 			{ id: 3,
-				perfil: 'Portaria de Serviço desativada',
+				perfil: 'Portaria de Teste 2',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -102,33 +130,37 @@ angular.module('passagem-servico')
 						],
 					},
 				],
+				permissoes: [],
 				disabled: true,
 			},
 		],
-		new: false,
-		listObjetos: [],
 		novaCategoria: false,
-		itens: [],
-
 		perfilNovo: false, // toggle do formulário de novo perfil
+		permissoesMenu: false,
 
-		current: "",
+		permissoesMenuToggle: function(perfil){
+			perfil.permissoesMenu = !perfil.permissoesMenu
+		},
 
-		init: function(perfil){ // init dos controles do perfil, para o menu e para as ações.
+		init: function(perfil){ // controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
 			if (perfil.edit.opened == true) {
-				this.listObjetos = this.listObjetos.concat(perfil.objetos)
-				console.log(this.listObjetos)
+				perfil.objetos = angular.copy(perfil.objetos)
 			}
-			console.log(perfil.edit.opened)
-			console.log(perfil.objetos)
-			console.log(this.listObjetos)
 		},
 
-		set: function() { //set do perfil, que muda o form
-			if (this.current == "") { return }
-			console.log('alçsdf')
+		setPermissao: function(perfil, permissao){
+			permissao.checked = !permissao.checked;
+			if (permissao.checked) {
+				perfil.permissoes.push(permissao)
+			} else {
+			perfil.permissoes.remove(permissao)
+			}
+		},
+
+		set: function(passagem) { //set do perfil, que muda o form
+			if (passagem.perfil == []) { passagem.objetos = [{ id: 1}] }
 
 			scAlert.open({
 				title: "Atenção!",
@@ -138,37 +170,37 @@ angular.module('passagem-servico')
 					],
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
-							$s.formCtrl.listObjetos = $s.formCtrl.listObjetos.concat($s.perfilCtrl.current.objetos)
+							passagem.objetos = passagem.objetos.concat(passagem.perfil.objetos)
 						},
 						tooltip: 'Mescla objetos/itens abaixo com os do perfil selecionado.',
 					},
 					{
 						label: "Sobreescrever", color: 'yellow', action: function() {
-							$s.formCtrl.listObjetos = angular.copy($s.perfilCtrl.current.objetos)
+							passagem.objetos = angular.copy(passagem.perfil.objetos)
 						},
 						tooltip: 'Sobreescreve objetos/itens abaixo pelos itens do perfil selecionado.',
 					},
 					{ label: "Cancelar", color: 'gray', action: scAlert.close() },
 				]
 			})
-
-			//$s.formCtrl.listObjetos = angular.copy($s.perfilCtrl.current.objetos)
 		},
 
-		novoPerfil: function(){
+		novoPerfil: function(perfil){
 			this.perfilNovo = !this.perfilNovo;
+			perfil.perfil = '';
+			perfil.objetos = [];
 		},
 
 		criarCategoria: function(){ //toggle do campo de adicionador de categoria
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
+		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+			perfil.objetos.unshift({id: perfil.objetos.length+1, itens: []});
 		},
 
 		removerCategoria: function(index){ //remover da lista de objetos do perfil, e não da lista principal de objetos
-			this.listObjetos.splice(index, 1);
+			perfil.objetos.splice(index, 1);
 		},
 
 		cadastrarItem: function(categoria){ //adicionador de itens
@@ -179,13 +211,32 @@ angular.module('passagem-servico')
 			categoria.itens.splice(index, 1);
 		},
 
-		salvarNovoPerfil: function(){
-			this.list.push({ id: this.list.length+1, perfil: this.new_perfil, objetos: this.listObjetos, disabled: false});
-			console.log(this.list);
+		salvarPerfil: function(perfil){
+			this.list.push({ id: this.list.length+1, perfil: perfil.perfil, objetos: perfil.objetos, disabled: false});
 		},
 
 		disable_enable: function(perfil){
-			perfil.disabled = !perfil.disabled;
+			title: '';
+			if (perfil.disabled) {
+				this.title = 'Deseja reativar o perfil?'
+			} else {
+				this.title = 'Deseja desativar o perfil?'
+			}
+			scAlert.open({
+				title: this.title,
+				buttons: [
+					{ label: 'Sim', color: 'yellow', action: function() {
+						perfil.disabled = !perfil.disabled;
+					},},
+					{ label: 'Não', color: 'gray', action: scAlert.close()}
+				],
+			})
+		},
+
+		duplicate: function(perfil) {
+			this.perfilNovo = !this.perfilNovo
+		  this.listObjetos = angular.copy(perfil.objetos)
+		  this.perfil = angular.copy(perfil.perfil)
 		},
 
 		modal: new scModal(),
@@ -197,80 +248,85 @@ angular.module('passagem-servico')
 		close: function () {
 			this.modal.close()
 		},
+
+		rmv: function(perfil) {
+			scAlert.open({
+				title: "Atenção!",
+				messages: [
+					{ msg: 'Deseja realmente excluir este perfil? Essa ação não pode ser desfeita e o registro não poderá ser recuperado.' },
+					{ msg: 'As passagens cadastradas anteriormente não serão afetadas, a menos que sejam editadas manualmente pelo usuário.' },
+				],
+				buttons: [
+				 { label: "Sim", color: 'yellow', action: function() { $s.perfilCtrl.list.remove(perfil) } },
+				 { label: "Cancelar", color: 'gray', action: scAlert.close() },
+				]
+			})
+		},
 	};
 
 	$s.formCtrl = {
-		params: [],
-		edit: false,
 		new: false,
-		newRecord: false,
-
-		new: false,
-		listObjetos: [],
-		novaCategoria: false,
-		itens: [],
 
 		novaPassagem: function(){ //abrir o formulário
 			this.new = !this.new;
+			$s.itemCtrl.params = []
 		},
 
-		/*init: function(passagem) {
-			obj = passagem || {}
-
-			// usar alguma coias para copiar o obj 'passagem'
-			this.newRecord = !obj.id
-
-			if (this.newRecord) {
-				$s.listCtrl.list.push(obj)
-			} else {
-				this.params = obj
-			}
-		},*/
-
-		init: function(passagem) {
-			passagem.acc = new scToggle()
-			passagem.menu = new scToggle()
-			passagem.notificacoes = new scToggle()
-			passagem.edit = new scToggle()
-			if (!passagem.id) {this.accToggle(passagem) }
-			if (passagem.edit.opened == true) {
-				$s.formCtrl.listObjetos == angular.copy(passagem)
-			}
-		},
-
-		accToggle: function(passagem) {
-			passagem.acc.toggle()
-			if (!passagem.id) { passagem.edit.toggle() }
-		},
-
-		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+		limparForm: function(passagem) {
 			scAlert.open({
 				title: 'Atenção!',
 				messages: [
-					{ msg: 'Deseja realmente fechar o formulário? Todos os dados não salvos serão perdidos.'}
+					{ msg: 'Os dados do formulário de objetos serão perdidos. Deseja continuar?' }
 				],
 				buttons: [
-					{ label: 'Sim', color: 'yellow', action: this.novaPassagem() },
-					{ label: 'Não', color: 'gray', action: scAlert.close() },
+					{ label: 'Sim', color: 'yellow', action: function(){ passagem.objetos = [] }
+				  },
+				  { label: 'Cancelar', color: 'gray', action: scAlert.close() }
 				]
 			})
+		},
+
+		init: function(passagem) {
+			if ($s.itemCtrl.duplicar == true) {
+				angular.extend(passagem, $s.itemCtrl.passagem)
+			}
+
+			if (Object.blank(passagem)) {
+				passagem.objetos = [];
+			}
+		},
+
+		alerta: function(){ //alerta ao clicar no accordion da nova passagem.
+			if ($s.formCtrl.new) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+						{ msg: 'Deseja realmente fechar o formulário? Todos os dados não salvos serão perdidos.'}
+					],
+					buttons: [
+						{ label: 'Sim', color: 'yellow', action: function() {
+							$s.formCtrl.new = !$s.formCtrl.new
+							}
+						},
+						{ label: 'Não', color: 'gray', action: scAlert.close() },
+					]
+				})
+			}
 		},
 
 		criarCategoria: function(){
 			this.novaCategoria = !this.novaCategoria;
 		},
 
-		addCategoria: function(){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			this.listObjetos.unshift({id: this.listObjetos.length+1, itens: []});
-			console.log(this.listObjetos);
+		addCategoria: function(passagem){ //adiciona uma nova categoria à lista de objetos DO PERFIL
+			passagem.objetos.unshift({id: passagem.objetos.length+1, itens: []});
 		},
 
-		removerCategoria: function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
-			this.listObjetos.splice(index, 1);
+		removerCategoria: function(passagem, index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
+			passagem.objetos.splice(index, 1);
 		},
 
 		cadastrarItem: function(categoria){
-			console.log(categoria.itens)
 			categoria.itens.unshift({})
 		},
 
@@ -279,33 +335,48 @@ angular.module('passagem-servico')
 		},
 
 		salvarEPassar: function(passagem){
+			var data = new Date();
+			var horario = data.getHours();
+			var minutos = data.getMinutes();
+			var segundos = data.getSeconds();
 			$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
 															pessoa_entrou: passagem.pessoa_entrou,
 															pessoa_saiu: passagem.pessoa_saiu,
-															data: new Date(),
-															horario: passagem.horario,
-															status: 'Realizada',
-															perfil: $s.perfilCtrl.current.perfil,
-															objetos: this.listObjetos,
+															data: data,
+															horario: horario + ':' + minutos + ':' + segundos,
+															status: { label: 'Realizada', color: 'green' },
+															perfil: passagem.perfil,
+															objetos: passagem.objetos,
 															obs: passagem.detalhes,
+															disabled: false,
 														});
-			console.log($s.listCtrl.list);
+			this.new = !this.new
 		},
 
 		salvar: function(passagem){
+			var data = new Date();
+			var horario = data.getHours();
+			var minutos = data.getMinutes();
+			var segundos = data.getSeconds();
 			if (this.new == true) {
 				$s.listCtrl.list.push({ id: $s.listCtrl.list.length+1,
 																pessoa_entrou: passagem.pessoa_entrou,
 																pessoa_saiu: passagem.pessoa_saiu,
-																data: new Date(),
-																horario: passagem.horario,
-																status: 'Pendente',
-																perfil: $s.perfilCtrl.current.perfil,
-																objetos: this.listObjetos,
-																obs: passagem.detalhes,
+																data: data,
+																horario: horario + ':' + minutos + ':' + segundos,
+																status: { label: 'Pendente', color: 'yellow' },
+																perfil: passagem.perfil,
+																objetos: passagem.objetos,
+																obs: passagem.obs,
+																disabled: false,
 															});
-				console.log($s.listCtrl.list);
+				this.new = !this.new
+			} else {
+				angular.extend(passagem.pessoa_entrou, $s.itemCtrl.params.pessoa_entrou)
+				console.log($s.itemCtrl.params)
+				console.log(passagem)
 			}
+			console.log($s.listCtrl.list)
 		},
 	};
 

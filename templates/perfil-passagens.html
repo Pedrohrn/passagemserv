@@ -5,11 +5,9 @@
 		<button class="sc-btn sc-btn-green sc-btn-thin sc-m-l-xxl" ng-click="perfilCtrl.novoPerfil(perfil)" type="button">Novo Perfil</button>
   </div>
 
-  <div class="sc-modal-body" ng-if="perfilCtrl.perfilNovo">
-    <div>
-      <div class="sc-panel-body sc-m-b-md">
-        <div ng-include="'templates/perfil_form.html'"></div>
-      </div>
+  <div class="sc-modal-body" ng-if="perfilCtrl.perfilNovo || perfilCtrl.duplicar">
+    <div class="sc-panel-body sc-m-b-md">
+      <div ng-include="'templates/perfil_form.html'"></div>
     </div>
   </div>
 
@@ -29,7 +27,7 @@
               <div class="sc-dropdown" ng-click="perfil.menu.toggle()">
                 <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': perfil.menu.opened}"></i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right ng-hide" ng-show="perfil.menu.opened" style="display: block;">
-                  <li ng-click="perfil.edit.toggle()">
+                  <li ng-click="perfilCtrl.editar(perfil)">
                     <span>Editar</span>
                   </li>
                   <li ng-click="perfilCtrl.duplicate(perfil)">
