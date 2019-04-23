@@ -103,7 +103,7 @@
               <div class="sc-dropdown" ng-click="passagem.menu.toggle()">
                 <i class="sc-badge-hover-gray sc-icon-reticiencias-v" ng-class="{'sc-badge-active': passagem.menu.opened, 'sc-badge-hover-white': passagem.acc.opened || passagem.edit.opened}"></i>
                 <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="passagem.menu.opened" style="display: block;">
-                  <li ng-if="passagem.status.label == 'Pendente'" ng-click="passagem.modal.open()">
+                  <li ng-if="passagem.status.label != 'Realizada'" ng-click="passagem.modal.open()">
                     <span>Passar serviço</span>
                   </li>
                   <li ng-click="itemCtrl.editar(passagem)">

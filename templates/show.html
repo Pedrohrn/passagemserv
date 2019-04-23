@@ -12,9 +12,9 @@
       </div>
     </div>
     <div class="flex-row col-xs-6">
-      <div class="col-xs-auto" ng-if="notificar.params == 0">
+      <div class="col-xs-auto" ng-if="viewCtrl.notifQtd">
         <div class="col-xs-auto">
-          <label class="sc-text-red sc-text-sm">Marque ao menos um usuário!</label>
+          <label class="sc-text-red sc-text-sm sc-label clear sc-m-l-lg">Marque ao menos um usuário!</label>
         </div>
         <div class="clear"></div>
       </div>
@@ -22,14 +22,19 @@
         <i class="sc-icon sc-icon-carta-4"></i>Notificações
       </div>
       <div class="col-xs-4 align-self-center" ng-if="passagem.notificacoes.opened">
-        <button class="sc-btn sc-btn-thin sc-btn-md sc-btn-blue" ng-click="notificar()">Notificar por e-mail</button>
+        <button class="sc-btn sc-btn-thin sc-btn-md sc-btn-blue" ng-click="viewCtrl.notificar()">Notificar por e-mail
+          <span ng-if="viewCtrl.notificarParams.length > 0" class="sc-badge sc-badge-fixed sc-bg-yellow">{{viewCtrl.notificarParams.length}}</span>
+        </button>
       </div>
       <div class="sc-p-none sc-text-sm sc-p-t-md sc-m-h-md" ng-if="passagem.notificacoes.opened" ng-repeat="grupo in admCtrl.grupos">
-        <div class="sc-label sc-text-blue">{{grupo.label}}
+        <div class="sc-label sc-text-blue">
+          <div class="sc-label sc-cursor-pointer sc-m-o" ng-click="viewCtrl.setAllByGroup()" style="max-width: max-content;">{{grupo.label}}</div>
           <div class="sc-fieldset">
             <div ng-repeat="membro in grupo.membros">
-              <input class="sc-checkbox sc-checkbox-gray" type="checkbox">
-              <label class="sc-label">{{membro.user}} -</label>
+              <span ng-click="viewCtrl.setUser(membro)">
+                <input class="sc-checkbox sc-checkbox-gray" type="checkbox" ng-model="membro.checked">
+                <label class="sc-label">{{membro.user}} -</label>
+              </span>
               <label class="sc-text-gray">{{membro.email}} -</label>
               <label class="sc-text-gray" ng-click="passagemCtrl.abrirLog()">ver histórico</label>
             </div>

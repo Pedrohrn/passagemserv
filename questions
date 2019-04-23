@@ -51,4 +51,4 @@ consigo fazer cópia da passagem para o params, mas não consigo salvar a ediç�
 
 botão cancelar, do formulário de edição de passagens não funciona da forma correta
 
-abrir/fechar accordion ainda tá meio zuado
+editar a caixa de permissões de um novo perfil e de um perfil existente trabalham de forma espelhada (a mesma coisa para a caixa de notificações das passagens)

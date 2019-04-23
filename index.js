@@ -35,6 +35,30 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 })
 
 .controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
+	$s.viewCtrl = {
+		notificarParams: [],
+		notifQtd: false,
+
+		setUser: function(membro) {
+			membro.checked = !membro.checked
+			if (membro.checked) {
+				this.notificarParams.push(membro)
+			} else {
+				this.notificarParams.remove(membro)
+			}
+		},
+
+		notificar: function() {
+			if (this.notificarParams.length = 0) {
+				this.notifQtd = false
+			} else {
+				this.notifQtd =  true
+			}
+			console.log(this.notificarParams)
+			console.log(this.notifQtd)
+		}
+	};
+
 	$s.categoriasCtrl = { //lista base PRINCIPAL das categorias. é a lista que define quais categorias estão previamente cadastradas.
 		list: [
 		 { id: 1, label: 'Funcionamento', disabled: false },
@@ -257,6 +281,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		passarServico: function(passagem) {
 			angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
+			passagem.disabled = false
 			passagem.modal.close()
 		},
 
@@ -319,13 +344,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				permissoes: [
-					{ id: 1, label: 'Adicionar categorias/itens', checked: true },
-					{ id: 2, label: 'Remover categorias/itens', checked: false },
-					{ id: 3, label: 'Editar itens (nomes)', checked: true },
-					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
-				],
-				total_permissoes: 3,
+				permissoes: [],
 				disabled: false,
 			},
 			{ id: 2,
@@ -349,13 +368,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				permissoes: [
-					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
-					{ id: 2, label: 'Remover categorias/itens', checked: false },
-					{ id: 3, label: 'Editar itens (nomes)', checked: true },
-					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
-				],
-				total_permissoes: 1,
+				permissoes: [],
 				disabled: false,
 			},
 			{ id: 3,
@@ -379,13 +392,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 						],
 					},
 				],
-				permissoes: [
-					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
-					{ id: 2, label: 'Remover categorias/itens', checked: true },
-					{ id: 3, label: 'Editar itens (nomes)', checked: false },
-					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
-				],
-				total_permissoes: 2,
+				permissoes: [],
 				disabled: true,
 			},
 		],
@@ -397,26 +404,20 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			perfil.permissoesMenu = !perfil.permissoesMenu
 		},
 
-		setPermissao: function(perfil, permissoes, permissao){
-			permissao.checked = !permissao.checked;
-			if (permissao.checked == true) {
-				perfil.total_permissoes++
-			} else {
-			perfil.total_permissoes--
-			}
-		},
-
-		total: function(perfil, permissoes, permissao){
-			for (var i = 0; i<permissoes.length; i++) {
-				if (permissao.checked == true) { perfil.total_permissoes++ }
-			}
-		},
-
 		init: function(perfil){ // controles do perfil, para o menu e para as ações.
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
 			if (perfil.edit.opened == true) {
 				perfil.objetos = angular.copy(perfil.objetos)
+			}
+		},
+
+		setPermissao: function(perfil, permissao){
+			permissao.checked = !permissao.checked;
+			if (permissao.checked) {
+				perfil.permissoes.push(permissao)
+			} else {
+			perfil.permissoes.remove(permissao)
 			}
 		},
 
@@ -648,7 +649,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 															});
 				this.new = !this.new
 			} else {
-				$s.itemCtrl.params = angular.copy(passagem)
+				angular.extend(passagem.pessoa_entrou, $s.itemCtrl.params.pessoa_entrou)
 				console.log($s.itemCtrl.params)
 				console.log(passagem)
 			}
