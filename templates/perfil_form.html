@@ -1,4 +1,4 @@
-<form class="sc-m-h-md" ng-init="perfil = (perfilCtrl.params) ; perfilCtrl.init(perfil)">
+<form class="sc-m-h-md" ng-init="perfil = (perfilCtrl.params) ; perfilCtrl.formInit(perfil)">
   <div class="sc-p-t-lg">
     <div class="sc-fieldset flex-row" style="margin-top: 0 !important;">
       <div class="col-xs-auto col-md-5 col-sm-5">
@@ -87,7 +87,9 @@
         <ul>
           <li class="" ng-if="categoria.itens.length > 0">
             <div class="flex-row sc-p-v-md sc-label sc-text-blue">
-              <div class="col-sm-2 sc-text-medium sc-label">Qtde</div>
+              <div class="col-sm-2">
+                <div class="sc-text-medium sc-label" style="max-width: 4.1em;">Qtde</div>
+              </div>
               <div class="sc-p-l-md col-xs-auto sc-text-medium sc-label">Item</div>
             </div>
           </li>
@@ -97,7 +99,7 @@
                 <input class="fcol-md-90 sc-input-default sc-input-thin" ng-value="item.qtd" ng-model="item.qtd" type="number" min="0" max="999" style="max-width: 4.1em;">
               </div>
               <div class="sc-p-l-md fcol-xs-auto">
-                <input class="fcol-xs-90 sc-input-default sc-input-thin" type="text" value="{{item.nome}}" ng-model="item.nome">
+                <input class="col-xs-10 col-lg-9 sc-input-default sc-input-thin" type="text" value="{{item.nome}}" ng-model="item.nome">
               </div>
               <div class="fcol-xs-1 align-right">
                 <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red" ng-click="perfilCtrl.deleteItem(categoria, $index)"></i>

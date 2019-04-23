@@ -47,10 +47,8 @@ tooltips da tela de confirmação da troca de perfil: como fazer com q eles fiqu
 
 known issues:
 
-consigo fazer cópia da passagem para o params, mas não consigo salvar a edição.
-
-botão cancelar, do formulário de edição de passagens não funciona da forma correta
+botão cancelar, do formulário de edição de passagens não funciona da forma correta. o problema, com certeza, está nos dois inits funcionando ao mesmo tempo, tanto no form quanto no perfil.
 
 editar a caixa de permissões de um novo perfil e de um perfil existente trabalham de forma espelhada (a mesma coisa para a caixa de notificações das passagens)
 
-input adicionador de categorias precisa ser refeito, talvez repensado
+**input adicionador de categorias precisa ser refeito, talvez repensado
