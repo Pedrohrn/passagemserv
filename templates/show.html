@@ -2,13 +2,16 @@
   <div class="sc-fieldset flex-row ng-animation-slider">
     <div class="col-xs-6 sc-p-l-sm">
       <div class="sc-text-gray sc-p-xs">Quem sai:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_saiu.nome}}</span>
+        <span class="sc-text-blue sc-p-l-xs">{{passagem.pessoa_saiu.nome}}</span>
       </div>
       <div class="sc-text-gray sc-p-xs">Quem entra:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.pessoa_entrou.nome}}</span>
+        <span class="sc-text-blue sc-p-l-xs">{{passagem.pessoa_entrou.nome}}</span>
       </div>
-      <div class="sc-text-gray sc-p-xs">Data e hora:
-        <span class="sc-text-blue sc-p-l-lg">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.data | date: 'mediumTime'}}</span>
+      <div class="sc-text-gray sc-p-xs">Cadastrado em:
+        <span class="sc-text-blue sc-p-l-xs">{{passagem.data | date: "dd/MM/yyyy" }}, às {{passagem.data | date: 'mediumTime' }}</span>
+      </div>
+      <div ng-if="passagem.data_passagem" class="sc-text-gray sc-p-xs">Passagem feita em:
+        <span class="sc-text-blue sc-p-l-xs">{{passagem.data_passagem | date: "dd/MM/yyyy" }}, às {{passagem.data_passagem | date: 'mediumTime' }}</span>
       </div>
     </div>
     <div class="flex-row col-xs-6">

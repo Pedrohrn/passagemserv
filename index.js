@@ -64,6 +64,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		 { id: 3, label: 'Empréstimos', disabled: false },
 		],
 		novaCategoria: false,
+		newCategoria: '',
 
 		showOptions: function(categoria){
 			categoria.showOpts = !categoria.showOpts;
@@ -71,25 +72,36 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		new: function(categoria){
 			categoria.novaCategoria = !categoria.novaCategoria;
+			if (categoria.edit) {
+				categoria.edit = false
+			}
 		},
 
 		rmv: function(categoria){
 			this.list.remove(categoria);
 		},
 
-		add: function(passagem, perfil){
-			this.list.push({ id: this.list.length+1, label: this.newCategoria});
-			if ($s.perfilCtrl.perfilNovo || perfil.edit.opened) {
-				perfil.objetos.unshift({ id: perfil.objetos.length+1, label: this.newCategoria});
-			} else {
-				passagem.objetos.unshift({ id: passagem.objetos.length+1, label: this.newCategoria});
-			};
-			this.newCategoria = '';
+		edit: function(categoria){
+			categoria.edit = true
+			this.newCategoria = angular.copy(categoria.categoria.label)
 		},
 
-		edit: function(categoria){
-			categoria.novaCategoria = true
-			categoria.newCategoria = angular.copy(categoria.newCategoria, categoria.label)
+		salvar: function(categoria){
+			var newCat = { id: categoria.categoria.id, label: this.newCategoria, disabled: false }
+			angular.extend($s.categoriasCtrl.list[categoria.categoria.id-1], newCat)
+			categoria.edit = false
+		},
+
+		add: function(passagem, perfil, categoria){
+			categoria = { id: this.list.length+1, label: this.newCategoria, disabled: false }
+			if ($s.perfilCtrl.perfilNovo) {
+				this.list.push(categoria);
+				perfil.objetos.unshift({ categoria: categoria, itens: [] });
+			} else {
+				this.list.push(categoria);
+				passagem.objetos.unshift({ categoria: categoria, itens: [] });
+			};
+			this.newCategoria = '';
 		},
 
 		disable_enable: function(categoria) {
@@ -228,6 +240,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					buttons: [
 					 { label: 'Sim', color: 'yellow', action: function () {
 					 		passagem.edit.opened = false
+							console.log(passagem.edit.opened)
 					 		}
 					 },
 					 { label: 'Não', color: 'gray', action: scAlert.close() }
@@ -273,6 +286,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
 			passagem.disabled = false
+			passagem.data_passagem = new Date()
 			passagem.modal.close()
 		},
 
@@ -433,7 +447,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
-			perfil.objetos.unshift({id: perfil.objetos.length+1, itens: []});
+			perfil.objetos.unshift({itens: []});
 		},
 
 		removerCategoria: function(perfil, index){ //remover da lista de objetos do perfil, e não da lista principal de objetos
@@ -450,11 +464,12 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
 		salvarPerfil: function(perfil){
 			if (this.perfilNovo || this.duplicar && !perfil.edit.opened) {
-				this.list.push({ id: this.list.length+1,
-				perfil: perfil.perfil,
-				objetos: perfil.objetos,
-				permissoes: perfil.permissoes,
-				disabled: false
+				this.list.push({
+					id: this.list.length+1,
+					perfil: perfil.perfil,
+					objetos: perfil.objetos,
+					permissoes: perfil.permissoes,
+					disabled: false
 				});
 				this.perfilNovo = false
 				this.duplicar = false
@@ -578,7 +593,18 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					],
 				buttons: [
 					{ label: "Mesclar", color: 'blue', action: function() {
-							passagem.objetos = passagem.objetos.concat(passagem.perfil.objetos)
+							if (Object.blank(passagem.objetos)) {
+								passagem.objetos = passagem.objetos.concat(passagem.perfil.objetos)
+							} else { //colocar mais um if aqui, pra verificar se EXISTE ALGUM PERFIL SETADO, ou se os objetos foram adicionados manualmente
+								passagem.objetos = passagem.objetos.concat(passagem.perfil.objetos)
+								for (var i = 0; i < passagem.objetos.length; i++) {
+									for (var j = 0; j< passagem.perfil.objetos.length; j++) {
+										if (passagem.objetos[i].categoria.id == passagem.perfil.objetos[j].categoria.id) {
+											passagem.objetos[i].itens = passagem.objetos[i].itens.concat(passagem.perfil.objetos[j].itens)
+										}
+									}
+								}
+							}
 						},
 						tooltip: 'Mescla objetos/itens abaixo com os do perfil selecionado.',
 					},
@@ -623,7 +649,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 		},
 
 		addCategoria: function(passagem){ //adiciona uma nova categoria à lista de objetos DA PASSAGEM
-			passagem.objetos.unshift({id: passagem.objetos.length+1, itens: []});
+			passagem.objetos.unshift({ itens: []});
 		},
 
 		removerCategoria: function(passagem, index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -646,6 +672,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					pessoa_entrou: passagem.pessoa_entrou,
 					pessoa_saiu: passagem.pessoa_saiu,
 					data: data,
+					data_passagem: data,
 					status: { label: 'Realizada', color: 'green' },
 					perfil: passagem.perfil,
 					objetos: passagem.objetos,
@@ -654,8 +681,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 				});
 				this.new = false
 				this.duplicar = false
-			};
-			if (passagem.edit.opened && !this.new) {
+			} else {
 				passagem.status = { label: 'Realizada', color: 'green'}
 				angular.extend($s.listCtrl.list[passagem.id-1], passagem)
 				passagem.edit.opened = false
@@ -671,6 +697,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 					pessoa_entrou: passagem.pessoa_entrou,
 					pessoa_saiu: passagem.pessoa_saiu,
 					data: data,
+					data_passagem: null,
 					status: { label: 'Pendente', color: 'yellow' },
 					perfil: passagem.perfil,
 					objetos: passagem.objetos,
@@ -745,23 +772,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 			}
 		}
 	};
-
-	$s.pdfCtrl = {
-		makePdf: function() {
-		  html2canvas(document.getElementById('exportthis'), {
-		  onrendered: function (canvas) {
-		      var data = canvas.toDataURL();
-		      var docDefinition = {
-		          content: [{
-		              image: data,
-		              width: 500,
-		          }]
-		      };
-		      pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
-		  	}
-			});
-		}
-	}
 
 	$s.menuAdmCtrl = { //controle de exibição do toolbar principal (gerenciamento de perfis e histórico)
 		menuOpened: false,
