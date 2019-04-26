@@ -1,4 +1,4 @@
-<div class="" sc-modal="perfilCtrl.modal"  ng-init="perfil = (perfil || {}); perfilCtrl.init(perfil)">
+<div class="" sc-modal="perfilCtrl.modal">
 
   <div class="sc-modal-header">
 		<i class="sc-modal-close sc-cursor-pointer sc-icon-fechar-1 sc-badge-hover-red" ng-click="perfilCtrl.close()"></i>
@@ -17,10 +17,10 @@
     </div>
     <div>
       <ul class="sc-accordion">
-        <li class="" ng-repeat="perfil in perfilCtrl.list" ng-init="perfilCtrl.init(perfil)">
+        <li ng-init="perfilCtrl.init(perfil)" ng-repeat="perfil in perfilCtrl.list">
           <div class="sc-accordion-head flex-row" style="background-color: white;">
             <div class="fcol-xs-auto sc-m-l-lg">
-              <div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.perfil}}</div>
+              <div class="sc-ellipsis-inline sc-text-bold sc-text-black">{{perfil.nome}}</div>
               <div class="sc-btn sc-btn-yellow sc-btn-sm sc-btn-thin sc-m-l-lg" ng-if="perfil.disabled">Desativado!</div>
             </div>
             <div class="fcol-xs-3em" sc-stop-click>

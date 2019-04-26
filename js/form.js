@@ -16,6 +16,7 @@ angular.module('passagem-servico').lazy
 
 		if (Object.blank(vm.params)) {
 			vm.params.objetos = [];
+			vm.new = true;
 		}
 	};
 
@@ -42,7 +43,7 @@ angular.module('passagem-servico').lazy
 					 	{ label: 'Ok', color: 'gray' }
 					],
 				})
-				break
+				break;
 			}
 		}
 	}
@@ -72,8 +73,6 @@ angular.module('passagem-servico').lazy
 							for (var i = 0; i < vm.params.objetos.length; i++) {
 								for (var j = 0; j < vm.params.perfil.objetos.length; j++) {
 									if (vm.params.objetos[i].categoria.label == vm.params.perfil.objetos[j].categoria.label) {
-										console.log(vm.params.objetos[i].categoria.label)
-										console.log(vm.params.perfil.objetos[j].categoria.label)
 										vm.params.objetos[i].itens = vm.params.objetos[i].itens.concat(vm.params.perfil.objetos[j].itens)
 										vm.params.perfil.objetos.remove(vm.params.perfil.objetos[j])
 									}
@@ -81,8 +80,6 @@ angular.module('passagem-servico').lazy
 							}
 							vm.params.objetos = vm.params.objetos.concat(vm.params.perfil.objetos)
 						}
-						console.log(vm.params.objetos)
-						console.log(vm.params.perfil.objetos)
 					},
 					tooltip: 'Mescla objetos/itens abaixo com os do perfil selecionado.',
 				},
@@ -131,8 +128,8 @@ angular.module('passagem-servico').lazy
 				obs: vm.params.obs,
 				disabled: false,
 			});
-			vm.new = false
-			vm.duplicar = false
+			vm.new = false;
+			vm.duplicar = false;
 		} else {
 			angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
 			vm.params.edit.opened = false

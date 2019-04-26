@@ -1,9 +1,9 @@
-<form class="sc-m-h-md" ng-init="perfil = (perfilCtrl.params) ; perfilCtrl.formInit(perfil)">
+<form class="sc-m-h-md" ng-init="perfil = (perfilCtrl.params)">
   <div class="sc-p-t-lg">
     <div class="sc-fieldset flex-row" style="margin-top: 0 !important;">
       <div class="col-xs-auto col-md-5 col-sm-5">
         <div class="sc-label">Título do Perfil</div>
-        <input class="sc-input-default sc-input-block" ng-model="perfil.perfil" value="{{perfil.perfil}}" type="text">
+        <input class="sc-input-default sc-input-block" ng-model="perfil.nome" type="text">
       </div>
       <div class="align-self-center sc-p-t-xxxl col-xs-auto col-md-6 col-lg-4">
         <div class="sc-m-l-md sc-dropdown" sc-dropdown-menu>
@@ -14,10 +14,10 @@
                 <i ng-class="{'sc-icon-seta-5-cima': perfil.permissoesMenu, 'sc-icon-seta-5-baixo': !perfil.permissoesMenu}"></i>
               </span>
             </div>
-            <span ng-if="perfil.permissoes.length > 0" class="sc-badge sc-badge-fixed sc-bg-yellow">{{perfil.permissoes.length}}</span>
+            <span ng-if="perfil.permissoesTotal > 0" class="sc-badge sc-badge-fixed sc-bg-yellow">{{perfil.permissoesTotal}}</span>
           </button>
           <ul class="sc-dropdown-menu ng-animation-slider sc-scrollbar" ng-if="perfil.permissoesMenu" style="max-height: 18em; overflow: auto; display: block;">
-            <li ng-repeat="permissao in perfilCtrl.permissoesList track by permissao.id" ng-click="perfilCtrl.setPermissao(perfil, permissao)">
+            <li ng-repeat="permissao in perfil.permissoes track by permissao.id" ng-click="perfilCtrl.setPermissao(perfil, permissoes, permissao)">
               <div>
                 <i ng-class="{'sc-icon-quadrado-1': !permissao.checked , 'sc-icon-visto-3': permissao.checked}" class=""></i>
                 <span>{{permissao.label}}</span>
@@ -112,6 +112,6 @@
   </div>
   <div class="align-right">
     <button class="sc-btn sc-btn-blue" ng-click="perfilCtrl.salvarPerfil(perfil)">Salvar</button>
-    <button class="sc-btn sc-btn-red" ng-click="perfilCtrl.editar(perfil)">Cancelar</button>
+    <button class="sc-btn sc-btn-red" ng-click="perfilCtrl.cancelar(perfil)">Cancelar</button>
   </div>
 </form>

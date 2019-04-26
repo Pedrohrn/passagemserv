@@ -204,6 +204,18 @@ angular.module('passagem-servico').lazy
 		},
 
 		editar: function(passagem) {
+			if (passagem.edit && passagem.edit.opened) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+					  { msg: 'Deseja realmente cancelar a edição? Os dados não salvos serão perdidos.' }
+					],
+					buttons: [
+					  { label: 'Sim', color: 'yellow', action: function() { passagem.edit.close() } },
+					  { label: 'Não', color: 'gray' }
+					],
+				})
+			}
 			passagem.acc.open()
 			passagem.edit.open()
 		},
@@ -277,7 +289,7 @@ angular.module('passagem-servico').lazy
 		],
 		list: [
 			{ id: 1,
-				perfil: 'Portaria Social',
+				nome: 'Portaria Social',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -293,11 +305,17 @@ angular.module('passagem-servico').lazy
 						],
 					},
 				],
-				permissoes: [],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: true },
+					{ id: 2, label: 'Remover categorias/itens', checked: true },
+					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: true, },
+				],
+				permissoesTotal: 3,
 				disabled: false,
 			},
 			{ id: 2,
-				perfil: 'Portaria de Serviço',
+				nome: 'Portaria de Serviço',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -317,11 +335,17 @@ angular.module('passagem-servico').lazy
 						],
 					},
 				],
-				permissoes: [],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: true },
+					{ id: 3, label: 'Editar itens (nomes)', checked: false },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+				],
+				permissoesTotal: 1,
 				disabled: false,
 			},
 			{ id: 3,
-				perfil: 'Portaria de Teste 2',
+				nome: 'Portaria de Teste 2',
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
@@ -341,7 +365,13 @@ angular.module('passagem-servico').lazy
 						],
 					},
 				],
-				permissoes: [],
+				permissoes: [
+					{ id: 1, label: 'Adicionar categorias/itens', checked: false },
+					{ id: 2, label: 'Remover categorias/itens', checked: true },
+					{ id: 3, label: 'Editar itens (nomes)', checked: true },
+					{ id: 4, label: 'Editar itens (quantidade)', checked: false, },
+				],
+				permissoesTotal: 2,
 				disabled: true,
 			},
 		],
@@ -355,24 +385,38 @@ angular.module('passagem-servico').lazy
 		},
 
 		init: function(perfil){ // controles do perfil, para o menu e para as ações.
+			if (Object.blank(perfil) || this.perfilNovo) {
+				return function() { perfil.edit.toggle() }
+			};
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
+			perfil.permissoes = angular.copy(this.permissoesList)
+			if (perfil.edit.opened) {
+				this.params = angular.copy(perfil)
+			};
 		},
 
-		formInit: function(perfil){
-			if (Object.blank(perfil)) {
-				perfil.objetos = [];
-				perfil.perfil = '';
-				perfil.permissoes = [];
-			}
+		novoPerfil: function(perfil){
+			this.perfilNovo = !this.perfilNovo;
+			perfil = {
+				id: this.list.length+1,
+				edit: new scToggle(),
+				menu: new scToggle(),
+				objetos: [],
+				nome: 'Novo perfil',
+				permissoes: angular.copy(this.permissoesList),
+				permissoesTotal: 0,
+				disabled: false,
+			};
+			this.params = angular.copy(perfil);
 		},
 
-		setPermissao: function(perfil, permissao){
+		setPermissao: function(perfil, permissoes, permissao){
 			permissao.checked = !permissao.checked;
 			if (permissao.checked) {
-				perfil.permissoes.push(permissao)
+				perfil.permissoesTotal++
 			} else {
-			perfil.permissoes.remove(permissao)
+				perfil.permissoesTotal--
 			}
 		},
 
@@ -389,8 +433,22 @@ angular.module('passagem-servico').lazy
 			})
 		},
 
-		novoPerfil: function(perfil){
-			this.perfilNovo = !this.perfilNovo;
+		cancelar: function(perfil, callback=null) {
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+					{ msg: 'Deseja realmente fechar o formulário? Todos os dados não salvos serão perdidos.'}
+				],
+				buttons: [
+				  {
+				  	label: 'Sim', color: 'yellow', action: function() {
+				  		perfil.edit.opened = false
+				  		angular.extend($s.perfilCtrl.list[perfil.id-1].edit, perfil.edit)
+				  	}
+					},
+					{ label: 'Não', color: 'gray' }
+				]
+			})
 		},
 
 		addCategoria: function(perfil){ //adiciona uma nova categoria à lista de objetos DO PERFIL
@@ -410,20 +468,23 @@ angular.module('passagem-servico').lazy
 		},
 
 		salvarPerfil: function(perfil){
-			if (this.perfilNovo || this.duplicar && !perfil.edit.opened) {
-				this.list.push({
-					id: this.list.length+1,
-					perfil: perfil.perfil,
-					objetos: perfil.objetos,
-					permissoes: perfil.permissoes,
-					disabled: false
-				});
-				this.perfilNovo = false
-				this.duplicar = false
-			} else {
-				angular.extend($s.perfilCtrl.list[perfil.id-1], perfil)
-				perfil.edit.opened = false
-			}
+		if (this.perfilNovo || this.duplicar && !perfil.edit.opened) {
+			this.list.push({
+				id: this.list.length+1,
+				nome: perfil.nome,
+				objetos: perfil.objetos,
+				permissoes: perfil.permissoes,
+				disabled: false
+			});
+			this.perfilNovo = false
+			this.duplicar = false
+		} else {
+			angular.extend($s.perfilCtrl.list[perfil.id-1], perfil)
+			perfil.edit.opened = false
+		}
+			console.log($s.perfilCtrl.list)
+			this.perfilNovo = false
+			this.duplicar = false
 		},
 
 		disable_enable: function(perfil){
@@ -451,9 +512,11 @@ angular.module('passagem-servico').lazy
 
 		editar: function(perfil){
 			if (!perfil.edit.opened) {
+				console.log(perfil.edit)
+				console.log(perfil)
 				perfil.edit.opened = true
 				this.params = angular.copy(perfil)
-			} else {
+			} else if (perfil.edit.opened) {
 				scAlert.open({
 					title: 'Atenção!',
 					messages: [
@@ -464,8 +527,7 @@ angular.module('passagem-servico').lazy
 						{ label: 'Não', color: 'gray' }
 					]
 				});
-			};
-			if (this.duplicar || this.perfilNovo) {
+			} else {
 				scAlert.open({
 					title: 'Atenção!',
 					messages: [

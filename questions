@@ -39,18 +39,15 @@ Passagem
 ==================================================
 
 toDo/questions:
-mover o menu de categorias para outro lugar. não há razão em ter um menu para cada categoria na lista. é melhor fazer um menu controlador geral para todas elas
-
-tooltips da tela de confirmação da troca de perfil: como fazer com q eles fiquem a frente dos demais elementos?
-
-******usar .concat nas categorias ao cadastrar mesclar perfis com categorias iguais
 
 ==================================================
 
 known issues:
 
-botão cancelar, do formulário de edição de passagens não funciona da forma correta. o problema, com certeza, está nos dois inits funcionando ao mesmo tempo, tanto no form quanto no perfil.
+botão de cancelar do perfil ainda não fecha o formulário
 
 editar a caixa de permissões de um novo perfil e de um perfil existente trabalham de forma espelhada (a mesma coisa para a caixa de notificações das passagens)
 
 **input adicionador de categorias precisa ser refeito, talvez repensado
+
+===================================================
