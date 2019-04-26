@@ -1,4 +1,4 @@
-<div ng-controller="PassagemServico::FormCtrl as formCtrl" ng-init="formCtrl.init(passagem, listCtrl)">
+<div ng-controller="PassagemServico::FormCtrl as formCtrl" ng-init="formCtrl.init(passagem, listCtrl, itemCtrl, formularioCtrl)">
 	<form class="sc-p-t-md sc-p-h-lg">
 		<!-- Geral -->
 		<div class="sc-fieldset sc-m-t-o">
@@ -137,7 +137,7 @@
 	</form>
 
 	<div class="sc-p-t-md align-right sc-m-r-lg">
-		<button ng-if="formCtrl.params.status.label != 'Realizada'" class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvarEPassar()">Salvar e passar</button>
+		<button ng-if="formCtrl.params.status.label != 'Realizada' || formCtrl.itemCtrl.duplicar" class="sc-btn sc-btn-green sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar_passar()">Salvar e passar</button>
 		<button class="sc-btn sc-btn-blue sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formCtrl.salvar()">Salvar</button>
 		<button class="sc-btn sc-btn-red sc-btn-block-only-xs sc-m-b-sm sc-m-l-md" ng-click="formularioCtrl.cancelar(passagem)">Cancelar</button>
 	</div>

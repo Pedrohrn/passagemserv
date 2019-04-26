@@ -1,63 +1,52 @@
-init: function(passagem) {
-	obj = passagem || {}
+vm.salvar = function() {
+  vm.data = new Date();
+  if (vm.new && !vm.params.edit.opened) {
+    vm.listCtrl.list.push({
+      id: vm.listCtrl.list.length+1,
+      pessoa_entrou: vm.params.pessoa_entrou,
+      pessoa_saiu: vm.params.pessoa_saiu,
+      data: vm.data,
+      data_passagem: null,
+      status: { label: 'Pendente', color: 'yellow' },
+      perfil: vm.params.perfil,
+      objetos: vm.params.objetos,
+      obs: vm.params.obs,
+      disabled: false,
+    })
+  } else if (vm.itemCtrl.duplicar && !vm.params.edit.opened) {
+    vm.params.status = { label: 'Pendente', color: 'yellow' };
+    vm.params.id = vm.listCtrl.list.length+1;
+    vm.listCtrl.list.push(vm.params)
+    console.log(vm.params)
+    console.log(vm.listCtrl.list)
+  } else {
+    angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
+    vm.params.edit.opened = false
+  };
+};
 
-	// usar alguma coias para copiar o obj 'passagem'
-	this.newRecord = !obj.id
-
-	if (this.newRecord) {
-		$s.listCtrl.list.push(obj)
-	} else {
-		this.params = obj
-	}
-},
-==========================================================================
-
-  function carregarCssJs(obj) {
-    return {
-      load: [ '$q', '$rootScope', function($q, $rootScope) {
-        var head = document.getElementsByTagName('head')[0];
-        var deferred = $q.defer()
-
-        createElementsBy = function(moduleList, tagName, moduleType, fun){
-          if (!moduleList || moduleList.length == 0){ return }
-
-          $('head '+tagName+'[id="'+moduleType+'"]').remove();//remove dentro do head o que tiver com link/script (tagname) e id="moduleType"(css ou js)
-          moduleList.forEach(function(moduleKey){
-            var el = document.createElement(tagName);
-
-            el.id = moduleType; //js/css
-
-            var path = "/"+moduleType+"/"+moduleKey+"."+moduleType; //css/produto.css
-
-            switch(tagName){
-              case 'link':
-                el.rel = "stylesheet";
-                el.href = path; //css/produto.css
-              case 'script':
-                el.src = path; // /js/produto.js
-            }
-
-            head.insertBefore(el, head.lastChild);
-          });
-        };
-
-        if (obj.js && obj.js.length > 0)   { createElementsBy(obj.js,  'script',  'js'); }
-        if (obj.css && obj.css.length > 0) { createElementsBy(obj.css,   'link', 'css'); }
-
-        setTimeout(() => {
-          $rootScope.$apply(function(){ deferred.resolve(); })
-        }, 30)
-
-        return deferred.promise;
-      }]
-    }
-  }
-
-  $routeProvider
-
-    .when('/form', {
-      controller : 'PassagemServico::FormCtrl',
-      resolve: carregarCssJs({
-        js: ['formCtrl'],
-      })
-    });
+vm.salvar_passar = function() {
+  vm.data = new Date();
+  if (vm.new && !vm.params.edit.opened) {
+    vm.listCtrl.list.push({
+      id: vm.listCtrl.list.length+1,
+      pessoa_entrou: vm.params.pessoa_entrou,
+      pessoa_saiu: vm.params.pessoa_saiu,
+      data: vm.data,
+      data_passagem: vm.data,
+      status: { label: 'Realizada', color: 'yellow' },
+      perfil: vm.params.perfil,
+      objetos: vm.params.objetos,
+      obs: vm.params.obs,
+      disabled: false,
+    })
+  } else if (vm.itemCtrl.duplicar) {
+    vm.params.status = { label: 'Realizada', color: 'green' };
+    vm.params.id = vm.listCtrl.list.length+1;
+    vm.listCtrl.list.push(vm.params)
+    console.log(vm.params)
+    console.log(vm.listCtrl.list)
+  } else {
+    angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
+  };
+};

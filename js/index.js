@@ -1,6 +1,6 @@
 angular.module('passagem-servico').lazy
 
-.controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert) {
+.controller( 'PassagemServico::IndexCtrl', [ '$scope', '$parse', '$scModal', 'scToggle', 'scAlert', function($s, $parse, scModal, scToggle, scAlert, scTopMessages) {
 	$s.viewCtrl = {
 		notificarParams: [],
 		notifQtd: false,
@@ -19,6 +19,12 @@ angular.module('passagem-servico').lazy
 				this.notifQtd = false
 			} else {
 				this.notifQtd =  true
+				scTopMessages.open({
+					messages: [
+						{ msg: 'Marque ao menos um usuário!'}
+					],
+					timeout: 5000
+				})
 			}
 		}
 	};
@@ -97,7 +103,6 @@ angular.module('passagem-servico').lazy
 				pessoa_entrou: { id: 1, nome: 'Porteiro 1'},
 				pessoa_saiu: { id: 2, nome: 'Porteiro 2'},
 				data: 20032019,
-				horario: 203031,
 				status: { label: 'Pendente', color: 'yellow' },
 				perfil: { id: 1, perfil: 'Portaria Social' },
 				objetos: [
@@ -127,7 +132,6 @@ angular.module('passagem-servico').lazy
 				pessoa_entrou: { id: 2, nome:'Porteiro 2' },
 				pessoa_saiu: { id: 3, nome: 'Porteiro 3'},
 				data: 21032019,
-				horario: 203031,
 				status: { label: 'Realizada', color: 'green' },
 				perfil: { id: 2, perfil: 'Portaria de Serviço' },
 				objetos: [
@@ -157,7 +161,6 @@ angular.module('passagem-servico').lazy
 				pessoa_entrou: { id: 3, nome: 'Porteiro 3' },
 				pessoa_saiu: { id: 4, nome: 'Porteiro 4' },
 				data: 22032019,
-				horario: 203031,
 				status: { label: 'Realizada', color: 'green' },
 				perfil: { id: 1, perfil: 'Portaria Social'},
 				objetos: [
@@ -242,7 +245,7 @@ angular.module('passagem-servico').lazy
 			})
 		},
 
-		passarServico: function(passagem) {
+		passarServico: function(passagem) { //abre o modal de passagem de serviço
 			angular.extend(passagem.pessoa_entrou, this.pessoa_entrou)
 			passagem.status = { label: 'Realizada', color: 'green' }
 			passagem.disabled = false
@@ -255,7 +258,7 @@ angular.module('passagem-servico').lazy
 			this.pessoa_entrou = angular.copy(passagem.pessoa_entrou)
 		},
 
-		disable_enable: function(passagem) {
+		disable_enable: function(passagem) { //desativa/ativa a passagem
 			title: '';
 			if (passagem.disabled) {
 				this.title = 'Deseja reativar a passagem?'
@@ -380,7 +383,7 @@ angular.module('passagem-servico').lazy
 		params: [],
 		duplicar: false,
 
-		permissoesMenuToggle: function(perfil){
+		permissoesMenuToggle: function(perfil){ //toggle da caixa de permissões de cada perfil
 			perfil.permissoesMenu = !perfil.permissoesMenu
 		},
 

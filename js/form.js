@@ -7,17 +7,27 @@ angular.module('passagem-servico').lazy
 	vm.params = {};
 	vm.listCtrl = null;
 	vm.passagem = null;
+	vm.itemCtrl = null;
+	vm.formularioCtrl = null;
 
-	vm.init = function(passagem, listCtrl) {
+	vm.init = function(passagem, listCtrl, itemCtrl, formularioCtrl) {
 		vm.passagem = passagem
+		vm.itemCtrl = itemCtrl
+		vm.formularioCtrl = formularioCtrl
+		console.log(vm.formularioCtrl)
 
 		vm.params = angular.copy(passagem || {});
 		vm.listCtrl = listCtrl
 
+
 		if (Object.blank(vm.params)) {
 			vm.params.objetos = [];
 			vm.new = true;
-		}
+		};
+
+		if (vm.itemCtrl.duplicar) {
+			vm.params = angular.copy(vm.itemCtrl.params)
+		};
 	};
 
 	vm.limparForm = function(){
@@ -94,47 +104,59 @@ angular.module('passagem-servico').lazy
 		})
 	};
 
-	vm.salvarEPassar = function(){
-		var data = new Date();
-		if (vm.new || vm.duplicar && !vm.params.edit.opened) {
-			vm.listCtrl.list.push({
-				id: vm.listCtrl.list.length+1,
-				data: data,
-				data_passagem: data,
-				status: { label: 'Realizada', color: 'green' },
-			});
-			vm.new = false
-			vm.duplicar = false
-		} else {
-			vm.params.status = { label: 'Realizada', color: 'green'}
-			angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
-			vm.params.edit.opened = false
-		};
-		if (vm.new) {vm.new = false}
-	};
+vm.salvar = function() {
+  vm.data = new Date();
+  if (vm.new) {
+    vm.listCtrl.list.push({
+      id: vm.listCtrl.list.length+1,
+      pessoa_entrou: vm.params.pessoa_entrou,
+      pessoa_saiu: vm.params.pessoa_saiu,
+      data: vm.data,
+      data_passagem: null,
+      status: { label: 'Pendente', color: 'yellow' },
+      perfil: vm.params.perfil,
+      objetos: vm.params.objetos,
+      obs: vm.params.obs,
+      disabled: false,
+    })
+  } else if (vm.itemCtrl.duplicar && !vm.params.edit.opened) {
+    vm.params.status = { label: 'Pendente', color: 'yellow' };
+    vm.params.id = vm.listCtrl.list.length+1;
+    vm.listCtrl.list.push(vm.params)
+    vm.itemCtrl.duplicar = false
+  } else {
+    angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
+    vm.params.edit.opened = false
+  };
+  vm.formularioCtrl.new = false
+};
 
-	vm.salvar = function(){
-		var data = new Date();
-		if (vm.new || vm.duplicar) {
-			vm.listCtrl.list.push({
-				id: vm.listCtrl.list.length+1,
-				pessoa_entrou: vm.params.pessoa_entrou,
-				pessoa_saiu: vm.params.pessoa_saiu,
-				data: data,
-				data_passagem: null,
-				status: { label: 'Pendente', color: 'yellow' },
-				perfil: vm.params.perfil,
-				objetos: vm.params.objetos,
-				obs: vm.params.obs,
-				disabled: false,
-			});
-			vm.new = false;
-			vm.duplicar = false;
-		} else {
-			angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
-			vm.params.edit.opened = false
-		};
-	};
+vm.salvar_passar = function() {
+  vm.data = new Date();
+  if (vm.new) {
+    vm.listCtrl.list.push({
+      id: vm.listCtrl.list.length+1,
+      pessoa_entrou: vm.params.pessoa_entrou,
+      pessoa_saiu: vm.params.pessoa_saiu,
+      data: vm.data,
+      data_passagem: vm.data,
+      status: { label: 'Realizada', color: 'green' },
+      perfil: vm.params.perfil,
+      objetos: vm.params.objetos,
+      obs: vm.params.obs,
+      disabled: false,
+    })
+  } else if (vm.itemCtrl.duplicar) {
+    vm.params.status = { label: 'Realizada', color: 'green' };
+    vm.params.id = vm.listCtrl.list.length+1;
+    vm.listCtrl.list.push(vm.params)
+    vm.itemCtrl.duplicar = false
+  } else {
+    angular.extend(vm.listCtrl.list[vm.params.id-1], vm.params)
+    vm.params.edit.opened = false
+  };
+  vm.formularioCtrl.new = false
+};
 
 	// Colocar todas as funções de categoria num objeto vm.categoriaCtrl = {}
 	vm.criarCategoria = function(){
