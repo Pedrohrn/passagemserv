@@ -35,7 +35,7 @@
 			<div class="col-xs-6 col-md-4 col-lg-6" style="max-width: 20em;">
 				<label>
 					<div class="sc-label">Perfil:</div>
-					<select class="sc-input-default sc-input-block" ng-change="formCtrl.setPerfil()" ng-options="perfil as perfil.nome disable when perfil.disabled for perfil in perfilCtrl.list track by perfil.id" ng-model="formCtrl.params.perfil">
+					<select class="sc-input-default sc-input-block" ng-change="formCtrl.setPerfil()" ng-options="perfil as perfil.nome disable when perfil.disabled for perfil in perfilCtrl.list track by perfil.id" ng-model="formCtrl.perfil">
 					</select>
 				</label>
 			</div>
@@ -54,21 +54,21 @@
 				<div class="sc-fieldset" ng-repeat="objeto in formCtrl.params.objetos track by $index"> <!-- fieldset dos objetos -->
 					<div class="sc-fieldset-head flex-row justify-items-center sc-text-sm">
 						<div class="sc-text-sm">
-							<div ng-if="!categoria.novaCategoria && !categoria.edit">
+							<div ng-if="!objeto.novaCategoria && !objeto.edit">
 								<label class="sc-input-group" sc-stop-click>
-									<select class="sc-input-default sc-input-block" ng-change="formCtrl.setCategoria()" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
+									<select class="sc-input-default sc-input-block" ng-change="formCtrl.setCategoria(objeto)" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
 										<option value="">Selecione ou cadastre</option>
 									</select>
-									<div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
+									<div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(objeto)">
 										<i class="sc-icon sc-icon-reticiencias-v"></i>
-										<ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="categoria.showOpts" style="display: block;">
-											<li ng-click="categoriasCtrl.new(categoria)">
+										<ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="objeto.showOpts" style="display: block;">
+											<li ng-click="categoriasCtrl.new(objeto)">
 												<div>Nova categoria</div>
 											</li>
-											<li ng-click="categoriasCtrl.edit(categoria)">
+											<li ng-click="categoriasCtrl.edit(objeto)">
 												<div>Editar</div>
 											</li>
-											<li ng-click="categoriasCtrl.disable_enable(categoria)">
+											<li ng-click="categoriasCtrl.disable_enable(categoria, objeto)">
 												<div>Desativar</div>
 											</li>
 											<li ng-click="categoriasCtrl.rmv(categoria)">
@@ -78,16 +78,16 @@
 									</div>
 								</label>
 							</div>
-							<div ng-if="categoria.novaCategoria || categoria.edit">
+							<div ng-if="objeto.novaCategoria || objeto.edit">
 								<label class="sc-input-group">
 									<input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-									<button ng-if="!categoria.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add(perfil, categoria)">
+									<button ng-if="!objeto.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add(perfil, objeto)">
 										<i class="sc-icon sc-icon-mais-1"></i>
 									</button>
-									<button ng-if="categoria.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.salvar(categoria)">
+									<button ng-if="objeto.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.salvar(objeto)">
 										<i class="sc-icon sc-icon-visto-1"></i>
 									</button>
-									<button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(categoria)">
+									<button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(objeto)">
 										<i class="sc-icon sc-icon-fechar-1"></i>
 									</button>
 								</label>

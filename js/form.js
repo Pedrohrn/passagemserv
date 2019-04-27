@@ -14,7 +14,6 @@ angular.module('passagem-servico').lazy
 		vm.passagem = passagem
 		vm.itemCtrl = itemCtrl
 		vm.formularioCtrl = formularioCtrl
-		console.log(vm.formularioCtrl)
 
 		vm.params = angular.copy(passagem || {});
 		vm.listCtrl = listCtrl
@@ -44,21 +43,31 @@ angular.module('passagem-servico').lazy
 		})
 	};
 
-	vm.setCategoria = function(){
+	vm.setCategoria = function(objeto){
+		if (objeto.categoria == null) {
+			objeto.categoria = { label: 'Selecione ou cadastre'}
+		}
+		console.log(vm.params.objetos)
+		console.log(objeto)
+		console.log(objeto.categoria)
+		console.log(objeto.categoria.label)
+		console.log(vm.params.objetos)
 		for (var i = 0; i < vm.params.objetos.length; i++) {
-			if (vm.params.objetos[i].categoria.label == categoria.categoria) {
+			console.log(objeto.categoria.label)
+			console.log(vm.params.objetos[i])
+			if (vm.params.objetos[i].categoria.label === objeto.categoria.label) {
 				scAlert.open({
-					title: 'Essa categoria já existe na lista! Escolha outra!',
+					title: 'Essa categoria já existe na lista!',
 					buttons: [
 					 	{ label: 'Ok', color: 'gray' }
 					],
 				})
-				break;
 			}
 		}
-	}
+	};
 
 	vm.setPerfil = function(){ //set do perfil, que muda o form
+		console.log(vm.perfil)
 		scAlert.open({
 			title: "Atenção!",
 			messages: [
@@ -68,10 +77,14 @@ angular.module('passagem-servico').lazy
 			buttons: [
 				{ label: "Mesclar", color: 'blue', action: function() { //mescla a lista de objetos, de acordo com as categorias. caso exista uma categoria, na lista de objetos, igual à uma categoria na lista de objetos do PERFIL (tracked by categoria.id), os itens das categorias são mesclados.
 						if (Object.blank(vm.params.objetos)) {
-							vm.params.objetos = angular.copy(vm.params.perfil.objetos)
+							console.log('1')
+							vm.params.perfil = angular.copy(vm.perfil)
+							vm.params.objetos = angular.copy(vm.perfil.objetos)
 						} else if (Object.blank(vm.params.perfil)){ //colocar mais um if aqui, pra verificar se EXISTE ALGUM PERFIL SETADO, ou se os objetos foram adicionados manualmente
+							console.log('2')
+							vm.params.perfil = angular.copy(vm.perfil)
 							for (var i = 0; i < vm.params.objetos.length; i++) {
-								for (var j= 0; i < vm.params.objetos.length; i++) {
+								for (var j= 0; j < vm.params.perfil.objetos.length; j++) {
 									if (vm.params.objetos[i].categoria.label == vm.params.perfil.objetos[j].categoria.label) {
 										vm.params.objetos[i].itens = vm.params.objetos[i].itens.concat(vm.params.perfil.objetos[j].itens)
 										vm.params.perfil.objetos.remove(vm.params.perfil.objetos[j])
@@ -80,9 +93,11 @@ angular.module('passagem-servico').lazy
 							}
 							vm.params.objetos = vm.params.objetos.concat(vm.params.perfil.objetos)
 						} else {
+							console.log('3')
+							vm.params.perfil = angular.copy(vm.perfil)
 							for (var i = 0; i < vm.params.objetos.length; i++) {
 								for (var j = 0; j < vm.params.perfil.objetos.length; j++) {
-									if (vm.params.objetos[i].categoria.label == vm.params.perfil.objetos[j].categoria.label) {
+									if (vm.params.objetos[i].categoria.label == vm.params.perfil.objetos[j].categoria.label && !null) {
 										vm.params.objetos[i].itens = vm.params.objetos[i].itens.concat(vm.params.perfil.objetos[j].itens)
 										vm.params.perfil.objetos.remove(vm.params.perfil.objetos[j])
 									}
@@ -105,6 +120,23 @@ angular.module('passagem-servico').lazy
 	};
 
 vm.salvar = function() {
+	console.log(vm.params.objetos)
+	for (i = 0; i < vm.params.objetos.length; i ++) {
+		if (Object.blank(vm.params.objetos[i].itens) || vm.params.objetos[i].categoria == null) {
+			vm.params.objetos.remove(vm.params.objetos[i])
+		}
+	}
+	for (i = 0; i < vm.params.objetos.length; i++) {
+		console.log(vm.params.objetos)
+		console.log(vm.params.objetos[i])
+		for (j = 0; j < vm.params.objetos.length; j++) {
+			if (vm.params.objetos[i].categoria.label == vm.params.objetos[j].categoria.label) {
+				vm.params.objetos[i].itens = vm.params.objetos[i].itens.concat(vm.params.objetos[j].itens)
+				vm.params.objetos.splice(vm.params.objetos[j], 1)
+			}
+		}
+	}
+	console.log(vm.params.objetos)
   vm.data = new Date();
   if (vm.new) {
     vm.listCtrl.list.push({
@@ -132,6 +164,11 @@ vm.salvar = function() {
 };
 
 vm.salvar_passar = function() {
+	for (i = 0; i < vm.params.objetos.length; i++) {
+		if (Object.blank(vm.params.objetos[i].itens) || vm.params.objetos[i].categoria == null) {
+			vm.params.objetos.remove(vm.params.objetos[i])
+		}
+	}
   vm.data = new Date();
   if (vm.new) {
     vm.listCtrl.list.push({
@@ -172,8 +209,17 @@ vm.salvar_passar = function() {
 	};
 
 	// Colocar todas as funções de item num objeto vm.objetoItemCtrl = {}
-	vm.cadastrarItem = function(objeto){
-		objeto.itens.unshift({})
+	vm.cadastrarItem = function(objeto) {
+		if(objeto.categoria == null) {
+			scAlert.open({
+				title: 'Selecione uma categoria primeiro!',
+				buttons: [
+				  { label: 'Não', color: 'gray' }
+				]
+			})
+		} else {
+			objeto.itens.unshift({})
+		}
 	};
 
 	vm.deleteItem = function(objeto, index){

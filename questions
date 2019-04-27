@@ -45,7 +45,6 @@ toDo/questions:
 known issues:
 
 editar a caixa de permissões de um novo perfil e de um perfil existente trabalham de forma espelhada (a mesma coisa para a caixa de notificações das passagens)
+se for possível excluir categorias, será necessário avisar que os perfis antigos sofrerão a perca dessa categoria, ou até mesmo impedir a exclusão da categoria, caso esteja vinculada com algum perfil
 
-**input adicionador de categorias precisa ser refeito, talvez repensado
-
-===================================================
+==================================================

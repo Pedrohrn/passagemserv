@@ -12,7 +12,7 @@
           <form class="sc-input-group">
             <input class="sc-input-default" ng-model="filtroCtrl.filtro_param" type="text">
             <button class="sc-btn sc-btn-blue" ng-click="filtroCtrl.buscaParam()" type="button"><i class="sc-icon sc-icon-lupa-2"></i></button>
-            <button ng-click="filtroCtrl.abrirFiltroAvancado()" class="sc-btn sc-btn-blue" type="button"><i class="sc-icon sc-icon-filtro-2"></i></button>
+            <button ng-click="filtroCtrl.abrirFiltroAvancado()" class="sc-btn sc-btn-blue" type="button" ng-class="{'sc-btn-gray': filtroCtrl.avancado}"><i class="sc-icon sc-icon-filtro-2"></i></button>
             <button class="sc-btn sc-btn-blue" ng-click="pdfCtrl.makePdf()" type="button"><i class="sc-icon sc-icon-impressora"></i></button>
           </form>
         </div>

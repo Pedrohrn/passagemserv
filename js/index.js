@@ -38,30 +38,43 @@ angular.module('passagem-servico').lazy
 		novaCategoria: false,
 		newCategoria: '',
 
-		showOptions: function(categoria){
-			categoria.showOpts = !categoria.showOpts;
+		showOptions: function(objeto){
+			objeto.showOpts = !objeto.showOpts;
 		},
 
-		new: function(categoria){
-			categoria.novaCategoria = !categoria.novaCategoria;
-			if (categoria.edit) {
-				categoria.edit = false
+		new: function(objeto){
+			objeto.novaCategoria = !objeto.novaCategoria;
+			if (objeto.edit) {
+				objeto.edit = false
 			}
 		},
 
 		rmv: function(categoria){
-			this.list.remove(categoria);
+			scAlert.open({
+				title: 'Atenção!',
+				messages: [
+				  { msg: 'Deseja realmente excluir essa categoria? Os perfis existentes que possuem essa categoria também serão afetados. Não será possível recuperar o registro.'}
+				],
+				buttons: [
+				  { label: 'Sim', color: 'red', action: function() {
+							$s.categoriasCtrl.list.splice(categoria, 1);
+							console.log($s.categoriasCtrl.list)
+						}
+					},
+					{ label: 'Não', color: 'gray' }
+				]
+			})
 		},
 
-		edit: function(categoria){
-			categoria.edit = true
-			this.newCategoria = angular.copy(categoria.categoria.label)
+		edit: function(objeto){
+			objeto.edit = true
+			this.newCategoria = angular.copy(objeto.categoria.label)
 		},
 
-		salvar: function(categoria){
-			var newCat = { id: categoria.categoria.id, label: this.newCategoria, disabled: false }
-			angular.extend(this.list[categoria.categoria.id-1], newCat)
-			categoria.edit = false
+		salvar: function(objeto){
+			var newCat = { id: objeto.categoria.id, label: this.newCategoria, disabled: false }
+			angular.extend(this.list[objeto.categoria.id-1], newCat)
+			objeto.edit = false
 		},
 
 		add: function(passagem, perfil, categoria){
@@ -74,12 +87,11 @@ angular.module('passagem-servico').lazy
 			};
 			this.newCategoria = '';
 			categoria.novaCategoria = false
-			console.log(categoria.novaCategoria)
 		},
 
-		disable_enable: function(categoria) {
+		disable_enable: function(categoria, objeto) {
 			title: '';
-			if (categoria.categoria.disabled) {
+			if (objeto.categoria.disabled) {
 				this.title = 'Deseja reativar a categoria?'
 			} else {
 				this.title = 'Deseja desativar a categoria?'
@@ -88,12 +100,16 @@ angular.module('passagem-servico').lazy
 				title: this.title,
 				buttons: [
 					{ label: 'Sim', color: 'yellow', action: function() {
-					 		categoria.categoria.disabled = !categoria.categoria.disabled
+					 		$s.categoriasCtrl.list[objeto.categoria.id-1].disabled = !$s.categoriasCtrl.list[objeto.categoria.id-1].disabled
+							objeto.categoria = {}
 						}
 					},
 					{ label: 'Não', color: 'gray' }
 				],
 			})
+			console.log(categoria)
+			console.log(objeto.categoria)
+			console.log($s.categoriasCtrl.list)
 		}
 	};
 
@@ -104,7 +120,7 @@ angular.module('passagem-servico').lazy
 				pessoa_saiu: { id: 2, nome: 'Porteiro 2'},
 				data: 20032019,
 				status: { label: 'Pendente', color: 'yellow' },
-				perfil: { id: 1, perfil: 'Portaria Social' },
+				perfil: { id: 1, nome: 'Portaria Social' },
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -133,7 +149,7 @@ angular.module('passagem-servico').lazy
 				pessoa_saiu: { id: 3, nome: 'Porteiro 3'},
 				data: 21032019,
 				status: { label: 'Realizada', color: 'green' },
-				perfil: { id: 2, perfil: 'Portaria de Serviço' },
+				perfil: { id: 2, nome: 'Portaria de Serviço' },
 				objetos: [
 					{ categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -162,7 +178,7 @@ angular.module('passagem-servico').lazy
 				pessoa_saiu: { id: 4, nome: 'Porteiro 4' },
 				data: 22032019,
 				status: { label: 'Realizada', color: 'green' },
-				perfil: { id: 1, perfil: 'Portaria Social'},
+				perfil: { id: 1, nome: 'Portaria Social'},
 				objetos: [
 					{	categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
@@ -388,30 +404,45 @@ angular.module('passagem-servico').lazy
 		},
 
 		init: function(perfil){ // controles do perfil, para o menu e para as ações.
-			if (Object.blank(perfil) || this.perfilNovo) {
+			if (Object.blank(perfil) || this.perfilNovo && !perfil.edit.opened) {
 				return function() { perfil.edit.toggle() }
 			};
 			perfil.edit = new scToggle()
 			perfil.menu = new scToggle()
-			perfil.permissoes = angular.copy(this.permissoesList)
 			if (perfil.edit.opened) {
 				this.params = angular.copy(perfil)
+				this.params.permissoes = angular.copy(perfil.permissoes)
+				console.log(perfil.permissoes)
 			};
 		},
 
 		novoPerfil: function(perfil){
-			this.perfilNovo = !this.perfilNovo;
-			perfil = {
-				id: this.list.length+1,
-				edit: new scToggle(),
-				menu: new scToggle(),
-				objetos: [],
-				nome: 'Novo perfil',
-				permissoes: angular.copy(this.permissoesList),
-				permissoesTotal: 0,
-				disabled: false,
-			};
-			this.params = angular.copy(perfil);
+			if (!this.perfilNovo) {
+				this.perfilNovo = true;
+				perfil = {
+					id: this.list.length+1,
+					edit: new scToggle(),
+					menu: new scToggle(),
+					objetos: [],
+					nome: 'Novo perfil',
+					permissoes: angular.copy(this.permissoesList),
+					permissoesTotal: 0,
+					disabled: false,
+				};
+				this.params = angular.copy(perfil);
+			} else {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+					  { msg: 'Deseja realmente fechar o formulário? Os dados não salvos serão perdidos' }
+					],
+					buttons: [
+						{ label: 'Sim', color: 'yellow', action: function() { $s.perfilCtrl.perfilNovo = false } },
+						{ label: 'Não', color: 'gray' }
+					]
+				})
+
+			}
 		},
 
 		setPermissao: function(perfil, permissoes, permissao){
@@ -421,6 +452,8 @@ angular.module('passagem-servico').lazy
 			} else {
 				perfil.permissoesTotal--
 			}
+			console.log(perfil.permissoes)
+			console.log(permissao)
 		},
 
 		limparForm: function(perfil){
@@ -445,8 +478,15 @@ angular.module('passagem-servico').lazy
 				buttons: [
 				  {
 				  	label: 'Sim', color: 'yellow', action: function() {
-				  		perfil.edit.opened = false
-				  		angular.extend($s.perfilCtrl.list[perfil.id-1].edit, perfil.edit)
+				  		if (perfil.edit.opened) {
+					  		perfil.edit.opened = false
+					  		angular.extend($s.perfilCtrl.list[perfil.id-1].edit, perfil.edit)
+					  	} else if ($s.perfilCtrl.perfilNovo) {
+					  		$s.perfilCtrl.perfilNovo = false
+					  	} else {
+					  		$s.perfilCtrl.perfilNovo = false
+					  		$s.perfilCtrl.duplicar = false
+					  	}
 				  	}
 					},
 					{ label: 'Não', color: 'gray' }
@@ -462,33 +502,33 @@ angular.module('passagem-servico').lazy
 			perfil.objetos.splice(index, 1);
 		},
 
-		cadastrarItem: function(categoria){ //adicionador de itens
-			categoria.itens.unshift({})
+		cadastrarItem: function(objeto){ //adicionador de itens
+			objeto.itens.unshift({})
 		},
 
-		deleteItem: function(categoria, index){
-			categoria.itens.splice(index, 1);
+		deleteItem: function(objeto, index){
+			objeto.itens.splice(index, 1);
 		},
 
 		salvarPerfil: function(perfil){
-		if (this.perfilNovo || this.duplicar && !perfil.edit.opened) {
-			this.list.push({
-				id: this.list.length+1,
-				nome: perfil.nome,
-				objetos: perfil.objetos,
-				permissoes: perfil.permissoes,
-				disabled: false
-			});
-			this.perfilNovo = false
-			this.duplicar = false
-		} else {
-			angular.extend($s.perfilCtrl.list[perfil.id-1], perfil)
-			perfil.edit.opened = false
-		}
-			console.log($s.perfilCtrl.list)
-			this.perfilNovo = false
-			this.duplicar = false
-		},
+			if (this.perfilNovo || this.duplicar && !perfil.edit.opened) {
+				this.list.push({
+					id: this.list.length+1,
+					nome: perfil.nome,
+					objetos: perfil.objetos,
+					permissoes: perfil.permissoes,
+					disabled: false,
+					permissoesTotal: 0,
+				});
+				this.perfilNovo = false
+				this.duplicar = false
+			} else {
+				angular.extend($s.perfilCtrl.list[perfil.id-1], perfil)
+				perfil.edit.opened = false
+			}
+				this.perfilNovo = false
+				this.duplicar = false
+			},
 
 		disable_enable: function(perfil){
 			title: '';
@@ -514,9 +554,8 @@ angular.module('passagem-servico').lazy
 		},
 
 		editar: function(perfil){
+			console.log(perfil)
 			if (!perfil.edit.opened) {
-				console.log(perfil.edit)
-				console.log(perfil)
 				perfil.edit.opened = true
 				this.params = angular.copy(perfil)
 			} else if (perfil.edit.opened) {
@@ -570,7 +609,20 @@ angular.module('passagem-servico').lazy
 		},
 
 		close: function () {
-			this.modal.close()
+			if (this.perfilNovo) {
+				scAlert.open({
+					title: 'Atenção!',
+					messages: [
+					  { msg: 'Ainda existem formulários, que não foram salvos, abertos. Deseja realmente fechar?'}
+					],
+					buttons: [
+					  { label: 'Sim', color: 'yellow', action: function() { $s.perfilCtrl.modal.close() } },
+					  { label: 'Não', color: 'gray'}
+					]
+				})
+			} else {
+			  this.modal.close()
+			}
 		},
 	};
 
