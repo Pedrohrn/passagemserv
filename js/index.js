@@ -122,19 +122,22 @@ angular.module('passagem-servico').lazy
 				status: { label: 'Pendente', color: 'yellow' },
 				perfil: { id: 1, nome: 'Portaria Social' },
 				objetos: [
-					{ categoria: { id: 1, label: 'Funcionamento'} ,
+					{ id: 1,
+						categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', qtd: 2 },
 							{ nome: 'Câmeras funcionando', qtd: 6 },
 							{ nome: 'Interfone funcionando', qtd: 7 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento'} ,
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Discussão ', qtd: 1 },
 						],
 					},
-					{ categoria: { id: 3, label: 'Empréstimos'} ,
+					{ id: 3,
+						categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', qtd: 3 },
 						],
@@ -151,19 +154,22 @@ angular.module('passagem-servico').lazy
 				status: { label: 'Realizada', color: 'green' },
 				perfil: { id: 2, nome: 'Portaria de Serviço' },
 				objetos: [
-					{ categoria: { id: 1, label: 'Funcionamento'} ,
+					{ id: 1,
+						categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', qtd: 2 },
 							{ nome: 'Câmeras funcionando', qtd: 6 },
 							{ nome: 'Interfone funcionando', qtd: 7 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento'} ,
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Discussão ', qtd: 2 },
 						],
 					},
-					{ categoria: { id: 3, label: 'Empréstimos'} ,
+					{ id: 3,
+						categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', qtd: 2 },
 						],
@@ -180,19 +186,22 @@ angular.module('passagem-servico').lazy
 				status: { label: 'Realizada', color: 'green' },
 				perfil: { id: 1, nome: 'Portaria Social'},
 				objetos: [
-					{	categoria: { id: 1, label: 'Funcionamento'} ,
+					{	id: 1,
+						categoria: { id: 1, label: 'Funcionamento'} ,
 						itens: [
 							{ nome: 'Portão funcionando', qtd: 2 },
 							{ nome: 'Câmeras funcionando', qtd: 6 },
 							{ nome: 'Interfone ', qtd: 7 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento'} ,
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento'} ,
 						itens: [
 							{ nome: 'Objeto danificado', qtd: 30 },
 						],
 					},
-					{ categoria: { id: 3, label: 'Empréstimos'} ,
+					{ id: 3,
+						categoria: { id: 3, label: 'Empréstimos'} ,
 						itens: [
 							{ nome: 'Bola', qtd: 7 },
 						],
@@ -310,14 +319,16 @@ angular.module('passagem-servico').lazy
 			{ id: 1,
 				nome: 'Portaria Social',
 				objetos: [
-					{ categoria: { id: 1, label: 'Funcionamento' },
+					{ id: 1,
+						categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
 							{ nome: 'Portão Funcionando', 		 qtd: 4 },
 							{ nome: 'Câmeras funcionando', 	 qtd: 6 },
 							{ nome: 'Interfone funcionando',  qtd: 2 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento' },
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento' },
 						itens: [
 							{ nome: 'Entrada de fornecedores', qtd: 38 },
 							{ nome: 'Retirada de chaves de espaço comum', qtd: 10 },
@@ -336,19 +347,22 @@ angular.module('passagem-servico').lazy
 			{ id: 2,
 				nome: 'Portaria de Serviço',
 				objetos: [
-					{ categoria: { id: 1, label: 'Funcionamento' },
+					{ id: 1,
+						categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
 							{ nome: 'Portão Funcionando',  	 qtd: 10 },
 							{ nome: 'Câmeras funcionando', 	 qtd: 5 },
 							{ nome: 'Interfone funcionando',  qtd: 2 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento' },
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento' },
 						itens: [
 							{ nome: 'Entrada de fornecedores', qtd: 7 },
 						],
 					},
-					{ categoria: { id: 3, label: 'Empréstimos' },
+					{ id: 3,
+						categoria: { id: 3, label: 'Empréstimos' },
 						itens: [
 							{ nome: 'Testando', qtd: 6 },
 						],
@@ -366,19 +380,22 @@ angular.module('passagem-servico').lazy
 			{ id: 3,
 				nome: 'Portaria de Teste 2',
 				objetos: [
-					{ categoria: { id: 1, label: 'Funcionamento' },
+					{ id: 1,
+						categoria: { id: 1, label: 'Funcionamento' },
 						itens: [
 							{ nome: 'Portão Funcionando',  	 qtd: 10 },
 							{ nome: 'Câmeras funcionando', 	 qtd: 5 },
 							{ nome: 'Interfone funcionando',  qtd: 2 },
 						],
 					},
-					{ categoria: { id: 2, label: 'Acontecimento' },
+					{ id: 2,
+						categoria: { id: 2, label: 'Acontecimento' },
 						itens: [
 							{ nome: 'Entrada de fornecedores', qtd: 7 },
 						],
 					},
-					{ categoria: { id: 3, label: 'Empréstimos' },
+					{ id: 3,
+						categoria: { id: 3, label: 'Empréstimos' },
 						itens: [
 							{ nome: 'Testando', qtd: 6 },
 						],

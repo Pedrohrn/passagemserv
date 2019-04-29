@@ -44,30 +44,27 @@ angular.module('passagem-servico').lazy
 	};
 
 	vm.setCategoria = function(objeto){
-		if (objeto.categoria == null) {
-			objeto.categoria = { label: 'Selecione ou cadastre'}
-		}
-		console.log(vm.params.objetos)
-		console.log(objeto)
-		console.log(objeto.categoria)
-		console.log(objeto.categoria.label)
-		console.log(vm.params.objetos)
+		var count = 0;
 		for (var i = 0; i < vm.params.objetos.length; i++) {
-			console.log(objeto.categoria.label)
-			console.log(vm.params.objetos[i])
-			if (vm.params.objetos[i].categoria.label === objeto.categoria.label) {
-				scAlert.open({
-					title: 'Essa categoria já existe na lista!',
-					buttons: [
-					 	{ label: 'Ok', color: 'gray' }
-					],
-				})
+			if (Object.blank(vm.params.objetos[i].categoria) || vm.params.objetos[i].categoria == undefined) {
+				break;
+			} else if (vm.params.objetos[i].categoria.label == objeto.categoria.label) {
+				count++;
 			}
 		}
+		if (count > 1) {
+			scAlert.open({
+				title: 'Essa categoria já existe na lista!',
+				buttons: [
+				 	{ label: 'Ok', color: 'gray' }
+				],
+			})
+			objeto.categoria = {}
+			count = 0
+		};
 	};
 
 	vm.setPerfil = function(){ //set do perfil, que muda o form
-		console.log(vm.perfil)
 		scAlert.open({
 			title: "Atenção!",
 			messages: [
@@ -76,13 +73,21 @@ angular.module('passagem-servico').lazy
 				],
 			buttons: [
 				{ label: "Mesclar", color: 'blue', action: function() { //mescla a lista de objetos, de acordo com as categorias. caso exista uma categoria, na lista de objetos, igual à uma categoria na lista de objetos do PERFIL (tracked by categoria.id), os itens das categorias são mesclados.
+						var aux = [];
+						for (var i = 0; i < vm.params.objetos.length; i++) {
+							if (vm.params.objetos[i].categoria == !undefined || vm.params.objetos[i].categoria == !null || vm.params.objetos[i].categoria == !{}) {
+								aux.push(vm.params.objetos[i], 1)
+							}
+						}
+						vm.params.objetos = angular.copy(aux)
 						if (Object.blank(vm.params.objetos)) {
-							console.log('1')
 							vm.params.perfil = angular.copy(vm.perfil)
 							vm.params.objetos = angular.copy(vm.perfil.objetos)
 						} else if (Object.blank(vm.params.perfil)){ //colocar mais um if aqui, pra verificar se EXISTE ALGUM PERFIL SETADO, ou se os objetos foram adicionados manualmente
-							console.log('2')
 							vm.params.perfil = angular.copy(vm.perfil)
+							if (vm.params.objetos[i].categoria == {} || vm.params.objetos[i].categoria == null || vm.params.objetos[i].categoria == undefined) {
+								vm.params.objetos.remove(vm.params.objetos[i])
+							}
 							for (var i = 0; i < vm.params.objetos.length; i++) {
 								for (var j= 0; j < vm.params.perfil.objetos.length; j++) {
 									if (vm.params.objetos[i].categoria.label == vm.params.perfil.objetos[j].categoria.label) {
@@ -93,7 +98,9 @@ angular.module('passagem-servico').lazy
 							}
 							vm.params.objetos = vm.params.objetos.concat(vm.params.perfil.objetos)
 						} else {
-							console.log('3')
+							if (vm.params.objetos[i].categoria == {} || vm.params.objetos[i].categoria == null || vm.params.objetos[i].categoria == undefined) {
+								vm.params.objetos.remove(vm.params.objetos[i])
+							}
 							vm.params.perfil = angular.copy(vm.perfil)
 							for (var i = 0; i < vm.params.objetos.length; i++) {
 								for (var j = 0; j < vm.params.perfil.objetos.length; j++) {
@@ -110,6 +117,7 @@ angular.module('passagem-servico').lazy
 				},
 				{
 					label: "Sobreescrever", color: 'yellow', action: function() {
+						vm.params.perfil = vm.perfil
 						vm.params.objetos = angular.copy(vm.params.perfil.objetos)
 					},
 					tooltip: 'Sobreescreve objetos/itens abaixo pelos itens do perfil selecionado.',
@@ -120,25 +128,14 @@ angular.module('passagem-servico').lazy
 	};
 
 vm.salvar = function() {
-	console.log(vm.params.objetos)
-	for (i = 0; i < vm.params.objetos.length; i ++) {
-		if (Object.blank(vm.params.objetos[i].itens) || vm.params.objetos[i].categoria == null) {
+	for (var i = 0; i < vm.params.objetos.length; i ++) {
+		if (vm.params.objetos[i].itens == [] || vm.params.objetos[i].categoria == {} || !vm.params.objetos[i].categoria) {
 			vm.params.objetos.remove(vm.params.objetos[i])
 		}
 	}
-	for (i = 0; i < vm.params.objetos.length; i++) {
-		console.log(vm.params.objetos)
-		console.log(vm.params.objetos[i])
-		for (j = 0; j < vm.params.objetos.length; j++) {
-			if (vm.params.objetos[i].categoria.label == vm.params.objetos[j].categoria.label) {
-				vm.params.objetos[i].itens = vm.params.objetos[i].itens.concat(vm.params.objetos[j].itens)
-				vm.params.objetos.splice(vm.params.objetos[j], 1)
-			}
-		}
-	}
-	console.log(vm.params.objetos)
   vm.data = new Date();
   if (vm.new) {
+  	vm.params.objetos
     vm.listCtrl.list.push({
       id: vm.listCtrl.list.length+1,
       pessoa_entrou: vm.params.pessoa_entrou,
@@ -166,7 +163,7 @@ vm.salvar = function() {
 vm.salvar_passar = function() {
 	for (i = 0; i < vm.params.objetos.length; i++) {
 		if (Object.blank(vm.params.objetos[i].itens) || vm.params.objetos[i].categoria == null) {
-			vm.params.objetos.remove(vm.params.objetos[i])
+			vm.params.objetos.splice(vm.params.objetos[i], 1)
 		}
 	}
   vm.data = new Date();
@@ -201,7 +198,7 @@ vm.salvar_passar = function() {
 	};
 
 	vm.addCategoria = function(){ //adiciona uma nova categoria à lista de objetos DA PASSAGEM
-		vm.params.objetos.unshift({ itens: []});
+		vm.params.objetos.unshift({ id: vm.params.objetos.length+1, itens: []});
 	};
 
 	vm.removerObjeto = function(index){ //remove a categoria apenas do corpo do formulário, e não da lista principal com as categorias
@@ -210,7 +207,7 @@ vm.salvar_passar = function() {
 
 	// Colocar todas as funções de item num objeto vm.objetoItemCtrl = {}
 	vm.cadastrarItem = function(objeto) {
-		if(objeto.categoria == null) {
+		if(objeto.categoria == {} || objeto.categoria == undefined || objeto.categoria == null) {
 			scAlert.open({
 				title: 'Selecione uma categoria primeiro!',
 				buttons: [
