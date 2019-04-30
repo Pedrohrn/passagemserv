@@ -46,7 +46,7 @@
 		<div class="sc-fieldset">
 			<div class="sc-fieldset-head">
 				<span class="sc-label sc-text-xxl">Objetos</span>
-				<button ng-click="formCtrl.addCategoria()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
+				<button ng-click="formCtrl.categoriaCtrl.addObjeto()" class="sc-btn sc-btn-green sc-btn-sm sc-btn-thin sc-m-l-lg" type="button">Adicionar Categoria</button>
 				<button class="sc-btn sc-btn-red sc-btn-thin sc-btn-sm sc-m-l-lg" ng-if="formCtrl.params.objetos.length > 0" ng-click="formCtrl.limparForm()">Limpar formulário</button>
 			</div>
 
@@ -56,7 +56,7 @@
 						<div class="sc-text-sm">
 							<div ng-if="!objeto.novaCategoria && !objeto.edit">
 								<label class="sc-input-group" sc-stop-click>
-									<select class="sc-input-default sc-input-block" ng-change="formCtrl.setCategoria(objeto)" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
+									<select class="sc-input-default sc-input-block" ng-change="formCtrl.categoriaCtrl.setCategoria(objeto)" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
 										<option value="">Selecione ou cadastre</option>
 									</select>
 									<div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(objeto)">
@@ -69,7 +69,8 @@
 												<div>Editar</div>
 											</li>
 											<li ng-click="categoriasCtrl.disable_enable(categoria, objeto)">
-												<div>Desativar</div>
+												<div ng-if="!categoria.disabled">Desativar</div>
+												<div ng-if="categoria.disabled">Ativar</div>
 											</li>
 											<li ng-click="categoriasCtrl.rmv(categoria)">
 												<div>Excluir</div>
@@ -95,10 +96,10 @@
 						</div>
 
 						<div class="sc-m-l-md">
-							<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.cadastrarItem(objeto)"></i>
+							<i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="formCtrl.objetoItemCtrl.cadastrarItem(objeto)"></i>
 						</div>
 						<div class="sc-m-l-md">
-							<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.removerObjeto($index)"></i>
+							<i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="formCtrl.categoriaCtrl.removerObjeto($index)"></i>
 						</div>
 					</div>
 
@@ -119,7 +120,7 @@
 										<input class="sc-input-default sc-input-thin col-xs-9 col-md-6 col-lg-5" type="text" value="{{item.nome}}" ng-model="item.nome">
 									</div>
 									<div class="fcol-xs-1 align-right">
-	                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red" ng-click="formCtrl.deleteItem(objeto, $index)"></i>
+	                  <i class="sc-icon sc-icon-lixeira-1 sc-badge-hover-red" ng-click="formCtrl.objetoItemCtrl.deleteItem(objeto, $index)"></i>
 	                </div>
 								</div>
 							</li>

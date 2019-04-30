@@ -35,3 +35,8 @@
 		font-size: 0.8em;
 	}
 }
+
+body .flex-row .fcol-xs-50, body .sc-flex-table .sc-flex-table-body>div .fcol-xs-50, body .sc-flex-table .sc-flex-table-head .fcol-xs-50, body .sc-flex-table .sc-flex-table-foot .fcol-xs-50, body .flex-row-with-padding .fcol-xs-50 {
+    flex: 0 0 49%;
+    max-width: 49%;
+}

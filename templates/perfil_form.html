@@ -38,21 +38,21 @@
     <div class="sc-fieldset sc-m-h-md sc-text-sm-xs" ng-repeat="objeto in perfil.objetos">
       <div class="sc-fieldset-head flex-row justify-items-center">
         <div class="sc-text-sm">
-          <div ng-if="!categoria.novaCategoria">
+          <div ng-if="!objeto.novaCategoria && !objeto.edit">
             <label class="sc-input-group" sc-stop-click>
-              <select class="sc-input-default sc-input-block" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
+              <select class="sc-input-default sc-input-block" ng-change="perfilCtrl.setCategoria(perfil, objeto)" ng-options="cat as cat.label disable when cat.disabled for cat in categoriasCtrl.list track by cat.id" ng-model="objeto.categoria">
                 <option value="">Selecione ou cadastre</option>
               </select>
-              <div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(categoria)">
+              <div class="sc-dropdown sc-btn sc-btn-default" ng-click="categoriasCtrl.showOptions(objeto)">
                 <i class="sc-icon sc-icon-reticiencias-v"></i>
-                <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="categoria.showOpts" style="display: block;">
-                  <li ng-click="categoriasCtrl.new(categoria)">
+                <ul class="sc-dropdown-menu ng-animation-slider pull-right" ng-show="objeto.showOpts" style="display: block;">
+                  <li ng-click="categoriasCtrl.new(objeto)">
                     <div>Nova categoria</div>
                   </li>
-                  <li ng-click="categoriasCtrl.edit($index)">
+                  <li ng-click="categoriasCtrl.edit(objeto)">
                     <div>Editar</div>
                   </li>
-                  <li ng-click="categoriasCtrl.disable_enable(categoria)">
+                  <li ng-click="categoriasCtrl.disable_enable(categoria, objeto)">
                     <div ng-if="!categoria.disabled">Desativar</div>
                     <div ng-if="categoria.disabled">Ativar</div>
                   </li>
@@ -63,13 +63,16 @@
               </div>
             </label>
           </div>
-          <div ng-if="categoria.novaCategoria">
+          <div ng-if="objeto.novaCategoria || objeto.edit">
             <label class="sc-input-group">
               <input class="sc-input-default sc-input-block" ng-model="categoriasCtrl.newCategoria" type="text">
-              <button class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add(passagem, perfil, categoria)">
+              <button ng-if="!objeto.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.add(passagem, perfil, categoria)">
                 <i class="sc-icon sc-icon-mais-1"></i>
               </button>
-              <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(categoria)">
+              <button ng-if="objeto.edit" class="sc-btn sc-btn-green" ng-click="categoriasCtrl.salvar(objeto)">
+                <i class="sc-icon sc-icon-visto-1"></i>
+              </button>
+              <button class="sc-btn sc-btn-red" ng-click="categoriasCtrl.new(objeto)">
                 <i class="sc-icon sc-icon-fechar-1"></i>
               </button>
             </label>
@@ -79,7 +82,7 @@
           <i class="sc-icon sc-icon-mais-1 sc-badge-hover-green" ng-click="perfilCtrl.cadastrarItem(objeto)"></i>
         </div>
         <div class="sc-m-l-md">
-          <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerCategoria(perfil, $index)"></i>
+          <i class="sc-icon sc-icon-lixeira-2 sc-badge-hover-red" ng-click="perfilCtrl.removerObjeto(perfil, $index)"></i>
         </div>
       </div>
 
