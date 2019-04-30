@@ -48,7 +48,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
   }
 
   $routeProvider.otherwise({
-    templateUrl: '/templates/index.html',
+    templateUrl: 'templates/index.html',
     resolve: carregarCssJs({
     	js: ['index', 'form'],
     })
