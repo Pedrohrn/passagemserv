@@ -1,5 +1,3 @@
-var url_base = "pedrohrn.github.io/passagemserv";
-
 app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal', 'sc.commons.directives.scStopClick', 'sc.commons.factories.toggle', 'sc.commons.service.scAlert', 'sc.commons.scTopMessages', 'sc.commons.filters.nl2br' ])
 
 .config(function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
@@ -7,8 +5,6 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
     enabled: true,
     requireBase: false,
   });
-
-  console.log('url_base', url_base);
 
   function carregarCssJs(obj) {
    	return {
@@ -25,7 +21,7 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
 
             el.id = moduleType; //js/css
 
-            var path = "/"+moduleType+"/"+moduleKey+"."+moduleType; //css/produto.css
+            var path = moduleType+"/"+moduleKey+"."+moduleType; //css/produto.css
 
             switch(tagName){
               case 'link':
