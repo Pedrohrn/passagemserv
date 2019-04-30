@@ -12,6 +12,8 @@ app = angular.module('passagem-servico',['ngRoute', 'sc.commons.directives.modal
         var head = document.getElementsByTagName('head')[0];
         var deferred = $q.defer()
 
+        console.log('alskdfjasçldkfj')
+
         createElementsBy = function(moduleList, tagName, moduleType, fun){
           if (!moduleList || moduleList.length == 0){ return }
 
