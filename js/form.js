@@ -55,6 +55,11 @@ angular.module('passagem-servico').lazy
 						var aux = [];
 						var maior = undefined;
 						var menor = undefined;
+						for (var i = 0; i < vm.params.objetos.length; i++) { //transfere os objetos não vazios para o array aux
+							if (vm.params.objetos[i].categoria != undefined || vm.params.objetos[i].categoria != null || vm.params.objetos[i].categoria != {}) {
+								aux.push(vm.params.objetos[i])
+							}
+						}
 						if (Object.blank(vm.params.objetos)) {
 								vm.params.perfil = angular.copy(vm.perfil)
 								vm.params.objetos = angular.copy(vm.perfil.objetos)
@@ -83,11 +88,7 @@ angular.module('passagem-servico').lazy
 								}
 								vm.params.objetos = vm.params.objetos.concat(vm.params.perfil.objetos)
 						} else {
-								for (var i = 0; i < vm.params.objetos.length; i++) {
-									if (vm.params.objetos[i].categoria == {} || vm.params.objetos[i].categoria == null || vm.params.objetos[i].categoria == undefined) {
-										vm.params.objetos.remove(vm.params.objetos[i])
-									}
-								}
+								vm.params.objetos = angular.copy(aux)
 								vm.params.perfil = angular.copy(vm.perfil)
 								for (var i = 0; i < vm.params.objetos.length; i++) {
 									for (var j = 0; j < vm.params.perfil.objetos.length; j++) {
